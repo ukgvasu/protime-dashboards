@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
-import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, PieChart, Pie, Cell } from 'recharts';
-import { ArrowUpCircle, Clock, CheckCircle, AlertTriangle } from 'lucide-react';
+import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, PieChart, Pie, Cell, CartesianGrid } from 'recharts';
+import { ArrowUpCircle, Clock, CheckCircle, AlertTriangle, Users } from 'lucide-react';
 import { api } from '../services/api';
 
 const JIRA_BASE = 'https://engjira.int.kronos.com/browse';
@@ -65,12 +65,19 @@ function UpgradeCard({ data, label, color }) {
 
 export default function UTAUpgradeTracker() {
   const [data, setData] = useState(null);
+  const [customerData, setCustomerData] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    api.getUpgradeTracker('uta')
-      .then(setData)
+    Promise.all([
+      api.getUpgradeTracker('uta'),
+      api.getCustomerImpact('uta'),
+    ])
+      .then(([upgradeData, impactData]) => {
+        setData(upgradeData);
+        setCustomerData(impactData);
+      })
       .catch(err => setError(err.message))
       .finally(() => setLoading(false));
   }, []);
@@ -122,6 +129,39 @@ export default function UTAUpgradeTracker() {
           )}
         </div>
       </div>
+
+      {/* Top Impacted Customers */}
+      {customerData && (
+        <div className="bg-white rounded-lg shadow-sm border border-gray-100 p-5 mb-6">
+          <div className="flex items-center gap-2 mb-1">
+            <Users size={16} className="text-[#005151]" />
+            <h2 className="font-semibold text-gray-700">Top Impacted Customers</h2>
+          </div>
+          <p className="text-xs text-gray-400 mb-4">
+            UTA customers with the most open impacted defects ({customerData.totalImpacted} total · {customerData.uniqueCustomers} unique customers)
+          </p>
+          {(customerData.topCustomers || []).length > 0 ? (
+            <ResponsiveContainer width="100%" height={240}>
+              <BarChart
+                data={(customerData.topCustomers || []).slice(0, 10).map(c => ({
+                  name: c.name.length > 22 ? c.name.slice(0, 22) + '…' : c.name,
+                  count: c.count,
+                }))}
+                layout="vertical"
+                margin={{ left: 10, right: 20 }}
+              >
+                <CartesianGrid strokeDasharray="3 3" stroke="#f0f0f0" horizontal={false} />
+                <XAxis type="number" tick={{ fontSize: 11 }} allowDecimals={false} />
+                <YAxis type="category" dataKey="name" tick={{ fontSize: 10 }} width={150} />
+                <Tooltip />
+                <Bar dataKey="count" fill="#005151" radius={[0, 4, 4, 0]} />
+              </BarChart>
+            </ResponsiveContainer>
+          ) : (
+            <div className="text-center py-10 text-gray-400 text-sm">No customer impact data</div>
+          )}
+        </div>
+      )}
 
       {/* Charts Row */}
       <div className="grid grid-cols-2 gap-6 mb-6">
