@@ -154,48 +154,9 @@ export default function UTAUpgradeTracker() {
         )}
       </div>
 
-      {/* Charts Row */}
-      <div className="grid grid-cols-2 gap-6 mb-6">
-        {/* Resolution Breakdown */}
-        <div className="bg-white rounded-lg shadow-sm border border-gray-100 p-5">
-          <h2 className="font-semibold text-gray-700 mb-3">Resolution Breakdown</h2>
-          {resolutionData.length > 0 ? (
-            <ResponsiveContainer width="100%" height={200}>
-              <PieChart>
-                <Pie data={resolutionData} dataKey="value" nameKey="name" cx="50%" cy="50%" outerRadius={80} label={({ name, value }) => `${name}: ${value}`}>
-                  {resolutionData.map((_, i) => <Cell key={i} fill={PIE_COLORS[i % PIE_COLORS.length]} />)}
-                </Pie>
-                <Tooltip />
-              </PieChart>
-            </ResponsiveContainer>
-          ) : (
-            <div className="text-center py-10 text-gray-400">No resolution data yet</div>
-          )}
-        </div>
-
-        {/* Baseline Comparison */}
-        <div className="bg-white rounded-lg shadow-sm border border-gray-100 p-5">
-          <h2 className="font-semibold text-gray-700 mb-3">Resolution Days Comparison</h2>
-          <ResponsiveContainer width="100%" height={200}>
-            <BarChart data={[
-              { name: 'Upgrade 25', days: data.upgrade25?.avg_resolution_days || 0, fill: '#005151' },
-              { name: 'Upgrade 26', days: data.upgrade26?.avg_resolution_days || 0, fill: '#0d9488' },
-              { name: 'Baseline', days: data.baseline?.avg_resolution_days || 0, fill: '#9ca3af' },
-            ]}>
-              <XAxis dataKey="name" tick={{ fontSize: 12 }} />
-              <YAxis tick={{ fontSize: 12 }} label={{ value: 'Days', angle: -90, position: 'insideLeft', fontSize: 11 }} />
-              <Tooltip formatter={(v) => [`${v} days`]} />
-              <Bar dataKey="days" radius={[4, 4, 0, 0]}>
-                {[{ fill: '#005151' }, { fill: '#0d9488' }, { fill: '#9ca3af' }].map((c, i) => <Cell key={i} fill={c.fill} />)}
-              </Bar>
-            </BarChart>
-          </ResponsiveContainer>
-        </div>
-      </div>
-
       {/* Aging Issues Table */}
       {data.aging_issues && data.aging_issues.length > 0 && (
-        <div className="bg-white rounded-lg shadow-sm border border-gray-100 p-5">
+        <div className="bg-white rounded-lg shadow-sm border border-gray-100 p-5 mb-6">
           <h2 className="font-semibold text-gray-700 mb-3 flex items-center gap-2">
             <Clock size={16} className="text-orange-500" />
             Aging Issues (Top {data.aging_issues.length} Oldest Open)
@@ -233,6 +194,45 @@ export default function UTAUpgradeTracker() {
           </div>
         </div>
       )}
+
+      {/* Charts Row */}
+      <div className="grid grid-cols-2 gap-6">
+        {/* Resolution Breakdown */}
+        <div className="bg-white rounded-lg shadow-sm border border-gray-100 p-5">
+          <h2 className="font-semibold text-gray-700 mb-3">Resolution Breakdown</h2>
+          {resolutionData.length > 0 ? (
+            <ResponsiveContainer width="100%" height={200}>
+              <PieChart>
+                <Pie data={resolutionData} dataKey="value" nameKey="name" cx="50%" cy="50%" outerRadius={80} label={({ name, value }) => `${name}: ${value}`}>
+                  {resolutionData.map((_, i) => <Cell key={i} fill={PIE_COLORS[i % PIE_COLORS.length]} />)}
+                </Pie>
+                <Tooltip />
+              </PieChart>
+            </ResponsiveContainer>
+          ) : (
+            <div className="text-center py-10 text-gray-400">No resolution data yet</div>
+          )}
+        </div>
+
+        {/* Baseline Comparison */}
+        <div className="bg-white rounded-lg shadow-sm border border-gray-100 p-5">
+          <h2 className="font-semibold text-gray-700 mb-3">Resolution Days Comparison</h2>
+          <ResponsiveContainer width="100%" height={200}>
+            <BarChart data={[
+              { name: 'Upgrade 25', days: data.upgrade25?.avg_resolution_days || 0, fill: '#005151' },
+              { name: 'Upgrade 26', days: data.upgrade26?.avg_resolution_days || 0, fill: '#0d9488' },
+              { name: 'Baseline', days: data.baseline?.avg_resolution_days || 0, fill: '#9ca3af' },
+            ]}>
+              <XAxis dataKey="name" tick={{ fontSize: 12 }} />
+              <YAxis tick={{ fontSize: 12 }} label={{ value: 'Days', angle: -90, position: 'insideLeft', fontSize: 11 }} />
+              <Tooltip formatter={(v) => [`${v} days`]} />
+              <Bar dataKey="days" radius={[4, 4, 0, 0]}>
+                {[{ fill: '#005151' }, { fill: '#0d9488' }, { fill: '#9ca3af' }].map((c, i) => <Cell key={i} fill={c.fill} />)}
+              </Bar>
+            </BarChart>
+          </ResponsiveContainer>
+        </div>
+      </div>
     </div>
   );
 }
