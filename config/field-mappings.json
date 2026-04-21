@@ -1,0 +1,26 @@
+{
+  "jiraFields": {
+    "portfolioTeam": "customfield_22500",
+    "deploymentVersion": "customfield_25700",
+    "plannedStartDate": "customfield_25305",
+    "plannedEndDate": "customfield_25306"
+  },
+  "priorityMapping": {
+    "P1": { "value": "P1", "color": "#c0392b", "weight": 10 },
+    "P2": { "value": "P2", "color": "#d35400", "weight": 8 },
+    "P3": { "value": "P3", "color": "#b7950b", "weight": 5 },
+    "P4": { "value": "P4", "color": "#3AD6C5", "weight": 2 },
+    "P5": { "value": "P5", "color": "#27ae60", "weight": 1 }
+  },
+  "severityMapping": {
+    "S1": { "value": "S1", "color": "#c0392b", "weight": 10 },
+    "S2": { "value": "S2", "color": "#d35400", "weight": 8 },
+    "S3": { "value": "S3", "color": "#b7950b", "weight": 5 },
+    "S4": { "value": "S4", "color": "#3AD6C5", "weight": 2 }
+  },
+  "productColors": {
+    "uta": "#005151",
+    "utm": "#3AD6C5",
+    "wfmClassic": "#b7950b"
+  }
+}

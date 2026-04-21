@@ -1,0 +1,56 @@
+{
+  "rules": [
+    {
+      "id": "unassigned-p2-plus",
+      "name": "Unassigned P2+",
+      "enabled": true,
+      "condition": {
+        "type": "defect-query",
+        "filter": {
+          "priority": ["P1", "P2"],
+          "assignee": null,
+          "ageDays": { "gt": 1 }
+        }
+      },
+      "threshold": 1,
+      "action": {
+        "type": "slack",
+        "channel": "#protime-alerts",
+        "message": "🚨 {count} high-priority defects unassigned for >24h"
+      }
+    },
+    {
+      "id": "total-defects-spike",
+      "name": "Total Defects Spike",
+      "enabled": true,
+      "condition": {
+        "type": "metric-threshold",
+        "metric": "total_defects",
+        "compare": "7d_avg",
+        "operator": "gt",
+        "factor": 1.3
+      },
+      "action": {
+        "type": "email",
+        "recipients": ["pm@ukg.com"],
+        "subject": "ProTime Defect Volume Spike Alert"
+      }
+    },
+    {
+      "id": "sla-breach",
+      "name": "SLA Breach",
+      "enabled": false,
+      "condition": {
+        "type": "sla",
+        "rules": [
+          { "priority": "P1", "maxAgeDays": 3 },
+          { "priority": "P2", "maxAgeDays": 10 }
+        ]
+      },
+      "action": {
+        "type": "pagerduty",
+        "severity": "warning"
+      }
+    }
+  ]
+}

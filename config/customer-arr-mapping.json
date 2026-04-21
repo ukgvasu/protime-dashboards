@@ -1,0 +1,2338 @@
+{
+  "version": "1.0",
+  "last_updated": "2026-04-14",
+  "source": "Customer Details.csv",
+  "customers": [
+    {
+      "name": "ROLLINS, INC.",
+      "arr": 4484811,
+      "tier": "Upper Enterprise",
+      "aliases": [],
+      "notes": ""
+    },
+    {
+      "name": "CHEESECAKE FACTORY",
+      "arr": 3821346,
+      "tier": "Upper Enterprise",
+      "aliases": [],
+      "notes": ""
+    },
+    {
+      "name": "AIMBRIDGE PARENT, INC.",
+      "arr": 3786537,
+      "tier": "Upper Enterprise",
+      "aliases": [],
+      "notes": ""
+    },
+    {
+      "name": "FIRST-CITIZENS BANK & TRUST COMPANY",
+      "arr": 3706020,
+      "tier": "Upper Enterprise",
+      "aliases": [],
+      "notes": ""
+    },
+    {
+      "name": "VERTEX AEROSPACE LLC",
+      "arr": 3435088,
+      "tier": "Upper Enterprise",
+      "aliases": [],
+      "notes": ""
+    },
+    {
+      "name": "F J MANAGEMENT, INC.",
+      "arr": 3388507,
+      "tier": "Upper Enterprise",
+      "aliases": [],
+      "notes": ""
+    },
+    {
+      "name": "Primeflight Aviation Services, Inc.",
+      "arr": 3331453,
+      "tier": "Upper Enterprise",
+      "aliases": [],
+      "notes": ""
+    },
+    {
+      "name": "OSI RESTAURANT PARTNERS  LLC",
+      "arr": 2963029,
+      "tier": "Upper Enterprise",
+      "aliases": [],
+      "notes": ""
+    },
+    {
+      "name": "CITY OF DETROIT",
+      "arr": 2944724,
+      "tier": "Upper Enterprise",
+      "aliases": [],
+      "notes": ""
+    },
+    {
+      "name": "Acadia Management Company, LLC",
+      "arr": 2869044,
+      "tier": "Upper Enterprise",
+      "aliases": [],
+      "notes": ""
+    },
+    {
+      "name": "National Health Corporation",
+      "arr": 2728516,
+      "tier": "Upper Enterprise",
+      "aliases": [],
+      "notes": ""
+    },
+    {
+      "name": "KIMBERLY-CLARK CORPORATION",
+      "arr": 2639187,
+      "tier": "Upper Enterprise",
+      "aliases": [],
+      "notes": ""
+    },
+    {
+      "name": "BALLY'S CORPORATION",
+      "arr": 2619822,
+      "tier": "Upper Enterprise",
+      "aliases": [],
+      "notes": ""
+    },
+    {
+      "name": "CULLIGAN INTERNATIONAL COMPANY",
+      "arr": 2544152,
+      "tier": "Enterprise",
+      "aliases": [],
+      "notes": ""
+    },
+    {
+      "name": "Encore Group (usa) LLC",
+      "arr": 2510085,
+      "tier": "Upper Enterprise",
+      "aliases": [],
+      "notes": ""
+    },
+    {
+      "name": "ROPER TECHNOLOGIES, INC.",
+      "arr": 2498364,
+      "tier": "Upper Enterprise",
+      "aliases": [],
+      "notes": ""
+    },
+    {
+      "name": "AMERICAN RESIDENTIAL SERVICES LLC",
+      "arr": 2323018,
+      "tier": "Enterprise",
+      "aliases": [],
+      "notes": ""
+    },
+    {
+      "name": "CHRISTIAN DIOR PERFUMES LLC",
+      "arr": 2289819,
+      "tier": "Upper Enterprise",
+      "aliases": [],
+      "notes": ""
+    },
+    {
+      "name": "SHAMROCK FOODS COMPANY",
+      "arr": 2285469,
+      "tier": "Enterprise",
+      "aliases": [],
+      "notes": ""
+    },
+    {
+      "name": "KEOLIS AMERICA INC.",
+      "arr": 2267646,
+      "tier": "Enterprise",
+      "aliases": [],
+      "notes": ""
+    },
+    {
+      "name": "Hydro Extrusion USA, LLC",
+      "arr": 2129817,
+      "tier": "Enterprise",
+      "aliases": [],
+      "notes": ""
+    },
+    {
+      "name": "Bausch & Lomb Americas Inc.",
+      "arr": 2098849,
+      "tier": "Enterprise",
+      "aliases": [],
+      "notes": ""
+    },
+    {
+      "name": "DYCOM INDUSTRIES, INC",
+      "arr": 2051983,
+      "tier": "Upper Enterprise",
+      "aliases": [],
+      "notes": ""
+    },
+    {
+      "name": "Equinox Holdings, Inc.",
+      "arr": 2047936,
+      "tier": "Upper Enterprise",
+      "aliases": [],
+      "notes": ""
+    },
+    {
+      "name": "FERRERO U S A INC",
+      "arr": 2035793,
+      "tier": "Enterprise",
+      "aliases": [],
+      "notes": ""
+    },
+    {
+      "name": "NVIDIA CORPORATION",
+      "arr": 2033632,
+      "tier": "Upper Enterprise",
+      "aliases": [],
+      "notes": ""
+    },
+    {
+      "name": "SBM Management Services, LP",
+      "arr": 2030670,
+      "tier": "Enterprise",
+      "aliases": [],
+      "notes": ""
+    },
+    {
+      "name": "SONY PICTURES ENTERTAINMENT  INC.",
+      "arr": 1992871,
+      "tier": "Upper Enterprise",
+      "aliases": [],
+      "notes": ""
+    },
+    {
+      "name": "THE SALVATION ARMY",
+      "arr": 1922170,
+      "tier": "Upper Enterprise",
+      "aliases": [],
+      "notes": ""
+    },
+    {
+      "name": "HEARTLAND DENTAL LLC",
+      "arr": 1915526,
+      "tier": "Upper Enterprise",
+      "aliases": [],
+      "notes": ""
+    },
+    {
+      "name": "AMSTED INDUSTRIES INCORPORATED",
+      "arr": 1894609,
+      "tier": "Upper Enterprise",
+      "aliases": [],
+      "notes": ""
+    },
+    {
+      "name": "MESSER NORTH AMERICA INC",
+      "arr": 1889980,
+      "tier": "Upper Enterprise",
+      "aliases": [],
+      "notes": ""
+    },
+    {
+      "name": "Alsco Inc.",
+      "arr": 1861427,
+      "tier": "Upper Enterprise",
+      "aliases": [],
+      "notes": ""
+    },
+    {
+      "name": "AFL TELECOMMUNICATIONS LLC",
+      "arr": 1860992,
+      "tier": "Enterprise",
+      "aliases": [],
+      "notes": ""
+    },
+    {
+      "name": "Surgery Center Holdings, Inc.",
+      "arr": 1849735,
+      "tier": "Upper Enterprise",
+      "aliases": [],
+      "notes": ""
+    },
+    {
+      "name": "WESTERN DENTAL SERVICES INC",
+      "arr": 1814533,
+      "tier": "Enterprise",
+      "aliases": [],
+      "notes": ""
+    },
+    {
+      "name": "DANFOSS POWER SOLUTIONS (US) COMPANY",
+      "arr": 1807884,
+      "tier": "Enterprise",
+      "aliases": [],
+      "notes": ""
+    },
+    {
+      "name": "HAWAIIAN AIRLINES, INC.",
+      "arr": 1800020,
+      "tier": "Upper Enterprise",
+      "aliases": [],
+      "notes": ""
+    },
+    {
+      "name": "Sound Inpatient Physicians, Inc.",
+      "arr": 1798543,
+      "tier": "Enterprise",
+      "aliases": [],
+      "notes": ""
+    },
+    {
+      "name": "Oncor Electric Delivery Holdings Company LLC",
+      "arr": 1696460,
+      "tier": "Upper Enterprise",
+      "aliases": [],
+      "notes": ""
+    },
+    {
+      "name": "CITIZENS BANK, N.A",
+      "arr": 1687429,
+      "tier": "Upper Enterprise",
+      "aliases": [],
+      "notes": ""
+    },
+    {
+      "name": "VECTRUS SYSTEMS, LLC",
+      "arr": 1677092,
+      "tier": "Upper Enterprise",
+      "aliases": [],
+      "notes": ""
+    },
+    {
+      "name": "FIRST HORIZON NATIONAL CORPORATION",
+      "arr": 1633159,
+      "tier": "Enterprise",
+      "aliases": [],
+      "notes": ""
+    },
+    {
+      "name": "Catapult Learning, LLC",
+      "arr": 1560690,
+      "tier": "Enterprise",
+      "aliases": [],
+      "notes": ""
+    },
+    {
+      "name": "PACIFIC SUNWEAR STORES LLC",
+      "arr": 1560572,
+      "tier": "Upper Enterprise",
+      "aliases": [],
+      "notes": ""
+    },
+    {
+      "name": "GRAY Media INC.",
+      "arr": 1557738,
+      "tier": "Enterprise",
+      "aliases": [],
+      "notes": ""
+    },
+    {
+      "name": "SOUTHCENTRAL FOUNDATION",
+      "arr": 1531829,
+      "tier": "Enterprise",
+      "aliases": [],
+      "notes": ""
+    },
+    {
+      "name": "Fisher Asset Management LLC",
+      "arr": 1528307,
+      "tier": "Enterprise",
+      "aliases": [],
+      "notes": ""
+    },
+    {
+      "name": "HUHTAMAKI AMERICAS  INC.",
+      "arr": 1517205,
+      "tier": "Enterprise",
+      "aliases": [],
+      "notes": ""
+    },
+    {
+      "name": "Cascades Canada ULC",
+      "arr": 1499091,
+      "tier": "Enterprise",
+      "aliases": [],
+      "notes": ""
+    },
+    {
+      "name": "SAGE HOSPITALITY RESOURCES LLC",
+      "arr": 1474295,
+      "tier": "Enterprise",
+      "aliases": [],
+      "notes": ""
+    },
+    {
+      "name": "THE CHIMES INC",
+      "arr": 1469750,
+      "tier": "Enterprise",
+      "aliases": [],
+      "notes": ""
+    },
+    {
+      "name": "THE BUCKLE, INC.",
+      "arr": 1469262,
+      "tier": "Enterprise",
+      "aliases": [],
+      "notes": ""
+    },
+    {
+      "name": "SCHLEGEL VILLAGES INC",
+      "arr": 1459015,
+      "tier": "Enterprise",
+      "aliases": [],
+      "notes": ""
+    },
+    {
+      "name": "SWEETGREEN  INC.",
+      "arr": 1453774,
+      "tier": "Enterprise",
+      "aliases": [],
+      "notes": ""
+    },
+    {
+      "name": "THE UNIVERSITY OF PHOENIX INC",
+      "arr": 1444936,
+      "tier": "Enterprise",
+      "aliases": [],
+      "notes": ""
+    },
+    {
+      "name": "AJINOMOTO FOODS NORTH AMERICA, INC.",
+      "arr": 1423239,
+      "tier": "Enterprise",
+      "aliases": [],
+      "notes": ""
+    },
+    {
+      "name": "PRIDE INDUSTRIES",
+      "arr": 1417634,
+      "tier": "Enterprise",
+      "aliases": [],
+      "notes": ""
+    },
+    {
+      "name": "AMERICAN RENAL ASSOCIATES LLC",
+      "arr": 1410826,
+      "tier": "Enterprise",
+      "aliases": [],
+      "notes": ""
+    },
+    {
+      "name": "FIREBIRDS INTERNATIONAL  LLC",
+      "arr": 1399204,
+      "tier": "Enterprise",
+      "aliases": [],
+      "notes": ""
+    },
+    {
+      "name": "SORENSON COMMUNICATIONS LLC",
+      "arr": 1394989,
+      "tier": "Enterprise",
+      "aliases": [],
+      "notes": ""
+    },
+    {
+      "name": "JOHN BEAN TECHNOLOGIES CORPORATION",
+      "arr": 1380860,
+      "tier": "Upper Enterprise",
+      "aliases": [],
+      "notes": ""
+    },
+    {
+      "name": "ACUREN INSPECTION  INC.",
+      "arr": 1369042,
+      "tier": "Upper Enterprise",
+      "aliases": [],
+      "notes": ""
+    },
+    {
+      "name": "Wyckoff Heights Medical Center",
+      "arr": 1361318,
+      "tier": "Upper Mid-market",
+      "aliases": [],
+      "notes": ""
+    },
+    {
+      "name": "BOZZUTO & ASSOCIATES  INC.",
+      "arr": 1342701,
+      "tier": "Enterprise",
+      "aliases": [],
+      "notes": ""
+    },
+    {
+      "name": "PRITCHARD INDUSTRIES, LLC",
+      "arr": 1333513,
+      "tier": "Enterprise",
+      "aliases": [],
+      "notes": ""
+    },
+    {
+      "name": "HERSHA HOSPITALITY MANAGEMENT  LP",
+      "arr": 1322396,
+      "tier": "Enterprise",
+      "aliases": [],
+      "notes": ""
+    },
+    {
+      "name": "J & J SNACK FOODS CORP.",
+      "arr": 1289869,
+      "tier": "Enterprise",
+      "aliases": [],
+      "notes": ""
+    },
+    {
+      "name": "SUB-ZERO GROUP, INC.",
+      "arr": 1284348,
+      "tier": "Enterprise",
+      "aliases": [],
+      "notes": ""
+    },
+    {
+      "name": "AHMC HEALTHCARE",
+      "arr": 1272782,
+      "tier": "Upper Enterprise",
+      "aliases": [],
+      "notes": ""
+    },
+    {
+      "name": "People Inc.",
+      "arr": 1264064,
+      "tier": "Enterprise",
+      "aliases": [],
+      "notes": ""
+    },
+    {
+      "name": "WEST FRASER MILLS LTD",
+      "arr": 1258908,
+      "tier": "Enterprise",
+      "aliases": [],
+      "notes": ""
+    },
+    {
+      "name": "T & T SUPERMARKET INC",
+      "arr": 1256817,
+      "tier": "Upper Enterprise",
+      "aliases": [],
+      "notes": ""
+    },
+    {
+      "name": "Wurth Group of North America, Inc.",
+      "arr": 1256702,
+      "tier": "Enterprise",
+      "aliases": [],
+      "notes": ""
+    },
+    {
+      "name": "MILLER'S ALE HOUSE  INC.",
+      "arr": 1243167,
+      "tier": "Enterprise",
+      "aliases": [],
+      "notes": ""
+    },
+    {
+      "name": "SA RECYCLING LLC",
+      "arr": 1241655,
+      "tier": "Enterprise",
+      "aliases": [],
+      "notes": ""
+    },
+    {
+      "name": "Ahrc New York City",
+      "arr": 1227339,
+      "tier": "Upper Enterprise",
+      "aliases": [],
+      "notes": ""
+    },
+    {
+      "name": "CONFIE SEGUROS HOLDING CO.",
+      "arr": 1217761,
+      "tier": "Enterprise",
+      "aliases": [],
+      "notes": ""
+    },
+    {
+      "name": "ANSCHUTZ ENTERTAINMENT GROUP, INC.",
+      "arr": 1207551,
+      "tier": "Upper Enterprise",
+      "aliases": [],
+      "notes": ""
+    },
+    {
+      "name": "ERNEST HEALTH INC",
+      "arr": 1197218,
+      "tier": "Enterprise",
+      "aliases": [],
+      "notes": ""
+    },
+    {
+      "name": "GLACIER BANCORP  INC.",
+      "arr": 1188030,
+      "tier": "Enterprise",
+      "aliases": [],
+      "notes": ""
+    },
+    {
+      "name": "Success Foods Management Group LLC",
+      "arr": 1187090,
+      "tier": "Enterprise",
+      "aliases": [],
+      "notes": ""
+    },
+    {
+      "name": "HOMESERVICES OF AMERICA  INC.",
+      "arr": 1179577,
+      "tier": "Upper Enterprise",
+      "aliases": [],
+      "notes": ""
+    },
+    {
+      "name": "POST ACUTE MEDICAL  LLC",
+      "arr": 1169806,
+      "tier": "Enterprise",
+      "aliases": [],
+      "notes": ""
+    },
+    {
+      "name": "REVLON CONSUMER PRODUCTS LLC",
+      "arr": 1166331,
+      "tier": "Enterprise",
+      "aliases": [],
+      "notes": ""
+    },
+    {
+      "name": "Genesee & Wyoming Railroad Services, Inc",
+      "arr": 1157114,
+      "tier": "Enterprise",
+      "aliases": [],
+      "notes": ""
+    },
+    {
+      "name": "RUIZ FOOD PRODUCTS  INC.",
+      "arr": 1124618,
+      "tier": "Enterprise",
+      "aliases": [],
+      "notes": ""
+    },
+    {
+      "name": "C.P.G. INTERNATIONAL  INC.",
+      "arr": 1116836,
+      "tier": "Upper Mid-market",
+      "aliases": [],
+      "notes": ""
+    },
+    {
+      "name": "AHF, LLC",
+      "arr": 1104088,
+      "tier": "Enterprise",
+      "aliases": [],
+      "notes": ""
+    },
+    {
+      "name": "BRAND INDUSTRIAL SERVICES, INC. DBA BRANDSAFWAY",
+      "arr": 1100176,
+      "tier": "Enterprise",
+      "aliases": [],
+      "notes": ""
+    },
+    {
+      "name": "READY PAC PRODUCE  INC.",
+      "arr": 1092632,
+      "tier": "Enterprise",
+      "aliases": [],
+      "notes": ""
+    },
+    {
+      "name": "UNIVERSAL TECHNICAL INSTITUTE INC.",
+      "arr": 1090909,
+      "tier": "Enterprise",
+      "aliases": [],
+      "notes": ""
+    },
+    {
+      "name": "SQUARE, INC.",
+      "arr": 1089139,
+      "tier": "Enterprise",
+      "aliases": [],
+      "notes": ""
+    },
+    {
+      "name": "HUNTER DOUGLAS INC.",
+      "arr": 1064945,
+      "tier": "Enterprise",
+      "aliases": [],
+      "notes": ""
+    },
+    {
+      "name": "ALLEGIANT TRAVEL COMPANY",
+      "arr": 1053294,
+      "tier": "Upper Enterprise",
+      "aliases": [],
+      "notes": ""
+    },
+    {
+      "name": "PSP Group, LLC",
+      "arr": 1049509,
+      "tier": "Upper Enterprise",
+      "aliases": [],
+      "notes": ""
+    },
+    {
+      "name": "TRUE MANUFACTURING",
+      "arr": 1048355,
+      "tier": "Enterprise",
+      "aliases": [],
+      "notes": ""
+    },
+    {
+      "name": "Triage, LLC",
+      "arr": 1048005,
+      "tier": "Enterprise",
+      "aliases": [],
+      "notes": ""
+    },
+    {
+      "name": "ACE PARKING MANAGEMENT, INC",
+      "arr": 1044714,
+      "tier": "Enterprise",
+      "aliases": [],
+      "notes": ""
+    },
+    {
+      "name": "RCN TELECOM SERVICES  LLC",
+      "arr": 1044402,
+      "tier": "Enterprise",
+      "aliases": [],
+      "notes": ""
+    },
+    {
+      "name": "Puyallup Tribal Gaming Enterprises, Inc. dba Emerald Queen Casino",
+      "arr": 1036023,
+      "tier": "Upper Mid-market",
+      "aliases": [],
+      "notes": ""
+    },
+    {
+      "name": "ARCHDIOCESE OF WASHINGTON",
+      "arr": 995464,
+      "tier": "Enterprise",
+      "aliases": [],
+      "notes": ""
+    },
+    {
+      "name": "ABC Technologies Inc.",
+      "arr": 992403,
+      "tier": "Enterprise",
+      "aliases": [],
+      "notes": ""
+    },
+    {
+      "name": "MCWANE  INC.",
+      "arr": 984514,
+      "tier": "Enterprise",
+      "aliases": [],
+      "notes": ""
+    },
+    {
+      "name": "SIENNA SENIOR LIVING INC",
+      "arr": 982176,
+      "tier": "Enterprise",
+      "aliases": [],
+      "notes": ""
+    },
+    {
+      "name": "RELIANT MANAGEMENT GROUP  LLC",
+      "arr": 981021,
+      "tier": "Enterprise",
+      "aliases": [],
+      "notes": ""
+    },
+    {
+      "name": "CO-OPERATORS FINANCIAL SERVICES LIMITED",
+      "arr": 980577,
+      "tier": "Enterprise",
+      "aliases": [],
+      "notes": ""
+    },
+    {
+      "name": "GLOBAL FEDERAL CREDIT UNION",
+      "arr": 961278,
+      "tier": "Enterprise",
+      "aliases": [],
+      "notes": ""
+    },
+    {
+      "name": "TKC HOLDINGS, INC",
+      "arr": 954796,
+      "tier": "Enterprise",
+      "aliases": [],
+      "notes": ""
+    },
+    {
+      "name": "NINTENDO OF AMERICA INC",
+      "arr": 947280,
+      "tier": "Enterprise",
+      "aliases": [],
+      "notes": ""
+    },
+    {
+      "name": "ARROW ELECTRONICS  INC.",
+      "arr": 935572,
+      "tier": "Upper Enterprise",
+      "aliases": [],
+      "notes": ""
+    },
+    {
+      "name": "AMERICAN CHEMICAL SOCIETY",
+      "arr": 934113,
+      "tier": "Upper Mid-market",
+      "aliases": [],
+      "notes": ""
+    },
+    {
+      "name": "THE NEW YORK FOUNDLING HOSPITAL",
+      "arr": 921472,
+      "tier": "Enterprise",
+      "aliases": [],
+      "notes": ""
+    },
+    {
+      "name": "Moss Adams Advisory Group LP",
+      "arr": 914132,
+      "tier": "Upper Enterprise",
+      "aliases": [],
+      "notes": ""
+    },
+    {
+      "name": "ALAMOS GOLD INC",
+      "arr": 903057,
+      "tier": "Enterprise",
+      "aliases": [],
+      "notes": ""
+    },
+    {
+      "name": "CBI Limited",
+      "arr": 899432,
+      "tier": "Enterprise",
+      "aliases": [],
+      "notes": ""
+    },
+    {
+      "name": "FPI Management, Inc.",
+      "arr": 893362,
+      "tier": "Enterprise",
+      "aliases": [],
+      "notes": ""
+    },
+    {
+      "name": "PROFESSIONAL CONTRACT SERVICES  INC.",
+      "arr": 884746,
+      "tier": "Upper Mid-market",
+      "aliases": [],
+      "notes": ""
+    },
+    {
+      "name": "DRISCOLL'S, INC.",
+      "arr": 863236,
+      "tier": "Enterprise",
+      "aliases": [],
+      "notes": ""
+    },
+    {
+      "name": "MISTRAS GROUP INC.",
+      "arr": 861280,
+      "tier": "Enterprise",
+      "aliases": [],
+      "notes": ""
+    },
+    {
+      "name": "Husch Blackwell LLP",
+      "arr": 855240,
+      "tier": "Upper Mid-market",
+      "aliases": [],
+      "notes": ""
+    },
+    {
+      "name": "ONEHARRIS  INC.",
+      "arr": 853096,
+      "tier": "Enterprise",
+      "aliases": [],
+      "notes": ""
+    },
+    {
+      "name": "CLOROX SERVICES COMPANY",
+      "arr": 852176,
+      "tier": "Enterprise",
+      "aliases": [],
+      "notes": ""
+    },
+    {
+      "name": "Mediacom Broadband LLC",
+      "arr": 848847,
+      "tier": "Enterprise",
+      "aliases": [],
+      "notes": ""
+    },
+    {
+      "name": "Eat'n Park Hospitality Group, Inc.",
+      "arr": 836010,
+      "tier": "Enterprise",
+      "aliases": [],
+      "notes": ""
+    },
+    {
+      "name": "LANDS' END  INC.",
+      "arr": 827892,
+      "tier": "Enterprise",
+      "aliases": [],
+      "notes": ""
+    },
+    {
+      "name": "Sony Music Entertainment",
+      "arr": 825564,
+      "tier": "Upper Enterprise",
+      "aliases": [],
+      "notes": ""
+    },
+    {
+      "name": "Kirby Corporation",
+      "arr": 816191,
+      "tier": "Enterprise",
+      "aliases": [],
+      "notes": ""
+    },
+    {
+      "name": "AMERICAN COMMERCIAL BARGE LINE LLC",
+      "arr": 808325,
+      "tier": "Enterprise",
+      "aliases": [],
+      "notes": ""
+    },
+    {
+      "name": "AUGUSTA HEALTH CARE  INC.",
+      "arr": 801722,
+      "tier": "Enterprise",
+      "aliases": [],
+      "notes": ""
+    },
+    {
+      "name": "PACIFIC SEAFOOD",
+      "arr": 796747,
+      "tier": "Enterprise",
+      "aliases": [],
+      "notes": ""
+    },
+    {
+      "name": "THE PROCACCIANTI GROUP LLC",
+      "arr": 793305,
+      "tier": "Upper Enterprise",
+      "aliases": [],
+      "notes": ""
+    },
+    {
+      "name": "Morton Salt, Inc.",
+      "arr": 792358,
+      "tier": "Enterprise",
+      "aliases": [],
+      "notes": ""
+    },
+    {
+      "name": "Visteon Corporation",
+      "arr": 783430,
+      "tier": "Enterprise",
+      "aliases": [],
+      "notes": ""
+    },
+    {
+      "name": "PCH HOTELS & RESORTS INC/RSA BATTLE HOUSE TOWER",
+      "arr": 780186,
+      "tier": "Upper Mid-market",
+      "aliases": [],
+      "notes": ""
+    },
+    {
+      "name": "GOODWILL INDUSTRIES OF SOUTHEASTERN WISCONSIN  INC.",
+      "arr": 773596,
+      "tier": "Enterprise",
+      "aliases": [],
+      "notes": ""
+    },
+    {
+      "name": "HEALTHPRO HERITAGE, LLC",
+      "arr": 770926,
+      "tier": "Enterprise",
+      "aliases": [],
+      "notes": ""
+    },
+    {
+      "name": "THE YOUNG MEN'S CHRISTIAN ASSOCIATION OF GREATER SEATTLE",
+      "arr": 755139,
+      "tier": "Upper Mid-market",
+      "aliases": [],
+      "notes": ""
+    },
+    {
+      "name": "THE DONOHOE COMPANIES INC",
+      "arr": 754910,
+      "tier": "Upper Mid-market",
+      "aliases": [],
+      "notes": ""
+    },
+    {
+      "name": "Good Shepherd Rehabilitation Network",
+      "arr": 749984,
+      "tier": "Upper Mid-market",
+      "aliases": [],
+      "notes": ""
+    },
+    {
+      "name": "Total Safety U.S., Inc.",
+      "arr": 747558,
+      "tier": "Upper Mid-market",
+      "aliases": [],
+      "notes": ""
+    },
+    {
+      "name": "BUILD-A-BEAR WORKSHOP  INC.",
+      "arr": 733630,
+      "tier": "Enterprise",
+      "aliases": [],
+      "notes": ""
+    },
+    {
+      "name": "JUSTICE RESOURCE INSTITUTE  INC.",
+      "arr": 728428,
+      "tier": "Enterprise",
+      "aliases": [],
+      "notes": ""
+    },
+    {
+      "name": "COVIA HOLDINGS LLC",
+      "arr": 723475,
+      "tier": "Enterprise",
+      "aliases": [],
+      "notes": ""
+    },
+    {
+      "name": "Ferrovial Holding US Corp",
+      "arr": 717575,
+      "tier": "Enterprise",
+      "aliases": [],
+      "notes": ""
+    },
+    {
+      "name": "ESSENDANT MANAGEMENT SERVICES LLC",
+      "arr": 716706,
+      "tier": "Upper Enterprise",
+      "aliases": [],
+      "notes": ""
+    },
+    {
+      "name": "Vibra Healthcare",
+      "arr": 710875,
+      "tier": "Enterprise",
+      "aliases": [],
+      "notes": ""
+    },
+    {
+      "name": "TAHOE FOREST HOSPITAL DISTRICT",
+      "arr": 707607,
+      "tier": "Mid-market",
+      "aliases": [],
+      "notes": ""
+    },
+    {
+      "name": "LANDCARE USA L.L.C.",
+      "arr": 701601,
+      "tier": "Enterprise",
+      "aliases": [],
+      "notes": ""
+    },
+    {
+      "name": "FYi Eye Care Services And Products Inc",
+      "arr": 699692,
+      "tier": "Enterprise",
+      "aliases": [],
+      "notes": ""
+    },
+    {
+      "name": "Employbridge, LLC",
+      "arr": 699297,
+      "tier": "Upper Enterprise",
+      "aliases": [],
+      "notes": ""
+    },
+    {
+      "name": "ELIOT COMMUNITY HUMAN SERVICES  INC.",
+      "arr": 699094,
+      "tier": "Upper Mid-market",
+      "aliases": [],
+      "notes": ""
+    },
+    {
+      "name": "SPORTSMAN'S WAREHOUSE  INC.",
+      "arr": 696172,
+      "tier": "Enterprise",
+      "aliases": [],
+      "notes": ""
+    },
+    {
+      "name": "Bausch Health US, LLC",
+      "arr": 691990,
+      "tier": "Enterprise",
+      "aliases": [],
+      "notes": ""
+    },
+    {
+      "name": "PotlatchDeltic Forest Holdings Inc.",
+      "arr": 684344,
+      "tier": "Mid-market",
+      "aliases": [],
+      "notes": ""
+    },
+    {
+      "name": "The Kendal Corporation",
+      "arr": 682000,
+      "tier": "Enterprise",
+      "aliases": [],
+      "notes": ""
+    },
+    {
+      "name": "INDICOR LLC",
+      "arr": 677653,
+      "tier": "Upper Enterprise",
+      "aliases": [],
+      "notes": ""
+    },
+    {
+      "name": "JDK MANAGEMENT CO.  INC.",
+      "arr": 675859,
+      "tier": "Enterprise",
+      "aliases": [],
+      "notes": ""
+    },
+    {
+      "name": "Audacy Operations, LLC",
+      "arr": 662723,
+      "tier": "Enterprise",
+      "aliases": [],
+      "notes": ""
+    },
+    {
+      "name": "P C Northwest Permanente",
+      "arr": 656797,
+      "tier": "Upper Enterprise",
+      "aliases": [],
+      "notes": ""
+    },
+    {
+      "name": "MICRO ELECTRONICS",
+      "arr": 651789,
+      "tier": "Enterprise",
+      "aliases": [],
+      "notes": ""
+    },
+    {
+      "name": "Toromont Industries Ltd",
+      "arr": 650427,
+      "tier": "Enterprise",
+      "aliases": [],
+      "notes": ""
+    },
+    {
+      "name": "PHI d/b/a Presbyterian Senior Living",
+      "arr": 640125,
+      "tier": "Enterprise",
+      "aliases": [],
+      "notes": ""
+    },
+    {
+      "name": "Ellwood Group, Inc.",
+      "arr": 631327,
+      "tier": "Enterprise",
+      "aliases": [],
+      "notes": ""
+    },
+    {
+      "name": "The George Washington University Medical Faculty Associates",
+      "arr": 625173,
+      "tier": "Upper Enterprise",
+      "aliases": [],
+      "notes": ""
+    },
+    {
+      "name": "ALPHA METALLURGICAL SERVICES, LLC",
+      "arr": 623449,
+      "tier": "Upper Enterprise",
+      "aliases": [],
+      "notes": ""
+    },
+    {
+      "name": "THERMA-TRU CORP.",
+      "arr": 617959,
+      "tier": "Enterprise",
+      "aliases": [],
+      "notes": ""
+    },
+    {
+      "name": "PARK NATIONAL BANK",
+      "arr": 617529,
+      "tier": "Enterprise",
+      "aliases": [],
+      "notes": ""
+    },
+    {
+      "name": "WAJAX LIMITED",
+      "arr": 616553,
+      "tier": "Enterprise",
+      "aliases": [],
+      "notes": ""
+    },
+    {
+      "name": "AVISTA CORPORATION",
+      "arr": 615966,
+      "tier": "Enterprise",
+      "aliases": [],
+      "notes": ""
+    },
+    {
+      "name": "CALPINE CORPORATION",
+      "arr": 615770,
+      "tier": "Enterprise",
+      "aliases": [],
+      "notes": ""
+    },
+    {
+      "name": "YMCA of Metropolitan Chicago",
+      "arr": 614082,
+      "tier": "Enterprise",
+      "aliases": [],
+      "notes": ""
+    },
+    {
+      "name": "FULL HOUSE RESORTS  INC.",
+      "arr": 609576,
+      "tier": "Upper Mid-market",
+      "aliases": [],
+      "notes": ""
+    },
+    {
+      "name": "Thryv, Inc.",
+      "arr": 605861,
+      "tier": "Enterprise",
+      "aliases": [],
+      "notes": ""
+    },
+    {
+      "name": "KEHE DISTRIBUTORS LLC",
+      "arr": 603756,
+      "tier": "Enterprise",
+      "aliases": [],
+      "notes": ""
+    },
+    {
+      "name": "GEORGE M. LEADER FAMILY CORPORATION",
+      "arr": 599446,
+      "tier": "Upper Mid-market",
+      "aliases": [],
+      "notes": ""
+    },
+    {
+      "name": "UPSTATE CEREBRAL PALSY, INC. dba UPSTATE CARING PARTNERS",
+      "arr": 588266,
+      "tier": "Upper Mid-market",
+      "aliases": [],
+      "notes": ""
+    },
+    {
+      "name": "CANADA CARTAGE SYSTEM  LIMITED PARTNERSHIP",
+      "arr": 568961,
+      "tier": "Enterprise",
+      "aliases": [],
+      "notes": ""
+    },
+    {
+      "name": "Royal Realty Corp.",
+      "arr": 567366,
+      "tier": "Mid-market",
+      "aliases": [],
+      "notes": ""
+    },
+    {
+      "name": "THE SALVATION ARMY, A NEW YORK CORPORATION",
+      "arr": 565895,
+      "tier": "Upper Enterprise",
+      "aliases": [],
+      "notes": ""
+    },
+    {
+      "name": "OTTERBEIN HOMES, INC.",
+      "arr": 559666,
+      "tier": "Enterprise",
+      "aliases": [],
+      "notes": ""
+    },
+    {
+      "name": "MASSANUTTEN RESORT",
+      "arr": 558346,
+      "tier": "Upper Mid-market",
+      "aliases": [],
+      "notes": ""
+    },
+    {
+      "name": "Blue Bird Body Company",
+      "arr": 558011,
+      "tier": "Enterprise",
+      "aliases": [],
+      "notes": ""
+    },
+    {
+      "name": "JEWISH FEDERATION OF METROPOLITAN CHICAGO",
+      "arr": 549372,
+      "tier": "Enterprise",
+      "aliases": [],
+      "notes": ""
+    },
+    {
+      "name": "K. Hovnanian Companies, LLC.",
+      "arr": 542523,
+      "tier": "Enterprise",
+      "aliases": [],
+      "notes": ""
+    },
+    {
+      "name": "GoEasy Ltd",
+      "arr": 536772,
+      "tier": "Enterprise",
+      "aliases": [],
+      "notes": ""
+    },
+    {
+      "name": "Lanxess Corporation",
+      "arr": 535095,
+      "tier": "Enterprise",
+      "aliases": [],
+      "notes": ""
+    },
+    {
+      "name": "Larry H. Miller Management Corporation",
+      "arr": 526109,
+      "tier": "Upper Enterprise",
+      "aliases": [],
+      "notes": ""
+    },
+    {
+      "name": "Red Wing Shoe Company, Inc.",
+      "arr": 516166,
+      "tier": "Enterprise",
+      "aliases": [],
+      "notes": ""
+    },
+    {
+      "name": "Crowell & Moring LLP",
+      "arr": 511052,
+      "tier": "Mid-market",
+      "aliases": [],
+      "notes": ""
+    },
+    {
+      "name": "SMS EQUIPMENT INC",
+      "arr": 504952,
+      "tier": "Enterprise",
+      "aliases": [],
+      "notes": ""
+    },
+    {
+      "name": "Goodwill of Southwestern Pennsylvania",
+      "arr": 498014,
+      "tier": "Mid-market",
+      "aliases": [],
+      "notes": ""
+    },
+    {
+      "name": "MATTAMY HOMES LIMITED",
+      "arr": 489336,
+      "tier": "Enterprise",
+      "aliases": [],
+      "notes": ""
+    },
+    {
+      "name": "YOUNG MEN'S CHRISTIAN ASSOCIATION OF GREATER RICHMOND",
+      "arr": 486959,
+      "tier": "Upper Mid-market",
+      "aliases": [],
+      "notes": ""
+    },
+    {
+      "name": "WATTS WATER TECHNOLOGIES  INC.",
+      "arr": 483117,
+      "tier": "Enterprise",
+      "aliases": [],
+      "notes": ""
+    },
+    {
+      "name": "UNIVERSITY OF REDLANDS",
+      "arr": 480341,
+      "tier": "Upper Mid-market",
+      "aliases": [],
+      "notes": ""
+    },
+    {
+      "name": "KAWASAKI MOTORS CORP.  U.S.A.",
+      "arr": 477410,
+      "tier": "Enterprise",
+      "aliases": [],
+      "notes": ""
+    },
+    {
+      "name": "HUNTER INDUSTRIES",
+      "arr": 477115,
+      "tier": "Enterprise",
+      "aliases": [],
+      "notes": ""
+    },
+    {
+      "name": "FORMICA CORP",
+      "arr": 467177,
+      "tier": "Mid-market",
+      "aliases": [],
+      "notes": ""
+    },
+    {
+      "name": "OUTREACH HEALTH CARE  INC",
+      "arr": 465377,
+      "tier": "Enterprise",
+      "aliases": [],
+      "notes": ""
+    },
+    {
+      "name": "Members 1st Federal Credit Union",
+      "arr": 464888,
+      "tier": "Mid-market",
+      "aliases": [],
+      "notes": ""
+    },
+    {
+      "name": "MNGI DIGESTIVE HEALTH, P.A.",
+      "arr": 463469,
+      "tier": "Mid-market",
+      "aliases": [],
+      "notes": ""
+    },
+    {
+      "name": "ASPIRE LIVING & LEARNING INC.",
+      "arr": 456027,
+      "tier": "Mid-market",
+      "aliases": [],
+      "notes": ""
+    },
+    {
+      "name": "KILPATRICK TOWNSEND & STOCKTON LLP",
+      "arr": 453377,
+      "tier": "Mid-market",
+      "aliases": [],
+      "notes": ""
+    },
+    {
+      "name": "TETRA TECHNOLOGIES INC.",
+      "arr": 450030,
+      "tier": "Mid-market",
+      "aliases": [],
+      "notes": ""
+    },
+    {
+      "name": "IRON SENERGY",
+      "arr": 445219,
+      "tier": "Mid-market",
+      "aliases": [],
+      "notes": ""
+    },
+    {
+      "name": "USHG, LLC",
+      "arr": 444338,
+      "tier": "Enterprise",
+      "aliases": [],
+      "notes": ""
+    },
+    {
+      "name": "MINNESOTA SPORTS & ENTERTAINMENT",
+      "arr": 443351,
+      "tier": "Mid-market",
+      "aliases": [],
+      "notes": ""
+    },
+    {
+      "name": "BL HARBERT",
+      "arr": 439124,
+      "tier": "Upper Mid-market",
+      "aliases": [],
+      "notes": ""
+    },
+    {
+      "name": "Modern/Niagara Group Inc",
+      "arr": 437915,
+      "tier": "Enterprise",
+      "aliases": [],
+      "notes": ""
+    },
+    {
+      "name": "SHAPE TECHNOLOGIES GROUP, INC.",
+      "arr": 434784,
+      "tier": "Enterprise",
+      "aliases": [],
+      "notes": ""
+    },
+    {
+      "name": "1ST SOURCE CORPORATION",
+      "arr": 432616,
+      "tier": "Mid-market",
+      "aliases": [],
+      "notes": ""
+    },
+    {
+      "name": "Houston Astros, LLC",
+      "arr": 427106,
+      "tier": "Upper Mid-market",
+      "aliases": [],
+      "notes": ""
+    },
+    {
+      "name": "THE MLB NETWORK LLC",
+      "arr": 424962,
+      "tier": "Mid-market",
+      "aliases": [],
+      "notes": ""
+    },
+    {
+      "name": "HYDRITE CHEMICAL CO.",
+      "arr": 421945,
+      "tier": "Mid-market",
+      "aliases": [],
+      "notes": ""
+    },
+    {
+      "name": "A.M CASTLE & CO",
+      "arr": 416979,
+      "tier": "Enterprise",
+      "aliases": [],
+      "notes": ""
+    },
+    {
+      "name": "TILLAMOOK COUNTY CREAMERY ASSOCIATION",
+      "arr": 403670,
+      "tier": "Mid-market",
+      "aliases": [],
+      "notes": ""
+    },
+    {
+      "name": "COVENANT MANAGEMENT SYSTEMS, LP",
+      "arr": 401462,
+      "tier": "Enterprise",
+      "aliases": [],
+      "notes": ""
+    },
+    {
+      "name": "PHARMASCIENCE INC",
+      "arr": 398364,
+      "tier": "Upper Mid-market",
+      "aliases": [],
+      "notes": ""
+    },
+    {
+      "name": "LASKO PRODUCTS LLC",
+      "arr": 397114,
+      "tier": "Upper Mid-market",
+      "aliases": [],
+      "notes": ""
+    },
+    {
+      "name": "The Gorman-Rupp Company",
+      "arr": 395350,
+      "tier": "Mid-market",
+      "aliases": [],
+      "notes": ""
+    },
+    {
+      "name": "NORTH AMERICAN FAMILY INSTITUTE  INC.",
+      "arr": 389866,
+      "tier": "Upper Mid-market",
+      "aliases": [],
+      "notes": ""
+    },
+    {
+      "name": "Giorgio Armani Corporation",
+      "arr": 388613,
+      "tier": "Enterprise",
+      "aliases": [],
+      "notes": ""
+    },
+    {
+      "name": "CBI Home Health",
+      "arr": 387024,
+      "tier": "Enterprise",
+      "aliases": [],
+      "notes": ""
+    },
+    {
+      "name": "SOUTHERN MINNESOTA BEET SUGAR COOPERATIVE",
+      "arr": 386133,
+      "tier": "Mid-market",
+      "aliases": [],
+      "notes": ""
+    },
+    {
+      "name": "SECURE Waste Infrastructure Corp",
+      "arr": 383536,
+      "tier": "Enterprise",
+      "aliases": [],
+      "notes": ""
+    },
+    {
+      "name": "ELLISDON CORPORATION",
+      "arr": 380979,
+      "tier": "Enterprise",
+      "aliases": [],
+      "notes": ""
+    },
+    {
+      "name": "Entravision Communications Corporation",
+      "arr": 379623,
+      "tier": "Mid-market",
+      "aliases": [],
+      "notes": ""
+    },
+    {
+      "name": "DIDI HIRSCH PSYCHIATRIC SERVICE",
+      "arr": 378437,
+      "tier": "Mid-market",
+      "aliases": [],
+      "notes": ""
+    },
+    {
+      "name": "NIPPON DYNAWAVE PACKAGING COMPANY  LLC",
+      "arr": 378302,
+      "tier": "Mid-market",
+      "aliases": [],
+      "notes": ""
+    },
+    {
+      "name": "BRADLEY AIR SERVICES LIMITED",
+      "arr": 374922,
+      "tier": "Enterprise",
+      "aliases": [],
+      "notes": ""
+    },
+    {
+      "name": "REDSAIL TECHNOLOGIES, LLC / Smith Tech Acquisition",
+      "arr": 370491,
+      "tier": "Mid-market",
+      "aliases": [],
+      "notes": ""
+    },
+    {
+      "name": "DORSEY & WHITNEY LLP",
+      "arr": 369614,
+      "tier": "Upper Mid-market",
+      "aliases": [],
+      "notes": ""
+    },
+    {
+      "name": "Parr Lumber Company",
+      "arr": 366958,
+      "tier": "Upper Mid-market",
+      "aliases": [],
+      "notes": ""
+    },
+    {
+      "name": "Associated Catholic Charities Inc.",
+      "arr": 365531,
+      "tier": "Enterprise",
+      "aliases": [],
+      "notes": ""
+    },
+    {
+      "name": "PORTS AMERICA SHARED SERVICES, INC.",
+      "arr": 358038,
+      "tier": "Enterprise",
+      "aliases": [],
+      "notes": ""
+    },
+    {
+      "name": "THE CADILLAC FAIRVIEW CORPORATION LIMITED",
+      "arr": 357376,
+      "tier": "Enterprise",
+      "aliases": [],
+      "notes": ""
+    },
+    {
+      "name": "BLAKES SERVICES INC",
+      "arr": 354720,
+      "tier": "Enterprise",
+      "aliases": [],
+      "notes": ""
+    },
+    {
+      "name": "WINPAK LTD",
+      "arr": 349838,
+      "tier": "Enterprise",
+      "aliases": [],
+      "notes": ""
+    },
+    {
+      "name": "Fujitsu North America Inc",
+      "arr": 349088,
+      "tier": "Enterprise",
+      "aliases": [],
+      "notes": ""
+    },
+    {
+      "name": "Johnson & Wales University Inc",
+      "arr": 348176,
+      "tier": "Upper Mid-market",
+      "aliases": [],
+      "notes": ""
+    },
+    {
+      "name": "BAKER, DONELSON, BEARMAN, CALDWELL & BERKOWITZ, P.C.",
+      "arr": 348155,
+      "tier": "Mid-market",
+      "aliases": [],
+      "notes": ""
+    },
+    {
+      "name": "LOGAN ALUMINUM INC.",
+      "arr": 348055,
+      "tier": "Enterprise",
+      "aliases": [],
+      "notes": ""
+    },
+    {
+      "name": "Westward Seafoods, Inc.",
+      "arr": 347789,
+      "tier": "Mid-market",
+      "aliases": [],
+      "notes": ""
+    },
+    {
+      "name": "EXCELITAS TECHNOLOGIES CORP.",
+      "arr": 345598,
+      "tier": "Upper Enterprise",
+      "aliases": [],
+      "notes": ""
+    },
+    {
+      "name": "AKEBONO BRAKE CORPORATION",
+      "arr": 345205,
+      "tier": "Enterprise",
+      "aliases": [],
+      "notes": ""
+    },
+    {
+      "name": "GREATER LAWRENCE FAMILY HEALTH",
+      "arr": 340622,
+      "tier": "Mid-market",
+      "aliases": [],
+      "notes": ""
+    },
+    {
+      "name": "CENTRIC HEALTH CORPORATION",
+      "arr": 340058,
+      "tier": "Upper Mid-market",
+      "aliases": [],
+      "notes": ""
+    },
+    {
+      "name": "HIGH LINER FOODS INCORPORATED",
+      "arr": 337480,
+      "tier": "Upper Mid-market",
+      "aliases": [],
+      "notes": ""
+    },
+    {
+      "name": "True North Energy, LLC",
+      "arr": 336577,
+      "tier": "Upper Mid-market",
+      "aliases": [],
+      "notes": ""
+    },
+    {
+      "name": "BOKF, NA",
+      "arr": 333305,
+      "tier": "Enterprise",
+      "aliases": [],
+      "notes": ""
+    },
+    {
+      "name": "RIVERSIDE COMMUNITY CARE  INC.",
+      "arr": 332980,
+      "tier": "Upper Mid-market",
+      "aliases": [],
+      "notes": ""
+    },
+    {
+      "name": "NUEHEALTH ENTERPRISES, LLC",
+      "arr": 323191,
+      "tier": "Upper Mid-market",
+      "aliases": [],
+      "notes": ""
+    },
+    {
+      "name": "AGA SERVICE COMPANY",
+      "arr": 318551,
+      "tier": "Mid-market",
+      "aliases": [],
+      "notes": ""
+    },
+    {
+      "name": "Logistec Marine Services ULC",
+      "arr": 318086,
+      "tier": "Enterprise",
+      "aliases": [],
+      "notes": ""
+    },
+    {
+      "name": "DOLBY LABORATORIES  INC.",
+      "arr": 315789,
+      "tier": "Upper Mid-market",
+      "aliases": [],
+      "notes": ""
+    },
+    {
+      "name": "ABILITY BEYOND DISABILITY  INC.",
+      "arr": 315748,
+      "tier": "Mid-market",
+      "aliases": [],
+      "notes": ""
+    },
+    {
+      "name": "DEBORAH HEART AND LUNG CENTER",
+      "arr": 313812,
+      "tier": "Mid-market",
+      "aliases": [],
+      "notes": ""
+    },
+    {
+      "name": "INTRUST FINANCIAL CORP",
+      "arr": 313795,
+      "tier": "Mid-market",
+      "aliases": [],
+      "notes": ""
+    },
+    {
+      "name": "MEMORIAL HEALTH",
+      "arr": 305959,
+      "tier": "Mid-market",
+      "aliases": [],
+      "notes": ""
+    },
+    {
+      "name": "YOUNG MEN'S CHRISTIAN ASSOCIATION OF GREATER KANSAS CITY",
+      "arr": 304451,
+      "tier": "Upper Mid-market",
+      "aliases": [],
+      "notes": ""
+    },
+    {
+      "name": "TEKNION LIMITED",
+      "arr": 302670,
+      "tier": "Enterprise",
+      "aliases": [],
+      "notes": ""
+    },
+    {
+      "name": "Tennessee Health Management, Inc.",
+      "arr": 301167,
+      "tier": "Enterprise",
+      "aliases": [],
+      "notes": ""
+    },
+    {
+      "name": "AMERICAN PSYCHOLOGICAL ASSOCIATION  INC.",
+      "arr": 296902,
+      "tier": "Mid-market",
+      "aliases": [],
+      "notes": ""
+    },
+    {
+      "name": "Roppe Holding Company",
+      "arr": 296728,
+      "tier": "Mid-market",
+      "aliases": [],
+      "notes": ""
+    },
+    {
+      "name": "RSUI GROUP  INC.",
+      "arr": 295848,
+      "tier": "Upper Enterprise",
+      "aliases": [],
+      "notes": ""
+    },
+    {
+      "name": "Harbisonwalker International Holdings, Inc.",
+      "arr": 295308,
+      "tier": "Mid-market",
+      "aliases": [],
+      "notes": ""
+    },
+    {
+      "name": "City of Ann Arbor",
+      "arr": 294177,
+      "tier": "Mid-market",
+      "aliases": [],
+      "notes": ""
+    },
+    {
+      "name": "BERLITZ LANGUAGES  INC.",
+      "arr": 277443,
+      "tier": "Enterprise",
+      "aliases": [],
+      "notes": ""
+    },
+    {
+      "name": "Dacotah Banks, Inc.",
+      "arr": 269356,
+      "tier": "Mid-market",
+      "aliases": [],
+      "notes": ""
+    },
+    {
+      "name": "Frandsen Corporation",
+      "arr": 268361,
+      "tier": "Mid-market",
+      "aliases": [],
+      "notes": ""
+    },
+    {
+      "name": "Nikon Precision Inc.",
+      "arr": 263124,
+      "tier": "Upper Mid-market",
+      "aliases": [],
+      "notes": ""
+    },
+    {
+      "name": "S & E SERVICES LIMITED PARTNERSHIP",
+      "arr": 247019,
+      "tier": "Upper Mid-market",
+      "aliases": [],
+      "notes": ""
+    },
+    {
+      "name": "CULINARY INSTITUTE OF AMERICA",
+      "arr": 242009,
+      "tier": "Mid-market",
+      "aliases": [],
+      "notes": ""
+    },
+    {
+      "name": "Wolf Steel Ltd",
+      "arr": 240366,
+      "tier": "Mid-market",
+      "aliases": [],
+      "notes": ""
+    },
+    {
+      "name": "SUNSTAR AMERICAS  INC.",
+      "arr": 236420,
+      "tier": "Mid-market",
+      "aliases": [],
+      "notes": ""
+    },
+    {
+      "name": "Consumer Reports, Inc.",
+      "arr": 224409,
+      "tier": "Mid-market",
+      "aliases": [],
+      "notes": ""
+    },
+    {
+      "name": "DUMAS CONTRACTING LTD",
+      "arr": 213662,
+      "tier": "Mid-market",
+      "aliases": [],
+      "notes": ""
+    },
+    {
+      "name": "YOUNG MEN'S CHRISTIAN ASSOCIATION OF DELAWARE",
+      "arr": 207161,
+      "tier": "Upper Mid-market",
+      "aliases": [],
+      "notes": ""
+    },
+    {
+      "name": "DIRTT ENVIRONMENTAL SOLUTIONS LTD",
+      "arr": 206555,
+      "tier": "Upper Mid-market",
+      "aliases": [],
+      "notes": ""
+    },
+    {
+      "name": "National Rifle Association of America",
+      "arr": 200170,
+      "tier": "Emerging",
+      "aliases": [],
+      "notes": ""
+    },
+    {
+      "name": "MOM365  INC.",
+      "arr": 199640,
+      "tier": "Mid-market",
+      "aliases": [],
+      "notes": ""
+    },
+    {
+      "name": "STAR TRIBUNE MEDIA COMPANY LLC",
+      "arr": 194149,
+      "tier": "Enterprise",
+      "aliases": [],
+      "notes": ""
+    },
+    {
+      "name": "BATH FITTER DISTRIBUTING INC.",
+      "arr": 190028,
+      "tier": "Upper Mid-market",
+      "aliases": [],
+      "notes": ""
+    },
+    {
+      "name": "NOT YOUR AVERAGE JOE'S  INC.",
+      "arr": 186163,
+      "tier": "Mid-market",
+      "aliases": [],
+      "notes": ""
+    },
+    {
+      "name": "AZGA SERVICE CANADA INC.",
+      "arr": 185242,
+      "tier": "Mid-market",
+      "aliases": [],
+      "notes": ""
+    },
+    {
+      "name": "NORTHWESTEL INC",
+      "arr": 182853,
+      "tier": "Upper Enterprise",
+      "aliases": [],
+      "notes": ""
+    },
+    {
+      "name": "Clearpoint Health Network Inc",
+      "arr": 178588,
+      "tier": "Mid-market",
+      "aliases": [],
+      "notes": ""
+    },
+    {
+      "name": "ProHealth Group, Inc",
+      "arr": 178167,
+      "tier": "Emerging",
+      "aliases": [],
+      "notes": ""
+    },
+    {
+      "name": "ONTARIO EDUCATIONAL COMMUNICATIONS AUTHORITY  THE",
+      "arr": 177439,
+      "tier": "Upper Enterprise",
+      "aliases": [],
+      "notes": ""
+    },
+    {
+      "name": "Global Tungsten & Powders Corp.",
+      "arr": 176013,
+      "tier": "Mid-market",
+      "aliases": [],
+      "notes": ""
+    },
+    {
+      "name": "YOKOGAWA CORPORATION OF AMERICA",
+      "arr": 173211,
+      "tier": "Mid-market",
+      "aliases": [],
+      "notes": ""
+    },
+    {
+      "name": "DAYTON PROGRESS CORPORATION",
+      "arr": 168282,
+      "tier": "Upper Mid-market",
+      "aliases": [],
+      "notes": ""
+    },
+    {
+      "name": "EACOM TIMBER CORPORATION",
+      "arr": 168208,
+      "tier": "Enterprise",
+      "aliases": [],
+      "notes": ""
+    },
+    {
+      "name": "BERKELEY EDUCATIONAL SERVICES OF NEW JERSEY, INC.",
+      "arr": 166503,
+      "tier": "Upper Mid-market",
+      "aliases": [],
+      "notes": ""
+    },
+    {
+      "name": "The Governing Council of the Salvation Army in Canada",
+      "arr": 155442,
+      "tier": "Enterprise",
+      "aliases": [],
+      "notes": ""
+    },
+    {
+      "name": "PROSPERA CREDIT UNION",
+      "arr": 154955,
+      "tier": "Mid-market",
+      "aliases": [],
+      "notes": ""
+    },
+    {
+      "name": "PASON SYSTEMS INC",
+      "arr": 148951,
+      "tier": "Mid-market",
+      "aliases": [],
+      "notes": ""
+    },
+    {
+      "name": "Coastal Community Credit Union",
+      "arr": 139319,
+      "tier": "Mid-market",
+      "aliases": [],
+      "notes": ""
+    },
+    {
+      "name": "BRITISH COLUMBIA SAFETY AUTHORITY",
+      "arr": 136187,
+      "tier": "Mid-market",
+      "aliases": [],
+      "notes": ""
+    },
+    {
+      "name": "Core-Mark International, Inc.",
+      "arr": 129175,
+      "tier": "Upper Enterprise",
+      "aliases": [],
+      "notes": ""
+    },
+    {
+      "name": "BECKER & POLIAKOFF  P.A.",
+      "arr": 125461,
+      "tier": "Emerging",
+      "aliases": [],
+      "notes": ""
+    },
+    {
+      "name": "Del Monte Hotel Management LLC",
+      "arr": 123224,
+      "tier": "Mid-market",
+      "aliases": [],
+      "notes": ""
+    },
+    {
+      "name": "STEINBACH CREDIT UNION LIMITED",
+      "arr": 109590,
+      "tier": "Mid-market",
+      "aliases": [],
+      "notes": ""
+    },
+    {
+      "name": "LAUREATE EDUCATION  INC.",
+      "arr": 107371,
+      "tier": "Upper Enterprise",
+      "aliases": [],
+      "notes": ""
+    },
+    {
+      "name": "WENTE FAMILY ESTATES",
+      "arr": 103626,
+      "tier": "Emerging",
+      "aliases": [],
+      "notes": ""
+    },
+    {
+      "name": "SAN DIEGO CONVENTION CENTER CORPORATION  INC.",
+      "arr": 103242,
+      "tier": "Emerging",
+      "aliases": [],
+      "notes": ""
+    },
+    {
+      "name": "Cavalier Enterprises Ltd",
+      "arr": 66790,
+      "tier": "Mid-market",
+      "aliases": [],
+      "notes": ""
+    },
+    {
+      "name": "Vancouver Aquarium Ltd.",
+      "arr": 62881,
+      "tier": "Emerging",
+      "aliases": [],
+      "notes": ""
+    },
+    {
+      "name": "Camden Development, Inc.",
+      "arr": 61087,
+      "tier": "Upper Mid-market",
+      "aliases": [],
+      "notes": ""
+    },
+    {
+      "name": "INOAC Exterior Systems",
+      "arr": 60198,
+      "tier": "Emerging",
+      "aliases": [],
+      "notes": ""
+    },
+    {
+      "name": "Capital Metropolitan Transportation Authority",
+      "arr": 59793,
+      "tier": "Mid-market",
+      "aliases": [],
+      "notes": ""
+    },
+    {
+      "name": "HEALTH DIMENSIONS CONSULTING, INC.",
+      "arr": 41311,
+      "tier": "Upper Enterprise",
+      "aliases": [],
+      "notes": ""
+    },
+    {
+      "name": "WHITE DRIVE MOTORS & STEERING, LLC",
+      "arr": 38953,
+      "tier": "Emerging",
+      "aliases": [],
+      "notes": ""
+    },
+    {
+      "name": "WHITTLESEA BLUE CAB",
+      "arr": 33031,
+      "tier": "Enterprise",
+      "aliases": [],
+      "notes": ""
+    },
+    {
+      "name": "Crawford & Company (Canada) Inc",
+      "arr": 32279,
+      "tier": "Mid-market",
+      "aliases": [],
+      "notes": ""
+    },
+    {
+      "name": "ACRT, INC.",
+      "arr": 25834,
+      "tier": "Mid-market",
+      "aliases": [],
+      "notes": ""
+    },
+    {
+      "name": "The Long & Foster Companies Inc",
+      "arr": 11474,
+      "tier": "Upper Enterprise",
+      "aliases": [],
+      "notes": ""
+    },
+    {
+      "name": "AVALON HEALTH CARE MANAGEMENT, INC",
+      "arr": 3137,
+      "tier": "Upper Enterprise",
+      "aliases": [],
+      "notes": ""
+    },
+    {
+      "name": "Alpha Natural Resources, Inc.",
+      "arr": 0,
+      "tier": "Upper Enterprise",
+      "aliases": [],
+      "notes": ""
+    },
+    {
+      "name": "ASBURY AUTOMOTIVE GROUP INC.",
+      "arr": 0,
+      "tier": "Upper Enterprise",
+      "aliases": [],
+      "notes": ""
+    },
+    {
+      "name": "Asbury Automotive Group, Inc.",
+      "arr": 0,
+      "tier": "Upper Enterprise",
+      "aliases": [],
+      "notes": ""
+    },
+    {
+      "name": "Blink Holdings, Inc.",
+      "arr": 0,
+      "tier": "Upper Enterprise",
+      "aliases": [],
+      "notes": ""
+    },
+    {
+      "name": "PLUM HEALTHCARE GROUP LLC",
+      "arr": 0,
+      "tier": "Upper Enterprise",
+      "aliases": [],
+      "notes": ""
+    },
+    {
+      "name": "Test Community Account",
+      "arr": 0,
+      "tier": "Enterprise",
+      "aliases": [],
+      "notes": ""
+    },
+    {
+      "name": "Ultimate Software - EnterpriseTest",
+      "arr": 0,
+      "tier": "Upper Enterprise",
+      "aliases": [],
+      "notes": ""
+    },
+    {
+      "name": "VCU HEALTH SYSTEM AUTHORITY",
+      "arr": 0,
+      "tier": "Enterprise",
+      "aliases": [],
+      "notes": ""
+    },
+    {
+      "name": "Applied filters:",
+      "arr": 0,
+      "tier": null,
+      "aliases": [],
+      "notes": ""
+    },
+    {
+      "name": "Customer_Category is not (Blank) or Former",
+      "arr": 0,
+      "tier": null,
+      "aliases": [],
+      "notes": ""
+    },
+    {
+      "name": "Customer_Product_Status__c is Created or Live",
+      "arr": 0,
+      "tier": null,
+      "aliases": [],
+      "notes": ""
+    },
+    {
+      "name": "Name is UKG PRO TIME & ATTENDANCE (LM)",
+      "arr": 0,
+      "tier": null,
+      "aliases": [],
+      "notes": ""
+    },
+    {
+      "name": "IsLiveYesNo is Yes",
+      "arr": 0,
+      "tier": null,
+      "aliases": [],
+      "notes": ""
+    },
+    {
+      "name": "Parameter is Customer Count,,,,,,,,,,,,,",
+      "arr": 0,
+      "tier": null,
+      "aliases": [],
+      "notes": ""
+    }
+  ]
+}

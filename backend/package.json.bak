@@ -1,0 +1,29 @@
+{
+  "name": "protime-dashboard-backend",
+  "version": "1.0.0",
+  "description": "Backend API for ProTime Dashboard",
+  "main": "src/server.js",
+  "type": "module",
+  "scripts": {
+    "start": "node --env-file=.env src/server.js",
+    "dev": "nodemon --exec 'node --env-file=.env' src/server.js",
+    "sync": "node ../scripts/initial-sync.js"
+  },
+  "dependencies": {
+    "@anthropic-ai/sdk": "^0.88.0",
+    "@slack/web-api": "^7.15.0",
+    "axios": "^1.6.0",
+    "cors": "^2.8.5",
+    "date-fns": "^3.0.0",
+    "dotenv": "^16.3.1",
+    "express": "^4.18.0",
+    "node-cron": "^3.0.0",
+    "nodemailer": "^6.9.0",
+    "puppeteer": "^21.0.0",
+    "sql.js": "^1.10.3",
+    "xlsx": "^0.18.5"
+  },
+  "devDependencies": {
+    "nodemon": "^3.0.2"
+  }
+}

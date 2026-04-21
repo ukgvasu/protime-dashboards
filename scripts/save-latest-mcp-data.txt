@@ -1,0 +1,17 @@
+# Save these MCP responses to mcp-defects.json:
+
+UTA (29 defects) - Already fetched
+UTM (3 defects) - Already fetched  
+WFM Classic (26 defects) - Already fetched
+
+Total: 58 defects
+
+Use this command to extract from tool results:
+# The JSON is in the MCP tool call results above
+
+Format required for import:
+{
+  "uta": { "total": 29, "issues": [...] },
+  "utm": { "total": 3, "issues": [...] },
+  "wfmClassic": { "total": 26, "issues": [...] }
+}

@@ -1,0 +1,21 @@
+{
+  "name": "protime-dashboard",
+  "version": "1.0.0",
+  "description": "ProTime Dashboard - Standalone web app for UTA, UTM, and WFM Classic defect tracking",
+  "private": true,
+  "workspaces": [
+    "backend",
+    "frontend"
+  ],
+  "scripts": {
+    "dev": "concurrently \"npm run dev:backend\" \"npm run dev:frontend\"",
+    "dev:backend": "cd backend && npm run dev",
+    "dev:frontend": "cd frontend && npm run dev",
+    "sync": "node scripts/initial-sync.js",
+    "build": "npm run build:frontend && npm run build:backend",
+    "build:frontend": "cd frontend && npm run build",
+    "build:backend": "cd backend && npm run build"
+  },
+  "author": "Ian Cowpar",
+  "license": "MIT"
+}

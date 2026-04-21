@@ -1,0 +1,44 @@
+{
+  "timeboxes": [
+    {
+      "id": "26.3-TB1",
+      "label": "UTA 26.3 TB1",
+      "code": "26.3.1",
+      "startDate": "2026-03-18",
+      "endDate": "2026-04-08",
+      "epicSummaryPattern": "UTA 26.3 TB1"
+    },
+    {
+      "id": "26.3-TB2",
+      "label": "UTA 26.3 TB2",
+      "code": "26.3.2",
+      "startDate": "2026-04-09",
+      "endDate": "2026-04-29",
+      "epicSummaryPattern": "UTA 26.3 TB2"
+    },
+    {
+      "id": "26.4-TB1",
+      "label": "UTA 26.4 TB1",
+      "code": "26.4.1",
+      "startDate": "2026-04-30",
+      "endDate": "2026-05-20",
+      "epicSummaryPattern": "UTA 26.4 TB1"
+    },
+    {
+      "id": "26.4-TB1",
+      "label": "UTA 26.4 TB1",
+      "code": "26.4.1",
+      "startDate": "2026-05-21",
+      "endDate": "2026-06-10",
+      "epicSummaryPattern": "UTA 26.4 TB1"
+    },
+    {
+      "id": "26.4-TB2",
+      "label": "UTA 26.4 TB2",
+      "code": "26.4.2",
+      "startDate": "2026-06-11",
+      "endDate": "2026-07-01",
+      "epicSummaryPattern": "UTA 26.4 TB2"
+    }
+  ]
+}

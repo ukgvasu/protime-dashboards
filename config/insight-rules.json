@@ -1,0 +1,134 @@
+{
+  "version": "1.0",
+  "last_updated": "2026-04-14",
+  "rules": {
+    "ktlo": [
+      {
+        "id": "h1-variance-high",
+        "type": "planning-accuracy",
+        "condition": {
+          "field": "summary.h1VariancePercent",
+          "operator": "gt",
+          "threshold": 20
+        },
+        "severity": "warning",
+        "template": "H1 KTLO ran {summary.h1VariancePercent}% over SWAG ({summary.h1Actual} actual vs {summary.h1Swag} estimated). Pattern suggests H2 estimates may also underestimate demand.",
+        "actionable": true
+      },
+      {
+        "id": "h1-variance-critical",
+        "type": "planning-accuracy",
+        "condition": {
+          "field": "summary.h1VariancePercent",
+          "operator": "gt",
+          "threshold": 50
+        },
+        "severity": "critical",
+        "template": "H1 KTLO severely exceeded SWAG by {summary.h1VariancePercent}% ({summary.h1Actual} vs {summary.h1Swag}). H2 planning requires capacity buffer.",
+        "actionable": true
+      },
+      {
+        "id": "h2-below-h1-actuals",
+        "type": "capacity-planning",
+        "condition": {
+          "field": "summary.h2Swag",
+          "operator": "lt",
+          "threshold": "summary.h1Actual"
+        },
+        "severity": "warning",
+        "template": "H2 SWAG ({summary.h2Swag} SP) is below H1 actuals ({summary.h1Actual} SP). If pattern repeats, H2 will exceed projections.",
+        "actionable": true
+      }
+    ],
+    "security": [
+      {
+        "id": "s1-spike",
+        "type": "severity-threshold",
+        "condition": {
+          "field": "summary.critical",
+          "operator": "gt",
+          "threshold": 5
+        },
+        "severity": "critical",
+        "template": "{summary.critical} critical (S1) security vulnerabilities requiring immediate attention",
+        "actionable": true
+      },
+      {
+        "id": "open-security-trend",
+        "type": "trend-analysis",
+        "condition": {
+          "field": "summary.open",
+          "operator": "gt",
+          "threshold": 20
+        },
+        "severity": "warning",
+        "template": "{summary.open} open security defects across all products. Review prioritization and capacity allocation.",
+        "actionable": true
+      }
+    ],
+    "customer-impact": [
+      {
+        "id": "high-arr-at-risk",
+        "type": "revenue-risk",
+        "condition": {
+          "field": "summary.openARRAtRisk",
+          "operator": "gt",
+          "threshold": 5000000
+        },
+        "severity": "warning",
+        "template": "${summary.openARRAtRisk / 1000000}M ARR at risk with open defects across {summary.customersWithOpenIssues} customers",
+        "actionable": true
+      },
+      {
+        "id": "critical-arr-at-risk",
+        "type": "revenue-risk",
+        "condition": {
+          "field": "summary.openARRAtRisk",
+          "operator": "gt",
+          "threshold": 10000000
+        },
+        "severity": "critical",
+        "template": "${summary.openARRAtRisk / 1000000}M ARR at critical churn risk — {summary.customersWithOpenIssues} customers with unresolved issues",
+        "actionable": true
+      },
+      {
+        "id": "s1-customer-impact",
+        "type": "severity-threshold",
+        "condition": {
+          "field": "summary.s1Count",
+          "operator": "gt",
+          "threshold": 3
+        },
+        "severity": "critical",
+        "template": "{summary.s1Count} S1 defects impacting customers. Immediate escalation required.",
+        "actionable": true
+      }
+    ],
+    "defects": [
+      {
+        "id": "high-open-count",
+        "type": "volume-threshold",
+        "condition": {
+          "field": "stats.total_open",
+          "operator": "gt",
+          "threshold": 100
+        },
+        "severity": "warning",
+        "template": "{stats.total_open} open defects. Review capacity allocation and closure velocity.",
+        "actionable": true
+      },
+      {
+        "id": "aging-defects",
+        "type": "age-threshold",
+        "condition": {
+          "field": "stats.avg_age_days",
+          "operator": "gt",
+          "threshold": 60
+        },
+        "severity": "warning",
+        "template": "Average defect age is {stats.avg_age_days} days. Aging backlog indicates capacity constraints.",
+        "actionable": false
+      }
+    ]
+  }
+}

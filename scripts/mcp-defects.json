@@ -1,0 +1,96 @@
+{
+  "uta": {
+    "total": 3,
+    "issues": [
+      {
+        "key": "PS-820937",
+        "summary": "Keolis Test-1 : UTA Application not working",
+        "status": {"name": "In Dev"},
+        "priority": {"name": "None"},
+        "assignee": {"display_name": "Mayank K Kumar", "email": "Mayank.K.Kumar@ukg.com"},
+        "created": "2026-04-01T23:42:01.000-0400",
+        "updated": "2026-04-02T09:58:11.000-0400",
+        "labels": []
+      },
+      {
+        "key": "PS-767369",
+        "summary": "Mobile app billboard shift claim button not working on UTA 24.10",
+        "status": {"name": "Analysis"},
+        "priority": {"name": "P2"},
+        "assignee": {"display_name": "Unassigned"},
+        "created": "2026-02-26T15:05:40.000-0500",
+        "updated": "2026-04-01T18:01:57.000-0400",
+        "labels": ["RCA-Type-Internal-Defect"]
+      },
+      {
+        "key": "PS-752711",
+        "summary": "UTA Mobile App - Add Date in Schedule page",
+        "status": {"name": "Analysis"},
+        "priority": {"name": "None"},
+        "assignee": {"display_name": "Unassigned"},
+        "created": "2026-02-17T10:40:11.000-0500",
+        "updated": "2026-02-17T10:40:54.000-0500",
+        "labels": []
+      }
+    ]
+  },
+  "utm": {
+    "total": 1,
+    "issues": [
+      {
+        "key": "PS-641783",
+        "summary": "Mobile - Timesheets - In landscape mode (tablet), the list with details does not display properly",
+        "status": {"name": "On Hold"},
+        "priority": {"name": "P4"},
+        "assignee": {"display_name": "Tony Estrada", "email": "tony.estrada@ukg.com"},
+        "created": "2025-11-12T16:15:01.000-0500",
+        "updated": "2026-04-07T17:13:53.000-0400",
+        "labels": []
+      }
+    ]
+  },
+  "wfmClassic": {
+    "total": 39,
+    "issues": [
+      {"key": "PS-825569", "summary": "Error Code - Error Code: 3a719077be508bf0d5353f3126b87564 on Dean Casey's time card", "status": {"name": "Waiting for Support"}, "priority": {"name": "P3"}, "assignee": {"display_name": "Tiruveedi Devisree", "email": "tiruveedi.devisree@ukg.com"}, "created": "2026-04-06T15:45:08.000-0400", "updated": "2026-04-08T10:10:51.000-0400", "labels": ["RCA-DC-PLAS", "RCA-Environment-Prod"]},
+      {"key": "PS-825414", "summary": "[UKG Pro] Delegated timesheet access lost", "status": {"name": "Analysis"}, "priority": {"name": "P3"}, "assignee": {"display_name": "Anoosha Somepally", "email": "anoosha.somepally@ukg.com"}, "created": "2026-04-06T14:01:17.000-0400", "updated": "2026-04-08T10:10:32.000-0400", "labels": ["RCA-DC-TOR", "RCA-Environment-Prod"]},
+      {"key": "PS-825380", "summary": "Core opens but UKG time user receives blank page for time module", "status": {"name": "Waiting for Support"}, "priority": {"name": "P3"}, "assignee": {"display_name": "Anoosha Somepally", "email": "anoosha.somepally@ukg.com"}, "created": "2026-04-06T13:47:29.000-0400", "updated": "2026-04-08T10:10:34.000-0400", "labels": ["RCA-DC-PLAS", "RCA-Environment-Prod"]},
+      {"key": "PS-825326", "summary": "Part Time Weekly Holiday rule says worked 30 hours in previous 1 week starting on Saturday before holiday to get holiday hours but it's still counting current week time", "status": {"name": "Analysis"}, "priority": {"name": "P3"}, "assignee": {"display_name": "Vibha Yadav", "email": "vibha.yadav@ukg.com"}, "created": "2026-04-06T13:31:57.000-0400", "updated": "2026-04-08T10:10:57.000-0400", "labels": ["RCA-DC-ATL", "RCA-Environment-Prod"]},
+      {"key": "PS-825230", "summary": "SWARM - Accruals Note Pausing During Probationary Period", "status": {"name": "Analysis"}, "priority": {"name": "P3"}, "assignee": {"display_name": "Anoosha Somepally", "email": "anoosha.somepally@ukg.com"}, "created": "2026-04-06T12:20:14.000-0400", "updated": "2026-04-08T10:10:29.000-0400", "labels": ["RCA-DC-PLAS", "RCA-Environment-Prod"]},
+      {"key": "PS-823633", "summary": "Intermittent issues with connecting with Time Classic and Time Off. Several users are affected. Example EE: Lexie Oliver", "status": {"name": "Waiting for Support"}, "priority": {"name": "P3"}, "assignee": {"display_name": "Tiruveedi Devisree", "email": "tiruveedi.devisree@ukg.com"}, "created": "2026-04-03T17:33:28.000-0400", "updated": "2026-04-08T10:10:42.000-0400", "labels": ["RCA-DC-TOR", "RCA-Environment-Prod"]},
+      {"key": "PS-823628", "summary": "EE Mano Gogia shows a -0h 30m balance in our report, but in her Time Off>>Banked Overtime bank, it shows a remaining balance of 38h 30m hour as of 3/31/26", "status": {"name": "Waiting for Support"}, "priority": {"name": "P3"}, "assignee": {"display_name": "Tiruveedi Devisree", "email": "tiruveedi.devisree@ukg.com"}, "created": "2026-04-03T17:25:59.000-0400", "updated": "2026-04-08T10:10:45.000-0400", "labels": ["RCA-DC-TOR", "RCA-Environment-Prod"]},
+      {"key": "PS-823474", "summary": "Time Summary report is stuck in processing", "status": {"name": "Waiting for Support"}, "priority": {"name": "P3"}, "assignee": {"display_name": "Tiruveedi Devisree", "email": "tiruveedi.devisree@ukg.com"}, "created": "2026-04-03T14:14:41.000-0400", "updated": "2026-04-08T10:10:54.000-0400", "labels": ["RCA-DC-PLAS", "RCA-Environment-Prod"]},
+      {"key": "PS-819966", "summary": "Time off pending approval issue", "status": {"name": "Analysis"}, "priority": {"name": "P3"}, "assignee": {"display_name": "Anoosha Somepally", "email": "anoosha.somepally@ukg.com"}, "created": "2026-04-01T13:55:51.000-0400", "updated": "2026-04-08T10:10:27.000-0400", "labels": ["RCA-DC-PLAS", "RCA-Environment-Prod"]},
+      {"key": "PS-817907", "summary": "EE Chris Horton has negative Sick balance of -5.98 but the policy is set as minimum balance 0", "status": {"name": "Analysis"}, "priority": {"name": "P3"}, "assignee": {"display_name": "Tiruveedi Devisree", "email": "tiruveedi.devisree@ukg.com"}, "created": "2026-03-31T12:15:13.000-0400", "updated": "2026-04-08T06:08:48.000-0400", "labels": ["RCA-DC-ATL", "RCA-Environment-Prod", "RCA-Type-Defect"]},
+      {"key": "PS-815820", "summary": "PS-790606 - Merge and Test", "status": {"name": "Backlog"}, "priority": {"name": "None"}, "assignee": {"display_name": "Unassigned"}, "created": "2026-03-30T09:09:27.000-0400", "updated": "2026-04-01T14:32:13.000-0400", "labels": []},
+      {"key": "PS-813704", "summary": "Absolute_Path_Traversal @ /src/main/java/com/ultimatesoftware/wfm/sched/web/dataimport/DataImportController.java", "status": {"name": "Analysis"}, "priority": {"name": "P3"}, "assignee": {"display_name": "Akhilesh A Kumar", "email": "akhilesh.a.kumar@ukg.com"}, "created": "2026-03-27T05:58:42.000-0400", "updated": "2026-04-08T08:21:29.000-0400", "labels": ["Checkmarx", "SAST", "security-field-updated"]},
+      {"key": "PS-813664", "summary": "CVE-2019-17359 @ Maven-org.bouncycastle:bcprov-ext-jdk15on-1.60", "status": {"name": "Backlog"}, "priority": {"name": "P3"}, "assignee": {"display_name": "Khushboo G Gupta", "email": "Khushboo.G.Gupta@ukg.com"}, "created": "2026-03-27T05:32:46.000-0400", "updated": "2026-04-08T10:07:25.000-0400", "labels": ["Checkmarx", "SCA", "security-field-updated", "security_defects"]},
+      {"key": "PS-813663", "summary": "CVE-2021-39145 @ Maven-com.thoughtworks.xstream:xstream-1.4.11.1", "status": {"name": "Analysis"}, "priority": {"name": "P3"}, "assignee": {"display_name": "Khushboo G Gupta", "email": "Khushboo.G.Gupta@ukg.com"}, "created": "2026-03-27T05:32:42.000-0400", "updated": "2026-04-08T08:47:13.000-0400", "labels": ["Checkmarx", "SCA", "security-field-updated"]},
+      {"key": "PS-813662", "summary": "CVE-2023-24998 @ Maven-commons-fileupload:commons-fileupload-1.3.3", "status": {"name": "Analysis"}, "priority": {"name": "P3"}, "assignee": {"display_name": "Khushboo G Gupta", "email": "Khushboo.G.Gupta@ukg.com"}, "created": "2026-03-27T05:32:38.000-0400", "updated": "2026-04-08T10:06:31.000-0400", "labels": ["Checkmarx", "SCA", "security-field-updated"]},
+      {"key": "PS-813660", "summary": "CVE-2025-48976 @ Maven-commons-fileupload:commons-fileupload-1.3.3", "status": {"name": "Analysis"}, "priority": {"name": "None"}, "assignee": {"display_name": "Swati Aggarwal", "email": "swati.aggarwal@ukg.com"}, "created": "2026-03-27T05:32:34.000-0400", "updated": "2026-04-08T06:45:52.000-0400", "labels": ["Checkmarx", "SCA", "security-field-updated"]},
+      {"key": "PS-813659", "summary": "CVE-2020-11988 @ Maven-org.apache.xmlgraphics:xmlgraphics-commons-2.2", "status": {"name": "Analysis"}, "priority": {"name": "None"}, "assignee": {"display_name": "Swati Aggarwal", "email": "swati.aggarwal@ukg.com"}, "created": "2026-03-27T05:32:31.000-0400", "updated": "2026-04-08T06:46:10.000-0400", "labels": ["Checkmarx", "SCA", "security-field-updated"]},
+      {"key": "PS-813656", "summary": "CVE-2020-25638 @ Maven-org.hibernate:hibernate-core-5.2.18.Final", "status": {"name": "Analysis"}, "priority": {"name": "None"}, "assignee": {"display_name": "Swati Aggarwal", "email": "swati.aggarwal@ukg.com"}, "created": "2026-03-27T05:32:20.000-0400", "updated": "2026-04-08T06:46:50.000-0400", "labels": ["Checkmarx", "SCA", "security-field-updated"]},
+      {"key": "PS-813133", "summary": "FinOps Waste Management: Review and Remediate Cloud SQL Waste Findings", "status": {"name": "Analysis"}, "priority": {"name": "P3"}, "assignee": {"display_name": "Pankaj P Chauhan", "email": "pankaj.p.chauhan@ukg.com"}, "created": "2026-03-26T22:01:38.000-0400", "updated": "2026-04-08T06:32:10.000-0400", "labels": []},
+      {"key": "PS-813027", "summary": "Reporting discrepancies between manual run reports and balances in WFM", "status": {"name": "Waiting for Support"}, "priority": {"name": "P3"}, "assignee": {"display_name": "Tiruveedi Devisree", "email": "tiruveedi.devisree@ukg.com"}, "created": "2026-03-26T19:43:36.000-0400", "updated": "2026-04-08T10:10:48.000-0400", "labels": ["RCA-DC-PLAS", "RCA-Environment-Prod"]},
+      {"key": "PS-810716", "summary": "Time Classic is currently unable to fully load the team timesheets", "status": {"name": "Analysis"}, "priority": {"name": "P3"}, "assignee": {"display_name": "Arjit Gautam", "email": "arjit.gautam@ukg.com"}, "created": "2026-03-25T15:31:26.000-0400", "updated": "2026-04-08T09:29:21.000-0400", "labels": ["RCA-Type-Defect"]},
+      {"key": "PS-802780", "summary": "Time classic WFM- cannot submit a timesheet", "status": {"name": "Analysis"}, "priority": {"name": "P3"}, "assignee": {"display_name": "Divyam Patel", "email": "divyam.patel@ukg.com"}, "created": "2026-03-20T19:10:45.000-0400", "updated": "2026-04-08T08:29:00.000-0400", "labels": ["RCA-DC-TOR", "RCA-Environment-Prod", "RCA-Type-Defect"]},
+      {"key": "PS-802516", "summary": "EEs Sick Front loaded balances are not matching the T&B report", "status": {"name": "Analysis"}, "priority": {"name": "P3"}, "assignee": {"display_name": "Joshi Akanksha", "email": "joshi.akanksha@ukg.com"}, "created": "2026-03-20T14:21:41.000-0400", "updated": "2026-04-08T05:43:28.000-0400", "labels": ["RCA-DC-ATL", "RCA-Environment-Prod", "RCA-Type-Defect"]},
+      {"key": "PS-792633", "summary": "Employees Unpaid Time Off Hourly remaining balance is showing 40.00 on the paystub", "status": {"name": "Analysis"}, "priority": {"name": "P4"}, "assignee": {"display_name": "Swati Aggarwal", "email": "swati.aggarwal@ukg.com"}, "created": "2026-03-13T16:47:46.000-0400", "updated": "2026-04-08T07:01:02.000-0400", "labels": ["RCA-ATL-PROD", "RCA-Environment-Prod", "RCA-Type-Defect"]},
+      {"key": "PS-792610", "summary": "Scheduled Punches reports stuck processing", "status": {"name": "Analysis"}, "priority": {"name": "P3"}, "assignee": {"display_name": "Akshay Jaggi", "email": "akshay.jaggi@ukg.com"}, "created": "2026-03-13T16:18:54.000-0400", "updated": "2026-04-08T10:10:23.000-0400", "labels": ["RCA-ATL-PROD", "RCA-Environment-Prod"]},
+      {"key": "PS-789912", "summary": "Employee update in UKGPro Synthetics failing with ToaQueueClient error", "status": {"name": "Analysis"}, "priority": {"name": "P3"}, "assignee": {"display_name": "Akhilesh A Kumar", "email": "akhilesh.a.kumar@ukg.com"}, "created": "2026-03-12T05:35:12.000-0400", "updated": "2026-04-08T06:28:05.000-0400", "labels": []},
+      {"key": "PS-771247", "summary": "Accrual is not prorating correctly in the first year for one employee", "status": {"name": "In Test"}, "priority": {"name": "P3"}, "assignee": {"display_name": "Joshi Akanksha", "email": "joshi.akanksha@ukg.com"}, "created": "2026-03-02T15:41:37.000-0500", "updated": "2026-04-08T06:54:10.000-0400", "labels": ["RCA-DC-ATL", "RCA-Environment-Prod", "RCA-Type-Defect"]},
+      {"key": "PS-770956", "summary": "A WIT import for Merit Increase made a historical change on the Job History", "status": {"name": "In Dev"}, "priority": {"name": "P3"}, "assignee": {"display_name": "Anoosha Somepally", "email": "anoosha.somepally@ukg.com"}, "created": "2026-03-02T12:47:12.000-0500", "updated": "2026-04-08T10:10:24.000-0400", "labels": ["RCA-Type-Defect"]},
+      {"key": "PS-767259", "summary": "Retro Charge Date setting for Weekly/Summary", "status": {"name": "Analysis"}, "priority": {"name": "P3"}, "assignee": {"display_name": "Anoosha Somepally", "email": "anoosha.somepally@ukg.com"}, "created": "2026-02-26T13:50:26.000-0500", "updated": "2026-04-08T09:51:05.000-0400", "labels": []},
+      {"key": "PS-750822", "summary": "WFM Classic - Absolute_Path_Traversal", "status": {"name": "In Dev"}, "priority": {"name": "P4"}, "assignee": {"display_name": "Yogesh Sharma", "email": "Yogesh.Sharma02@ukg.com"}, "created": "2026-02-16T10:07:59.000-0500", "updated": "2026-04-08T10:11:02.000-0400", "labels": ["Checkmarx", "SAST", "security-field-updated"]},
+      {"key": "PS-750821", "summary": "CVE-2024-32655 @ Nuget-Npgsql-3.0.7", "status": {"name": "Analysis"}, "priority": {"name": "None"}, "assignee": {"display_name": "Arjit Gautam", "email": "arjit.gautam@ukg.com"}, "created": "2026-02-16T10:06:46.000-0500", "updated": "2026-04-06T07:58:36.000-0400", "labels": ["Checkmarx", "SCA", "security-field-updated"]},
+      {"key": "PS-750820", "summary": "WFM Classic - CVE-2024-21907 @ Nuget-Newtonsoft.Json-9.0.1", "status": {"name": "Analysis"}, "priority": {"name": "None"}, "assignee": {"display_name": "Unassigned"}, "created": "2026-02-16T10:06:42.000-0500", "updated": "2026-04-08T06:24:06.000-0400", "labels": ["Checkmarx", "SCA", "security-field-updated"]},
+      {"key": "PS-741689", "summary": "WFMC Branding Update - Remove old logo from Direct login screen", "status": {"name": "Waiting To Accept"}, "priority": {"name": "P3"}, "assignee": {"display_name": "Saumya Prabhakar", "email": "saumya.prabhakar@ukg.com"}, "created": "2026-02-09T14:55:04.000-0500", "updated": "2026-04-08T10:10:39.000-0400", "labels": ["RCA-DC-PLAS", "RCA-Environment-Prod", "RCA-Type-Defect"]},
+      {"key": "PS-727887", "summary": "UKG Classic API integration Failures", "status": {"name": "Analysis"}, "priority": {"name": "P3"}, "assignee": {"display_name": "Divyam Patel", "email": "divyam.patel@ukg.com"}, "created": "2026-01-29T18:06:07.000-0500", "updated": "2026-04-08T10:10:37.000-0400", "labels": ["RCA-DC-ATL", "RCA-Environment-Prod"]},
+      {"key": "PS-716780", "summary": "TOA - Timeoff request - date validation & multiple API calls", "status": {"name": "Analysis"}, "priority": {"name": "None"}, "assignee": {"display_name": "Unassigned"}, "created": "2026-01-20T20:18:00.000-0500", "updated": "2026-04-02T12:00:06.000-0400", "labels": []},
+      {"key": "PS-697824", "summary": "WFM Classic - SQL_Injection @ /SyncWebApp/Controllers/CsvExportController.cs", "status": {"name": "Waiting To Accept"}, "priority": {"name": "P3"}, "assignee": {"display_name": "Yogesh Sharma", "email": "Yogesh.Sharma02@ukg.com"}, "created": "2026-01-06T20:23:14.000-0500", "updated": "2026-04-08T10:10:59.000-0400", "labels": ["Checkmarx", "SAST"]},
+      {"key": "PS-604582", "summary": "Development | TRox Phase 2 | Toggle flag for WFM Privacy Manager service", "status": {"name": "Analysis"}, "priority": {"name": "None"}, "assignee": {"display_name": "Unassigned"}, "created": "2025-10-09T06:02:49.000-0400", "updated": "2026-04-02T12:35:15.000-0400", "labels": []},
+      {"key": "PS-528840", "summary": "Preview & Latest - Resolve Module to Module Navigation", "status": {"name": "Analysis"}, "priority": {"name": "P3"}, "assignee": {"display_name": "Pruthvi Garlapati", "email": "pruthvi.garlapati@ukg.com"}, "created": "2025-08-01T16:16:00.000-0400", "updated": "2026-04-08T06:17:45.000-0400", "labels": []},
+      {"key": "PS-528839", "summary": "Preview & Latest - Permanent fix login issues", "status": {"name": "In Dev"}, "priority": {"name": "P3"}, "assignee": {"display_name": "Pruthvi Garlapati", "email": "pruthvi.garlapati@ukg.com"}, "created": "2025-08-01T16:15:15.000-0400", "updated": "2026-04-02T12:55:47.000-0400", "labels": []}
+    ]
+  }
+}
