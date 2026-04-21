@@ -226,6 +226,7 @@ export default function LeadershipDashboard() {
                 <th className="px-3 py-2 text-xs font-semibold text-gray-500 uppercase whitespace-nowrap">Issue</th>
                 <th className="px-3 py-2 text-xs font-semibold text-gray-500 uppercase">Priority</th>
                 <th className="px-3 py-2 text-xs font-semibold text-gray-500 uppercase">Severity</th>
+                <th className="px-3 py-2 text-xs font-semibold text-gray-500 uppercase">Status</th>
                 <th className="px-3 py-2 text-xs font-semibold text-gray-500 uppercase">Age</th>
                 <th className="px-3 py-2 text-xs font-semibold text-gray-500 uppercase">Reason</th>
                 <th className="px-3 py-2 text-xs font-semibold text-gray-500 uppercase">Assignee</th>
@@ -252,6 +253,9 @@ export default function LeadershipDashboard() {
                   </td>
                   <td className="px-3 py-2 whitespace-nowrap">
                     {d.severity ? <Badge text={d.severity} color={SEVERITY_COLOR[d.severity] || '#6b7280'} /> : <span className="text-gray-300 text-xs">—</span>}
+                  </td>
+                  <td className="px-3 py-2 whitespace-nowrap">
+                    <span className="text-xs text-gray-600">{d.status || '—'}</span>
                   </td>
                   <td className="px-3 py-2 whitespace-nowrap">
                     <span className={`text-xs font-semibold px-1.5 py-0.5 rounded ${(d.age_days||0) >= 30 ? 'bg-orange-50 text-orange-600' : 'bg-gray-50 text-gray-500'}`}>
