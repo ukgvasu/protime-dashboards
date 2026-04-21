@@ -14,6 +14,10 @@ const PRIORITY_COLOR = { P1: '#dc2626', P2: '#ea580c', P3: '#b7950b', P4: '#6b72
 const SEVERITY_COLOR = { S1: '#dc2626', S2: '#ea580c', S3: '#b7950b', S4: '#6b7280' };
 const MONTH_SHORT = { '01':'Jan','02':'Feb','03':'Mar','04':'Apr','05':'May','06':'Jun','07':'Jul','08':'Aug','09':'Sep','10':'Oct','11':'Nov','12':'Dec' };
 
+const BASE_JQL = `(issuetype in (Bug, Defect) OR labels = "RCA-Type-Defect") AND NOT labels in (Checkmarx, SCA, bitsight, automation, SAST, DAST) AND statusCategory != Done`;
+const PT_TEAMS = { uta: 3121, utm: 3120, wfmClassic: 3122 };
+const jiraLink = (jql) => `${JIRA_BASE}/issues/?jql=${encodeURIComponent(jql)}`;
+
 function Badge({ text, color = '#6b7280' }) {
   return (
     <span className="inline-block text-xs font-semibold px-1.5 py-0.5 rounded" style={{ color, background: color + '22' }}>
@@ -22,11 +26,17 @@ function Badge({ text, color = '#6b7280' }) {
   );
 }
 
-function StatCard({ label, value, sublabel, color = '#005151' }) {
+function StatCard({ label, value, sublabel, color = '#005151', href }) {
   return (
     <div className="bg-white rounded-lg shadow-sm border border-gray-100 p-4">
       <div className="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-1">{label}</div>
-      <div className="text-3xl font-bold" style={{ color }}>{value ?? '—'}</div>
+      {href ? (
+        <a href={href} target="_blank" rel="noreferrer"
+          className="text-3xl font-bold hover:underline decoration-1 underline-offset-2 block"
+          style={{ color }}>{value ?? '—'}</a>
+      ) : (
+        <div className="text-3xl font-bold" style={{ color }}>{value ?? '—'}</div>
+      )}
       {sublabel && <div className="text-xs text-gray-400 mt-1">{sublabel}</div>}
     </div>
   );
@@ -147,6 +157,13 @@ export default function LeadershipDashboard() {
     unassigned:PRODUCTS.reduce((s, p) => s + (statsData[p]?.unassigned || 0), 0),
   };
 
+  // === Jira search links for Portfolio Summary ===
+  const portfolioLinks = {
+    total:     jiraLink(`${BASE_JQL} ORDER BY priority DESC`),
+    p1p2:      jiraLink(`${BASE_JQL} AND priority in (P1, P2) ORDER BY priority DESC`),
+    s1s2:      jiraLink(`${BASE_JQL} AND cf[10704] in (S1, S2) ORDER BY priority DESC`),
+  };
+
   // === Cross-Product Breakdown ===
   const allDefects = PRODUCTS.flatMap(p => defectsData[p] || []);
 
@@ -186,10 +203,10 @@ export default function LeadershipDashboard() {
       {/* ── Portfolio Summary ── */}
       <SectionHeader>Portfolio Summary</SectionHeader>
       <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4 mb-8">
-        <StatCard label="Total Open Defects" value={portfolio.total} sublabel="All products" color="#005151" />
+        <StatCard label="Total Open Defects" value={portfolio.total} sublabel="All products" color="#005151" href={portfolioLinks.total} />
         <StatCard label="Customer Impacting" value={portfolio.customer} sublabel="customer_count > 0" color="#dc2626" />
-        <StatCard label="High Priority (P1+P2)" value={portfolio.p1p2} sublabel="Urgent attention" color="#ea580c" />
-        <StatCard label="High Severity (S1+S2)" value={portfolio.s1s2} sublabel="S1+S2 all products" color="#c0392b" />
+        <StatCard label="High Priority (P1+P2)" value={portfolio.p1p2} sublabel="Urgent attention" color="#ea580c" href={portfolioLinks.p1p2} />
+        <StatCard label="High Severity (S1+S2)" value={portfolio.s1s2} sublabel="S1+S2 all products" color="#c0392b" href={portfolioLinks.s1s2} />
         <StatCard label="Stale (30+ days)" value={portfolio.stale} sublabel="No update" color="#d35400" />
         <StatCard label="Unassigned" value={portfolio.unassigned} sublabel="No owner" color="#ca8a04" />
       </div>
@@ -270,6 +287,11 @@ export default function LeadershipDashboard() {
           const avgAge = defs.length
             ? Math.round(defs.reduce((s, d) => s + (d.age_days || 0), 0) / defs.length)
             : 0;
+          const team = PT_TEAMS[p];
+          const productJql = `${BASE_JQL} AND cf[22500] = ${team}`;
+          const linkTotal = jiraLink(`${productJql} ORDER BY priority DESC`);
+          const linkP1P2  = jiraLink(`${productJql} AND priority in (P1, P2) ORDER BY priority DESC`);
+          const linkS1S2  = jiraLink(`${productJql} AND cf[10704] in (S1, S2) ORDER BY priority DESC`);
           return (
             <div key={p} className="flex-1 min-w-[220px] bg-white border border-gray-200 rounded-lg p-5"
               style={{ borderTop: `4px solid ${color}` }}>
@@ -282,15 +304,20 @@ export default function LeadershipDashboard() {
               </div>
               <div className="grid grid-cols-2 gap-3">
                 <div>
-                  <div className="text-2xl font-bold text-gray-800">{st.total ?? defs.length}</div>
+                  <a href={linkTotal} target="_blank" rel="noreferrer"
+                    className="text-2xl font-bold text-gray-800 hover:underline block">{st.total ?? defs.length}</a>
                   <div className="text-xs text-gray-400 uppercase tracking-wide">Open Defects</div>
                 </div>
                 <div>
-                  <div className="text-2xl font-bold" style={{ color: (st.p1p2||0) > 0 ? '#d35400' : '#27ae60' }}>{st.p1p2 || 0}</div>
+                  <a href={linkP1P2} target="_blank" rel="noreferrer"
+                    className="text-2xl font-bold hover:underline block"
+                    style={{ color: (st.p1p2||0) > 0 ? '#d35400' : '#27ae60' }}>{st.p1p2 || 0}</a>
                   <div className="text-xs text-gray-400 uppercase tracking-wide">P1 + P2</div>
                 </div>
                 <div>
-                  <div className="text-2xl font-bold" style={{ color: (st.s1s2||0) > 0 ? '#d35400' : '#27ae60' }}>{st.s1s2 || 0}</div>
+                  <a href={linkS1S2} target="_blank" rel="noreferrer"
+                    className="text-2xl font-bold hover:underline block"
+                    style={{ color: (st.s1s2||0) > 0 ? '#d35400' : '#27ae60' }}>{st.s1s2 || 0}</a>
                   <div className="text-xs text-gray-400 uppercase tracking-wide">S1 + S2 Sev</div>
                 </div>
                 <div>
