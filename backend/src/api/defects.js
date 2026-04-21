@@ -145,6 +145,24 @@ router.get('/:product/upgrade-tracker', (req, res) => {
         resolutionBreakdown[i.resolution] = (resolutionBreakdown[i.resolution] || 0) + 1;
       });
 
+    // Top impacted customers — from upgrade issues only
+    const upgradeCustomerMap = {};
+    allUpgrade
+      .filter(i => !['Closed', 'Canceled'].includes(i.status) && i.customer_count > 0)
+      .forEach(i => {
+        let customers = [];
+        try { customers = JSON.parse(i.customers || '[]'); } catch { customers = []; }
+        customers.forEach(c => {
+          const name = typeof c === 'string' ? c : (c.name || '');
+          if (!name) return;
+          if (!upgradeCustomerMap[name]) upgradeCustomerMap[name] = { name, count: 0 };
+          upgradeCustomerMap[name].count++;
+        });
+      });
+    const topCustomers = Object.values(upgradeCustomerMap)
+      .sort((a, b) => b.count - a.count)
+      .slice(0, 10);
+
     const result = {
       upgrade25,
       upgrade26,
@@ -160,6 +178,8 @@ router.get('/:product/upgrade-tracker', (req, res) => {
       },
       aging_issues: agingIssues,
       resolution_breakdown: resolutionBreakdown,
+      top_customers: topCustomers,
+      unique_impacted_customers: Object.keys(upgradeCustomerMap).length,
       generated_at: new Date().toISOString(),
     };
 
