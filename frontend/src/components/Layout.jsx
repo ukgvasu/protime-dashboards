@@ -88,10 +88,7 @@ export default function Layout() {
               <div className="space-y-0.5 mt-0.5">
                 <NavLink to="/uta" end className={subNavLinkClass}>Dashboard</NavLink>
                 <NavLink to="/uta/upgrade-tracker" className={subNavLinkClass}><ArrowUpCircle size={12} /> Upgrade Tracker</NavLink>
-                <NavLink to="/customer-impact"
-                  className={({ isActive }) => `flex items-center gap-2 pl-10 pr-3 py-1.5 rounded-md text-sm transition-colors ${isActive ? 'bg-[#005151] text-white font-medium' : 'text-gray-400 hover:bg-gray-100'}`}>
-                  <Users size={11} /> Customer Impact
-                </NavLink>
+                <NavLink to="/customer-impact" className={subNavLinkClass}><Users size={12} /> Customer Impact</NavLink>
                 <NavLink to="/swag-actuals" className={subNavLinkClass}>SWAG vs Actuals</NavLink>
                 <NavLink to="/swag-actuals-leadership" className={subNavLinkClass}>SWAG Leadership</NavLink>
               </div>
