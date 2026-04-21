@@ -1,10 +1,18 @@
 import { Outlet, NavLink, useNavigate } from 'react-router-dom';
 import { useState } from 'react';
-import { LayoutDashboard, Shield, TrendingUp, Users, RefreshCw, ChevronDown, ChevronRight, ArrowUpCircle } from 'lucide-react';
+import { LayoutDashboard, Shield, TrendingUp, Users, RefreshCw, ChevronDown, ChevronRight, ArrowUpCircle, Clock } from 'lucide-react';
 import { api } from '../services/api';
+
+function formatDateTime(date) {
+  return date.toLocaleString('en-US', {
+    month: 'short', day: 'numeric', year: 'numeric',
+    hour: 'numeric', minute: '2-digit', hour12: true,
+  });
+}
 
 export default function Layout() {
   const [syncing, setSyncing] = useState(false);
+  const [lastUpdated, setLastUpdated] = useState(new Date());
   const [expandedSections, setExpandedSections] = useState({ uta: true, utm: false, wfm: false });
   const navigate = useNavigate();
 
@@ -12,7 +20,10 @@ export default function Layout() {
     setSyncing(true);
     try {
       await api.triggerSync('all');
-      setTimeout(() => setSyncing(false), 3000);
+      setTimeout(() => {
+        setSyncing(false);
+        setLastUpdated(new Date());
+      }, 3000);
     } catch (err) {
       console.error('Sync error:', err);
       setSyncing(false);
@@ -115,8 +126,15 @@ export default function Layout() {
           </div>
         </nav>
 
-        {/* Sync button */}
+        {/* Last updated + Sync button */}
         <div className="p-3 border-t border-gray-200">
+          <div className="flex items-start gap-1.5 mb-2 px-1">
+            <Clock size={11} className="text-gray-400 mt-0.5 flex-shrink-0" />
+            <div>
+              <div className="text-[10px] font-semibold text-gray-400 uppercase tracking-wider leading-none mb-0.5">Last Updated</div>
+              <div className="text-[11px] text-gray-500 leading-tight">{formatDateTime(lastUpdated)}</div>
+            </div>
+          </div>
           <button
             onClick={handleSync}
             disabled={syncing}
