@@ -1,5 +1,4 @@
 import { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
 import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, PieChart, Pie, Cell, CartesianGrid } from 'recharts';
 import { ArrowUpCircle, Clock, CheckCircle, AlertTriangle, Users } from 'lucide-react';
 import { api } from '../services/api';
@@ -129,9 +128,6 @@ export default function UTAUpgradeTracker() {
         <div className="flex items-center gap-2 mb-1">
           <Users size={16} className="text-[#005151]" />
           <h2 className="font-semibold text-gray-700">Top Impacted Customers</h2>
-          <Link to="/customer-impact" className="text-xs text-[#005151] hover:underline font-medium ml-1">
-            Click for Details →
-          </Link>
         </div>
         <p className="text-xs text-gray-400 mb-4">
           Customers impacted by open UTAUPGRADE25 / UTAUPGRADE26 issues · {data.unique_impacted_customers ?? 0} unique customers
