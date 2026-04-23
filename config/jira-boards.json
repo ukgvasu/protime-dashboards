@@ -4,7 +4,7 @@
       "id": 3097,
       "name": "ProTime – UTA",
       "portfolioTeam": 3121,
-      "jql": "(issuetype in (Bug, Defect) OR labels = \"RCA-Type-Defect\") AND NOT labels in (Checkmarx, SCA, bitsight, automation, SAST, DAST) AND statusCategory != Done ORDER BY priority DESC, created DESC"
+      "jql": "\"Portfolio Team\" = 3121 AND labels in (\"RCA-Type-Defect\", \"RCA-TYPE-DEFECT\") AND Classification != Security AND statusCategory != Done ORDER BY priority DESC, created DESC"
     },
     "utm": {
       "id": 3057,
