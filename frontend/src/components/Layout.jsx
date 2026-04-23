@@ -13,7 +13,7 @@ function formatDateTime(date) {
 export default function Layout() {
   const [syncing, setSyncing] = useState(false);
   const [lastUpdated, setLastUpdated] = useState(new Date());
-  const [expandedSections, setExpandedSections] = useState({ uta: true, utm: false, wfm: false });
+  const [expandedSections, setExpandedSections] = useState({ uta: true, utm: false, wfm: false, security: false });
   const navigate = useNavigate();
 
   const handleSync = async () => {
@@ -67,9 +67,26 @@ export default function Layout() {
           <NavLink to="/all-products" className={navLinkClass}>
             <TrendingUp size={16} /> All Products
           </NavLink>
-          <NavLink to="/security" className={navLinkClass}>
-            <Shield size={16} /> Security
-          </NavLink>
+          <div>
+            <button onClick={() => toggleSection('security')} className="w-full flex items-center justify-between px-3 py-2 rounded-md text-sm text-gray-600 hover:bg-gray-100">
+              <span className="flex items-center gap-2"><Shield size={16} /> Security</span>
+              {expandedSections.security ? <ChevronDown size={14} /> : <ChevronRight size={14} />}
+            </button>
+            {expandedSections.security && (
+              <div className="space-y-0.5 mt-0.5">
+                <NavLink to="/security" end className={subNavLinkClass}>Overview</NavLink>
+                <NavLink to="/security/uta" className={subNavLinkClass}>
+                  <span className="w-2 h-2 rounded-full flex-shrink-0" style={{ background: '#059669' }} /> UTA
+                </NavLink>
+                <NavLink to="/security/utm" className={subNavLinkClass}>
+                  <span className="w-2 h-2 rounded-full flex-shrink-0" style={{ background: '#2563eb' }} /> UTM
+                </NavLink>
+                <NavLink to="/security/wfm-classic" className={subNavLinkClass}>
+                  <span className="w-2 h-2 rounded-full flex-shrink-0" style={{ background: '#7c3aed' }} /> WFM Classic
+                </NavLink>
+              </div>
+            )}
+          </div>
           <NavLink to="/ktlo-analysis" className={navLinkClass}>
             <TrendingUp size={16} /> KTLO Analysis
           </NavLink>

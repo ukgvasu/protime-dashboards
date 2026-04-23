@@ -14,7 +14,16 @@ const jiraClient = axios.create({
   timeout: 30000
 });
 
-export async function fetchIssues(jql, maxResults = 500) {
+const DEFAULT_FIELDS = [
+  'summary', 'status', 'priority', 'assignee', 'reporter', 'created', 'updated',
+  'resolutiondate', 'resolution', 'issuetype', 'labels', 'components',
+  'customfield_10704', // severity
+  'customfield_10503', // impacted customers
+  'customfield_22500', // portfolio team
+  'customfield_25700', // deployment version
+];
+
+export async function fetchIssues(jql, maxResults = 500, fields = null) {
   const allIssues = [];
   let startAt = 0;
   const pageSize = 100;
@@ -24,14 +33,7 @@ export async function fetchIssues(jql, maxResults = 500) {
       jql,
       maxResults: pageSize,
       startAt,
-      fields: [
-        'summary', 'status', 'priority', 'assignee', 'reporter', 'created', 'updated',
-        'resolutiondate', 'resolution', 'issuetype', 'labels', 'components',
-        'customfield_10704', // severity
-        'customfield_10503', // impacted customers
-        'customfield_22500', // portfolio team
-        'customfield_25700', // deployment version
-      ]
+      fields: fields || DEFAULT_FIELDS,
     });
 
     const issues = response.data.issues || [];

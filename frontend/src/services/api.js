@@ -24,6 +24,9 @@ export const api = {
   // Reports
   getLeadership: () => fetchAPI('/reports/leadership'),
   getSecurity: () => fetchAPI('/reports/security'),
+  getSecurityUTA: () => fetchAPI('/reports/security/uta'),
+  getSecurityUTM: () => fetchAPI('/reports/security/utm'),
+  getSecurityWFM: () => fetchAPI('/reports/security/wfm-classic'),
   getHistory: (product, months = 6) => fetchAPI(`/reports/history/${product}?months=${months}`),
 
   // Sync

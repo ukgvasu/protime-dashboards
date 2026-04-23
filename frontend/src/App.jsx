@@ -33,6 +33,9 @@ function App() {
           <Route path="wfm-classic/customer-impact" element={<CustomerImpactDashboard product="wfmClassic" />} />
           <Route path="leadership" element={<LeadershipDashboard />} />
           <Route path="security" element={<SecurityDashboard />} />
+          <Route path="security/uta" element={<SecurityDashboard product="uta" />} />
+          <Route path="security/utm" element={<SecurityDashboard product="utm" />} />
+          <Route path="security/wfm-classic" element={<SecurityDashboard product="wfmClassic" />} />
           <Route path="*" element={<Navigate to="/" replace />} />
         </Route>
       </Routes>
