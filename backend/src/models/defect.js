@@ -193,6 +193,30 @@ export class DefectModel {
     }
   }
 
+  static getWeeklyCustomerImpactTrend(product, days = 60) {
+    // substr(created_at,1,10) extracts YYYY-MM-DD from Jira's ISO string (which has timezone offsets
+    // that SQLite's strftime cannot parse, causing NULL results without this slice)
+    if (product === 'all') {
+      return dbManager.all(
+        `SELECT strftime('%Y-%W', substr(created_at,1,10)) as week,
+                MIN(substr(created_at,1,10)) as week_start,
+                COUNT(*) as count
+         FROM defects
+         WHERE customer_count > 0 AND substr(created_at,1,10) >= date('now', '-${days} days')
+         GROUP BY week ORDER BY week ASC`
+      );
+    }
+    return dbManager.all(
+      `SELECT strftime('%Y-%W', substr(created_at,1,10)) as week,
+              MIN(substr(created_at,1,10)) as week_start,
+              COUNT(*) as count
+       FROM defects
+       WHERE product = ? AND customer_count > 0 AND substr(created_at,1,10) >= date('now', '-${days} days')
+       GROUP BY week ORDER BY week ASC`,
+      [product]
+    );
+  }
+
   static getUpgradeIssues(label) {
     const col = label.toUpperCase().includes('25') ? 'is_upgrade_25' : 'is_upgrade_26';
     return dbManager.all(`SELECT * FROM defects WHERE ${col} = 1 AND product = 'uta'`);

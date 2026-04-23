@@ -69,12 +69,15 @@ router.get('/:product', (req, res) => {
     const bySeverity = {};
     defects.forEach(d => { const s = d.severity || 'Unknown'; bySeverity[s] = (bySeverity[s] || 0) + 1; });
 
+    const weeklyTrend = DefectModel.getWeeklyCustomerImpactTrend(product, 60);
+
     const result = {
       product,
       totalImpacted: defects.length,
       uniqueCustomers: Object.keys(customerMap).length,
       topCustomers,
       allImpactedDefects,
+      weeklyTrend,
       byPriority: {
         P1: defects.filter(d => d.priority === 'P1').length,
         P2: defects.filter(d => d.priority === 'P2').length,
