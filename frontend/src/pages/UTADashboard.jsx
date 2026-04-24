@@ -253,10 +253,6 @@ export default function UTADashboard() {
           <p className="text-sm text-gray-400 italic">Security defects — see the <a href="/security" className="text-[#005151] underline">Security dashboard</a>.</p>
         </CollapsibleSection>
 
-        {/* All Open Defects */}
-        <CollapsibleSection title="All Open Defects" count={defects.length}>
-          <DefectTable defects={defects} />
-        </CollapsibleSection>
       </div>
     </div>
   );
