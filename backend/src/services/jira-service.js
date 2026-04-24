@@ -90,7 +90,7 @@ export function transformIssue(issue, product) {
   try {
     const rawCustomers = fields.customfield_10503;
     if (Array.isArray(rawCustomers)) {
-      customers = rawCustomers.map(c => typeof c === 'string' ? c : (c.name || c.displayName || ''));
+      customers = rawCustomers.map(c => typeof c === 'string' ? c : (c.value || c.name || c.displayName || ''));
       customerCount = customers.filter(Boolean).length;
     } else if (typeof rawCustomers === 'string' && rawCustomers.trim()) {
       customers = [rawCustomers];

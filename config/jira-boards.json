@@ -4,19 +4,19 @@
       "id": 3097,
       "name": "ProTime – UTA",
       "portfolioTeam": 3121,
-      "jql": "(issuetype in (Bug, Defect) OR labels in (\"RCA-Type-Defect\", \"RCA-TYPE-DEFECT\")) AND NOT labels in (Checkmarx, SCA, bitsight, automation, SAST, DAST) AND Classification not in (Security) AND statusCategory != Done ORDER BY priority DESC, created DESC"
+      "jql": "cf[22500] = \"UTA\" AND issuetype in (Bug, Defect) AND NOT labels in (Checkmarx, SCA, bitsight, automation, SAST, DAST) AND (Classification is EMPTY OR Classification not in (Security)) AND statusCategory != Done ORDER BY priority DESC, created DESC"
     },
     "utm": {
       "id": 3057,
       "name": "ProTime – UTM",
       "portfolioTeam": 3120,
-      "jql": "(issuetype in (Bug, Defect) OR labels = \"RCA-Type-Defect\") AND NOT labels in (Checkmarx, SCA, bitsight, automation, SAST, DAST) AND statusCategory != Done ORDER BY priority DESC, created DESC"
+      "jql": "cf[22500] = \"UTM\" AND (issuetype in (Bug, Defect) OR labels in (\"RCA-Type-Defect\", \"RCA-TYPE-DEFECT\")) AND NOT labels in (Checkmarx, SCA, bitsight, automation, SAST, DAST) AND statusCategory != Done ORDER BY priority DESC, created DESC"
     },
     "wfmClassic": {
       "id": 3106,
       "name": "ProTime – WFM Classic",
       "portfolioTeam": 3122,
-      "jql": "(issuetype in (Bug, Defect) OR labels = \"RCA-Type-Defect\") AND NOT labels in (Checkmarx, SCA, bitsight, automation, SAST, DAST) AND statusCategory != Done ORDER BY priority DESC, created DESC"
+      "jql": "cf[22500] = \"ProTime India\" AND (issuetype in (Bug, Defect) OR labels in (\"RCA-Type-Defect\", \"RCA-TYPE-DEFECT\")) AND NOT labels in (Checkmarx, SCA, bitsight, automation, SAST, DAST) AND statusCategory != Done ORDER BY priority DESC, created DESC"
     }
   },
   "securityJql": "(issuetype in (Bug, Defect) OR labels = \"RCA-Type-Defect\") AND labels in (Checkmarx, SCA, bitsight, Security, CVE) ORDER BY priority DESC"
