@@ -134,6 +134,7 @@ router.get('/:product/upgrade-tracker', (req, res) => {
         severity: i.severity,
         assignee: i.assignee,
         status: i.status,
+        labels: i.labels || '',
         jira_url: `${process.env.JIRA_BASE_URL}/browse/${i.key}`
       }));
 

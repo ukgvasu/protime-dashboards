@@ -177,9 +177,16 @@ export default function UTAUpgradeTracker() {
               <tbody>
                 {data.aging_issues.map(issue => (
                   <tr key={issue.key} className="border-b border-gray-50 hover:bg-gray-50">
-                    <td className="py-2">
-                      <a href={`${JIRA_BASE}/${issue.key}`} target="_blank" rel="noopener noreferrer"
-                        className="font-mono text-xs text-[#005151] hover:underline">{issue.key}</a>
+                    <td className="py-2 whitespace-nowrap">
+                      <div className="flex items-center gap-1.5">
+                        <a href={`${JIRA_BASE}/${issue.key}`} target="_blank" rel="noopener noreferrer"
+                          className="font-mono text-xs text-[#005151] hover:underline">{issue.key}</a>
+                        {(issue.labels || '').split(',').map(l => l.trim()).includes('UTA-INFOR-Defect') && (
+                          <span style={{ padding: '1px 5px', borderRadius: 4, fontSize: 10, fontWeight: 700, background: '#fef3c7', color: '#92400e', border: '1px solid #fcd34d', whiteSpace: 'nowrap' }}>
+                            INFOR
+                          </span>
+                        )}
+                      </div>
                     </td>
                     <td className="py-2 text-xs max-w-xs truncate" title={issue.summary}>{issue.summary}</td>
                     <td className="py-2 text-xs font-semibold text-red-600">{issue.age_days}d</td>
