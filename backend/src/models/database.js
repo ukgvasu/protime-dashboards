@@ -155,6 +155,15 @@ class DatabaseManager {
       CREATE INDEX IF NOT EXISTS idx_defects_priority ON defects(priority);
       CREATE INDEX IF NOT EXISTS idx_defects_is_customer_reported ON defects(is_customer_reported);
     `);
+
+    // Migrations: add columns that may be missing from older database files
+    const migrations = [
+      `ALTER TABLE defects ADD COLUMN synced_at TEXT DEFAULT CURRENT_TIMESTAMP`,
+    ];
+    for (const sql of migrations) {
+      try { this.db.run(sql); } catch { /* column already exists */ }
+    }
+
     this.save();
   }
 }

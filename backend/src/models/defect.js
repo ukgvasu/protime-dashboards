@@ -161,7 +161,7 @@ export class DefectModel {
           reporter = ?, area = ?, labels = ?, customer_count = ?, customers = ?,
           is_customer_reported = ?, age_days = ?, updated_at = ?, resolution_date = ?,
           resolution = ?, issue_type = ?, raw_json = ?, is_upgrade_25 = ?, is_upgrade_26 = ?,
-          resolution_time_days = ?, synced_at = CURRENT_TIMESTAMP
+          resolution_time_days = ?
         WHERE key = ?
       `, [
         defect.summary, defect.status, defect.priority, defect.severity, defect.assignee,
