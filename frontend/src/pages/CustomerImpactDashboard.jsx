@@ -215,10 +215,17 @@ export default function CustomerImpactDashboard({ product = 'uta' }) {
                 {sortedDefects.map((d, i) => (
                   <tr key={d.key} className={i % 2 === 0 ? 'bg-white' : 'bg-gray-50/40'}>
                     <td className="px-3 py-2 whitespace-nowrap">
-                      <a href={`${JIRA_BASE}/browse/${d.key}`} target="_blank" rel="noreferrer"
-                        className="font-medium hover:underline flex items-center gap-1" style={{ color }}>
-                        {d.key}<ExternalLink size={11} className="text-gray-400 flex-shrink-0" />
-                      </a>
+                      <div className="flex items-center gap-1.5">
+                        <a href={`${JIRA_BASE}/browse/${d.key}`} target="_blank" rel="noreferrer"
+                          className="font-medium hover:underline flex items-center gap-1" style={{ color }}>
+                          {d.key}<ExternalLink size={11} className="text-gray-400 flex-shrink-0" />
+                        </a>
+                        {(d.labels || '').split(',').map(l => l.trim()).includes('UTA-INFOR-Defect') && (
+                          <span style={{ padding: '1px 5px', borderRadius: 4, fontSize: 10, fontWeight: 700, background: '#fef3c7', color: '#92400e', border: '1px solid #fcd34d', whiteSpace: 'nowrap' }}>
+                            INFOR
+                          </span>
+                        )}
+                      </div>
                     </td>
                     <td className="px-3 py-2 max-w-xs">
                       <span className="text-gray-700 text-xs leading-snug line-clamp-2" title={d.summary}>{d.summary}</span>

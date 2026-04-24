@@ -62,6 +62,7 @@ router.get('/:product', (req, res) => {
       return {
         key: d.key, summary: d.summary, priority: d.priority, severity: d.severity,
         status: d.status, assignee: d.assignee, age_days: d.age_days,
+        labels: d.labels || '',
         customers: customers.filter(Boolean),
       };
     });
