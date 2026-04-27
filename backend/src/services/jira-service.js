@@ -2,17 +2,31 @@ import axios from 'axios';
 import { differenceInDays, parseISO } from 'date-fns';
 
 const JIRA_BASE_URL = process.env.JIRA_BASE_URL || 'https://engjira.int.kronos.com';
-const JIRA_PAT = process.env.JIRA_PAT;
 
-const jiraClient = axios.create({
-  baseURL: JIRA_BASE_URL,
-  headers: {
-    'Authorization': `Bearer ${JIRA_PAT}`,
-    'Content-Type': 'application/json',
-    'Accept': 'application/json'
-  },
-  timeout: 30000
-});
+// Read PAT lazily so dotenv has time to populate process.env
+function getJiraClient() {
+  return axios.create({
+    baseURL: JIRA_BASE_URL,
+    headers: {
+      'Authorization': `Bearer ${process.env.JIRA_PAT}`,
+      'Content-Type': 'application/json',
+      'Accept': 'application/json',
+    },
+    timeout: 30000,
+  });
+}
+
+// Keep a cached client but recreate if PAT changes (e.g. after dotenv loads)
+let _client = null;
+let _clientPat = null;
+function jiraClient() {
+  const pat = process.env.JIRA_PAT;
+  if (!_client || pat !== _clientPat) {
+    _client = getJiraClient();
+    _clientPat = pat;
+  }
+  return _client;
+}
 
 const DEFAULT_FIELDS = [
   'summary', 'status', 'priority', 'assignee', 'reporter', 'created', 'updated',
@@ -29,7 +43,7 @@ export async function fetchIssues(jql, maxResults = 500, fields = null) {
   const pageSize = 100;
 
   while (true) {
-    const response = await jiraClient.post('/rest/api/2/search', {
+    const response = await jiraClient().post('/rest/api/2/search', {
       jql,
       maxResults: pageSize,
       startAt,
@@ -48,7 +62,7 @@ export async function fetchIssues(jql, maxResults = 500, fields = null) {
 
 export async function fetchBoardIssues(boardId, jql) {
   try {
-    const response = await jiraClient.get(`/rest/agile/1.0/board/${boardId}/issue`, {
+    const response = await jiraClient().get(`/rest/agile/1.0/board/${boardId}/issue`, {
       params: { jql, maxResults: 100, fields: 'summary,status,priority,labels,components,issuetype' }
     });
     return response.data.issues || [];
@@ -59,14 +73,14 @@ export async function fetchBoardIssues(boardId, jql) {
 
 export async function fetchSprintIssues(boardId) {
   try {
-    const sprintRes = await jiraClient.get(`/rest/agile/1.0/board/${boardId}/sprint`, {
+    const sprintRes = await jiraClient().get(`/rest/agile/1.0/board/${boardId}/sprint`, {
       params: { state: 'active' }
     });
     const sprints = sprintRes.data.values || [];
     if (!sprints.length) return [];
 
     const sprintId = sprints[0].id;
-    const issuesRes = await jiraClient.get(`/rest/agile/1.0/sprint/${sprintId}/issue`, {
+    const issuesRes = await jiraClient().get(`/rest/agile/1.0/sprint/${sprintId}/issue`, {
       params: { maxResults: 200, fields: 'summary,labels,components,issuetype,priority' }
     });
     return issuesRes.data.issues || [];

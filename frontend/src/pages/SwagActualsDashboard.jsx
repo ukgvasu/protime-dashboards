@@ -1,279 +1,423 @@
 import { useState, useEffect } from 'react';
-import { BarChart, Bar, XAxis, YAxis, Tooltip, Legend, ResponsiveContainer, LineChart, Line, CartesianGrid } from 'recharts';
-import { ExternalLink, TrendingUp, TrendingDown, Minus } from 'lucide-react';
+import {
+  BarChart, Bar, XAxis, YAxis, Tooltip, Legend, ResponsiveContainer,
+  LineChart, Line, CartesianGrid, ReferenceLine,
+} from 'recharts';
+import { ExternalLink } from 'lucide-react';
 import { api } from '../services/api';
 
 const JIRA_BASE = 'https://engjira.int.kronos.com';
-const PRIORITY_COLOR = { P1: '#dc2626', P2: '#ea580c', P3: '#b7950b', P4: '#6b7280', P5: '#9ca3af', None: '#9ca3af' };
-const SEVERITY_COLOR = { S1: '#dc2626', S2: '#ea580c', S3: '#b7950b', S4: '#6b7280' };
 
-const PRODUCT_COLORS = { uta: '#005151', utm: '#0d9488', wfmClassic: '#b7950b' };
-const PRODUCT_LABELS = { uta: 'UTA', utm: 'UTM', wfmClassic: 'WFM Classic' };
+const EPIC_COLORS = [
+  '#005151', '#0d9488', '#0369a1', '#7c3aed',
+  '#b45309', '#be185d', '#1d4ed8', '#065f46',
+];
 
-function Badge({ text, color = '#6b7280' }) {
-  return (
-    <span className="inline-block text-xs font-semibold px-1.5 py-0.5 rounded" style={{ color, background: color + '18' }}>
-      {text}
-    </span>
-  );
-}
-
-function StatCard({ label, value, sublabel, color = '#005151', trend }) {
+function StatCard({ label, value, sublabel, color = '#005151' }) {
   return (
     <div className="bg-white rounded-lg shadow-sm border border-gray-100 p-4">
       <div className="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-1">{label}</div>
-      <div className="flex items-end gap-2">
-        <div className="text-3xl font-bold" style={{ color }}>{value ?? '—'}</div>
-        {trend != null && (
-          <div className={`text-xs mb-1 flex items-center gap-0.5 ${trend > 0 ? 'text-red-500' : trend < 0 ? 'text-green-600' : 'text-gray-400'}`}>
-            {trend > 0 ? <TrendingUp size={12} /> : trend < 0 ? <TrendingDown size={12} /> : <Minus size={12} />}
-            {Math.abs(trend)}
-          </div>
-        )}
-      </div>
+      <div className="text-3xl font-bold" style={{ color }}>{value ?? '—'}</div>
       {sublabel && <div className="text-xs text-gray-400 mt-1">{sublabel}</div>}
     </div>
   );
 }
 
-function parseCustomers(raw) {
-  try {
-    const arr = typeof raw === 'string' ? JSON.parse(raw) : (raw || []);
-    return arr.filter(Boolean).join(', ') || '—';
-  } catch { return '—'; }
-}
+const TAB_CLASSES = (active) =>
+  `px-4 py-2 text-sm font-medium border-b-2 transition-colors ${
+    active
+      ? 'border-[#005151] text-[#005151]'
+      : 'border-transparent text-gray-500 hover:text-gray-700'
+  }`;
 
-function DefectTable({ defects, maxRows = 20 }) {
-  const [page, setPage] = useState(0);
-  const [filter, setFilter] = useState('all');
-  const pageSize = maxRows;
-
-  const filtered = filter === 'all' ? defects
-    : filter === 'customer' ? defects.filter(d => d.is_customer_reported === 1 || d.is_customer_reported === true)
-    : defects.filter(d => ['P1', 'P2'].includes(d.priority));
-
-  const pages = Math.ceil(filtered.length / pageSize);
-  const rows = filtered.slice(page * pageSize, (page + 1) * pageSize);
-
-  return (
-    <div>
-      <div className="flex items-center gap-2 mb-3">
-        {['all', 'customer', 'high-priority'].map(f => (
-          <button
-            key={f}
-            onClick={() => { setFilter(f); setPage(0); }}
-            className={`text-xs px-3 py-1 rounded-full border transition-colors ${filter === f ? 'bg-[#005151] text-white border-[#005151]' : 'border-gray-200 text-gray-600 hover:border-[#005151]'}`}
-          >
-            {f === 'all' ? `All (${defects.length})` : f === 'customer' ? `Customer-Facing (${defects.filter(d => d.is_customer_reported === 1 || d.is_customer_reported === true).length})` : `P1+P2 (${defects.filter(d => ['P1','P2'].includes(d.priority)).length})`}
-          </button>
-        ))}
-      </div>
-      {filtered.length === 0 ? (
-        <p className="text-sm text-gray-400 italic py-4 text-center">No defects match this filter.</p>
-      ) : (
-        <>
-          <div className="overflow-x-auto rounded border border-gray-100">
-            <table className="w-full text-sm">
-              <thead>
-                <tr className="bg-gray-50 text-left">
-                  <th className="px-3 py-2 text-xs font-semibold text-gray-500 uppercase whitespace-nowrap">Key</th>
-                  <th className="px-3 py-2 text-xs font-semibold text-gray-500 uppercase">Summary</th>
-                  <th className="px-3 py-2 text-xs font-semibold text-gray-500 uppercase">Priority</th>
-                  <th className="px-3 py-2 text-xs font-semibold text-gray-500 uppercase">Severity</th>
-                  <th className="px-3 py-2 text-xs font-semibold text-gray-500 uppercase">Status</th>
-                  <th className="px-3 py-2 text-xs font-semibold text-gray-500 uppercase">Assignee</th>
-                  <th className="px-3 py-2 text-xs font-semibold text-gray-500 uppercase">Customer(s)</th>
-                  <th className="px-3 py-2 text-xs font-semibold text-gray-500 uppercase whitespace-nowrap">Age</th>
-                </tr>
-              </thead>
-              <tbody className="divide-y divide-gray-50">
-                {rows.map((d, i) => (
-                  <tr key={d.key} className={i % 2 === 0 ? 'bg-white' : 'bg-gray-50/40'}>
-                    <td className="px-3 py-2 whitespace-nowrap">
-                      <a href={`${JIRA_BASE}/browse/${d.key}`} target="_blank" rel="noreferrer"
-                        className="text-[#005151] font-medium hover:underline flex items-center gap-1">
-                        {d.key}<ExternalLink size={11} className="text-gray-400 flex-shrink-0" />
-                      </a>
-                    </td>
-                    <td className="px-3 py-2 max-w-xs">
-                      <span className="text-gray-700 text-xs leading-snug line-clamp-2" title={d.summary}>{d.summary}</span>
-                    </td>
-                    <td className="px-3 py-2 whitespace-nowrap">
-                      <Badge text={d.priority || '—'} color={PRIORITY_COLOR[d.priority] || '#6b7280'} />
-                    </td>
-                    <td className="px-3 py-2 whitespace-nowrap">
-                      {d.severity ? <Badge text={d.severity} color={SEVERITY_COLOR[d.severity] || '#6b7280'} /> : <span className="text-gray-300 text-xs">—</span>}
-                    </td>
-                    <td className="px-3 py-2"><span className="text-xs text-gray-600">{d.status || '—'}</span></td>
-                    <td className="px-3 py-2">
-                      <span className={`text-xs ${!d.assignee || d.assignee === 'Unassigned' ? 'text-amber-500' : 'text-gray-600'}`}>
-                        {d.assignee || 'Unassigned'}
-                      </span>
-                    </td>
-                    <td className="px-3 py-2 max-w-[160px]">
-                      <span className="text-xs text-gray-500 break-words">{parseCustomers(d.customers)}</span>
-                    </td>
-                    <td className="px-3 py-2 whitespace-nowrap">
-                      <span className={`text-xs font-medium ${(d.age_days || 0) >= 30 ? 'text-red-500' : 'text-gray-500'}`}>
-                        {d.age_days ?? '?'}d
-                      </span>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-          {pages > 1 && (
-            <div className="flex items-center gap-2 mt-3 justify-end">
-              <button onClick={() => setPage(p => Math.max(0, p - 1))} disabled={page === 0}
-                className="text-xs px-2 py-1 rounded border border-gray-200 disabled:opacity-40 hover:border-[#005151]">Prev</button>
-              <span className="text-xs text-gray-500">{page + 1} / {pages}</span>
-              <button onClick={() => setPage(p => Math.min(pages - 1, p + 1))} disabled={page === pages - 1}
-                className="text-xs px-2 py-1 rounded border border-gray-200 disabled:opacity-40 hover:border-[#005151]">Next</button>
-            </div>
-          )}
-        </>
-      )}
-    </div>
-  );
-}
-
-export default function SwagActualsDashboard({ product = 'uta' }) {
-  const [stats, setStats] = useState(null);
-  const [history, setHistory] = useState(null);
-  const [defects, setDefects] = useState([]);
+export default function SwagActualsDashboard() {
+  const [data, setData] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [tab, setTab] = useState('period');
+  const [storyFilter, setStoryFilter] = useState('');
+  const [storySort, setStorySort] = useState({ key: 'resolutionDate', dir: 'desc' });
+  const [expanded, setExpanded] = useState(new Set());
+  const toggleExpand = (key) => setExpanded(prev => {
+    const next = new Set(prev);
+    next.has(key) ? next.delete(key) : next.add(key);
+    return next;
+  });
+  const expandAll = () => setExpanded(new Set(data?.epics?.map(e => e.key) || []));
+  const collapseAll = () => setExpanded(new Set());
 
   useEffect(() => {
     setLoading(true);
     setError(null);
-    Promise.all([
-      api.getStats(product),
-      api.getHistory(product, 6),
-      api.getDefects(product),
-    ])
-      .then(([s, h, d]) => {
-        setStats(s);
-        setHistory(h);
-        setDefects(d.defects || []);
-      })
+    api.getSwagActualsUTAQ3()
+      .then(setData)
       .catch(err => setError(err.message))
       .finally(() => setLoading(false));
-  }, [product]);
+  }, []);
 
-  if (loading) return <div className="p-8 text-center text-gray-500">Loading {PRODUCT_LABELS[product] || product} SWAG vs Actuals...</div>;
+  if (loading) return <div className="p-8 text-center text-gray-500">Loading UTA Q3 SWAG vs Actuals…</div>;
   if (error) return <div className="p-8 text-center text-red-500">Error: {error}</div>;
+  if (!data) return null;
 
-  const color = PRODUCT_COLORS[product] || '#005151';
-  const label = PRODUCT_LABELS[product] || product.toUpperCase();
+  const { periods, periodDates, totalSwag, asOf, timeElapsed, epics, stories } = data;
 
-  const monthlyData = (history?.monthlyFlow || []).map(m => ({
-    month: m.month?.slice(0, 7) || m.month,
-    Opened: m.opened_count || 0,
-    Closed: m.closed_count || 0,
-  }));
+  const totalActuals = epics.reduce((s, e) => s + e.totalActuals, 0);
+  const pctDelivered = totalSwag > 0 ? Math.round((totalActuals / totalSwag) * 100) : 0;
+  const remaining = Math.max(0, totalSwag - totalActuals);
+  const variance = totalActuals - totalSwag;
 
-  // Assignee distribution (top 8)
-  const assigneeMap = {};
-  defects.forEach(d => {
-    const a = d.assignee || 'Unassigned';
-    assigneeMap[a] = (assigneeMap[a] || 0) + 1;
+  // Find which period index is "current" (today falls in)
+  const todayStr = asOf;
+  const currentPeriodIdx = periodDates.findIndex(p => todayStr >= p.start && todayStr <= p.end);
+
+  // ── By Period chart data ──────────────────────────────────────────────────
+  const byPeriodData = periods.map((label, pi) => {
+    const row = { period: label };
+    epics.forEach(e => { row[e.summary] = e.actuals[pi] || 0; });
+    row._total = epics.reduce((s, e) => s + (e.actuals[pi] || 0), 0);
+    return row;
   });
-  const assigneeData = Object.entries(assigneeMap)
-    .sort((a, b) => b[1] - a[1])
-    .slice(0, 8)
-    .map(([name, count]) => ({ name: name.split(' ').slice(0, 2).join(' '), count }));
 
-  // Area distribution
-  const areaMap = {};
-  defects.forEach(d => { const a = d.area || 'Unknown'; areaMap[a] = (areaMap[a] || 0) + 1; });
-  const areaData = Object.entries(areaMap).sort((a, b) => b[1] - a[1]).slice(0, 8).map(([name, count]) => ({ name, count }));
+  // ── Cumulative chart data ─────────────────────────────────────────────────
+  let cumActuals = 0;
+  // Evenly distribute SWAG across periods as a "plan" line
+  const swagPerPeriod = totalSwag / periods.length;
+  let cumPlan = 0;
+  const cumulativeData = periods.map((label, pi) => {
+    const isFuture = pi > currentPeriodIdx && currentPeriodIdx >= 0;
+    const periodActuals = epics.reduce((s, e) => s + (e.actuals[pi] || 0), 0);
+    cumActuals += periodActuals;
+    cumPlan += swagPerPeriod;
+    return {
+      period: label,
+      Actuals: Math.round(cumActuals * 10) / 10,
+      Plan: Math.round(cumPlan),
+      // Remaining: only plot for periods up to and including today; null hides the dot/line segment
+      Remaining: !isFuture ? Math.round((totalSwag - cumActuals) * 10) / 10 : null,
+      _isFuture: isFuture,
+    };
+  });
 
-  // Net change trend from monthly data
-  const lastMonth = monthlyData[monthlyData.length - 1];
-  const prevMonth = monthlyData[monthlyData.length - 2];
-  const netTrend = lastMonth && prevMonth ? (lastMonth.Opened - lastMonth.Closed) - (prevMonth.Opened - prevMonth.Closed) : null;
+  // ── Story table helpers ───────────────────────────────────────────────────
+  const epicKeyToSummary = {};
+  epics.forEach(e => { epicKeyToSummary[e.key] = e.summary; });
+
+  const filteredStories = stories
+    .filter(s => {
+      if (!storyFilter) return true;
+      const f = storyFilter.toLowerCase();
+      return (
+        s.key.toLowerCase().includes(f) ||
+        s.summary.toLowerCase().includes(f) ||
+        (s.assignee || '').toLowerCase().includes(f) ||
+        (epicKeyToSummary[s.beKey] || '').toLowerCase().includes(f)
+      );
+    })
+    .sort((a, b) => {
+      const { key, dir } = storySort;
+      let av = a[key] ?? '';
+      let bv = b[key] ?? '';
+      if (key === 'sp') { av = parseFloat(av) || 0; bv = parseFloat(bv) || 0; }
+      return dir === 'asc' ? (av > bv ? 1 : -1) : (av < bv ? 1 : -1);
+    });
+
+  const toggleSort = (key) =>
+    setStorySort(prev => ({ key, dir: prev.key === key && prev.dir === 'desc' ? 'asc' : 'desc' }));
+
+  const SortHdr = ({ col, label }) => (
+    <th
+      className="px-3 py-2 text-xs font-semibold text-gray-500 uppercase cursor-pointer select-none whitespace-nowrap hover:text-[#005151]"
+      onClick={() => toggleSort(col)}
+    >
+      {label} {storySort.key === col ? (storySort.dir === 'asc' ? '↑' : '↓') : ''}
+    </th>
+  );
 
   return (
     <div className="p-6 max-w-7xl mx-auto">
+      {/* Header */}
       <div className="mb-6">
-        <h1 className="text-2xl font-bold" style={{ color }}>{label} — SWAG vs Actuals</h1>
-        <p className="text-sm text-gray-500 mt-1">Monthly defect flow and trend analysis — live from Jira</p>
+        <h1 className="text-2xl font-bold text-[#005151]">UTA Q3 — SWAG vs Actuals</h1>
+        <p className="text-sm text-gray-500 mt-1">
+          FY26 Q3 (Apr 1 – Jun 30) · As of {asOf} · {timeElapsed}% of quarter elapsed
+        </p>
       </div>
 
-      {/* Stats row */}
+      {/* Stat cards */}
       <div className="grid grid-cols-2 md:grid-cols-5 gap-4 mb-6">
-        <StatCard label="Total Open" value={stats?.total || 0} sublabel="All open defects" color={color} />
-        <StatCard label="Customer Impacting" value={stats?.customerImpacting || 0} sublabel="RCA-Type-Defect" color="#dc2626" />
-        <StatCard label="P1 + P2" value={stats?.p1p2 || 0} sublabel="High priority" color="#ea580c" />
-        <StatCard label="High Severity" value={stats?.s1s2 || 0} sublabel="S1 + S2" color="#7c3aed" />
-        <StatCard label="Stale (30+ days)" value={stats?.stale || 0} sublabel="No update" color="#6b7280" />
+        <StatCard label="Total SWAG" value={`${totalSwag} pts`} sublabel="Committed capacity" color="#005151" />
+        <StatCard label="Actuals to Date" value={`${Math.round(totalActuals * 10) / 10} pts`} sublabel="Story points resolved" color="#0d9488" />
+        <StatCard label="% Delivered" value={`${pctDelivered}%`} sublabel={`vs ${timeElapsed}% time elapsed`} color={pctDelivered >= timeElapsed ? '#16a34a' : '#dc2626'} />
+        <StatCard label="Remaining" value={`${Math.round(remaining)} pts`} sublabel="SWAG – Actuals" color="#0369a1" />
+        <StatCard label="Variance" value={`${variance >= 0 ? '+' : ''}${Math.round(variance)} pts`} sublabel={variance >= 0 ? 'Ahead of plan' : 'Behind plan'} color={variance >= 0 ? '#16a34a' : '#dc2626'} />
       </div>
 
-      {/* Monthly flow chart + assignee distribution side by side */}
-      <div className="grid grid-cols-3 gap-4 mb-4">
-        <div className="col-span-2 bg-white rounded-lg shadow-sm border border-gray-100 p-5">
-          <h2 className="font-semibold text-gray-700 mb-1">Monthly Defect Flow (Last 6 Months)</h2>
-          <p className="text-xs text-gray-400 mb-4">Opened vs Closed per month — computed from Jira created/resolution dates</p>
-          {monthlyData.some(m => m.Opened > 0 || m.Closed > 0) ? (
-            <ResponsiveContainer width="100%" height={240}>
-              <BarChart data={monthlyData} barGap={4}>
-                <CartesianGrid strokeDasharray="3 3" stroke="#f0f0f0" />
-                <XAxis dataKey="month" tick={{ fontSize: 11 }} />
-                <YAxis tick={{ fontSize: 11 }} allowDecimals={false} />
-                <Tooltip />
-                <Legend />
-                <Bar dataKey="Opened" fill="#dc2626" radius={[3, 3, 0, 0]} />
-                <Bar dataKey="Closed" fill="#16a34a" radius={[3, 3, 0, 0]} />
-              </BarChart>
-            </ResponsiveContainer>
-          ) : (
-            <div className="text-center py-12 text-gray-400">
-              <p>No monthly data available — defects may predate the current month window</p>
+      {/* Tabs */}
+      <div className="border-b border-gray-200 mb-5 flex gap-1">
+        {[
+          { id: 'period', label: 'By Period' },
+          { id: 'cumulative', label: 'Cumulative' },
+          { id: 'epics', label: 'Business Epic Breakdown' },
+          { id: 'stories', label: `Stories (${stories.length})` },
+        ].map(t => (
+          <button key={t.id} className={TAB_CLASSES(tab === t.id)} onClick={() => setTab(t.id)}>
+            {t.label}
+          </button>
+        ))}
+      </div>
+
+      {/* ── By Period ── */}
+      {tab === 'period' && (
+        <div className="bg-white rounded-lg shadow-sm border border-gray-100 p-5">
+          <h2 className="font-semibold text-gray-700 mb-1">Story Points Delivered — By 2-Week Period</h2>
+          <p className="text-xs text-gray-400 mb-4">Each bar shows points resolved per business epic in that bi-weekly window</p>
+          <ResponsiveContainer width="100%" height={320}>
+            <BarChart data={byPeriodData} barGap={2}>
+              <CartesianGrid strokeDasharray="3 3" stroke="#f0f0f0" />
+              <XAxis dataKey="period" tick={{ fontSize: 10 }} />
+              <YAxis tick={{ fontSize: 11 }} allowDecimals={false} />
+              <Tooltip />
+              <Legend wrapperStyle={{ fontSize: 11 }} />
+              {currentPeriodIdx >= 0 && (
+                <ReferenceLine x={periods[currentPeriodIdx]} stroke="#CCFF00" strokeWidth={2} strokeDasharray="4 2" label={{ value: 'Today', fontSize: 10, fill: '#888' }} />
+              )}
+              {epics.map((e, i) => (
+                <Bar key={e.key} dataKey={e.summary} stackId="a" fill={EPIC_COLORS[i % EPIC_COLORS.length]} radius={i === epics.length - 1 ? [3, 3, 0, 0] : [0, 0, 0, 0]} />
+              ))}
+            </BarChart>
+          </ResponsiveContainer>
+        </div>
+      )}
+
+      {/* ── Cumulative ── */}
+      {tab === 'cumulative' && (
+        <div className="bg-white rounded-lg shadow-sm border border-gray-100 p-5">
+          <h2 className="font-semibold text-gray-700 mb-1">Cumulative Story Points — Actuals vs Plan · Remaining Burndown</h2>
+          <p className="text-xs text-gray-400 mb-4">Plan = SWAG ({totalSwag} pts) distributed evenly across {periods.length} periods · Remaining starts at {totalSwag} pts and falls as work is completed</p>
+          <ResponsiveContainer width="100%" height={360}>
+            <LineChart data={cumulativeData}>
+              <CartesianGrid strokeDasharray="3 3" stroke="#f0f0f0" />
+              <XAxis dataKey="period" tick={{ fontSize: 10 }} />
+              <YAxis tick={{ fontSize: 11 }} allowDecimals={false} domain={[0, totalSwag]} />
+              <Tooltip formatter={(val, name) => [val === null ? '—' : `${val} pts`, name]} />
+              <Legend wrapperStyle={{ fontSize: 11 }} />
+              {currentPeriodIdx >= 0 && (
+                <ReferenceLine x={periods[currentPeriodIdx]} stroke="#CCFF00" strokeWidth={2} strokeDasharray="4 2" label={{ value: 'Today', fontSize: 10, fill: '#888' }} />
+              )}
+              <ReferenceLine y={0} stroke="#e5e7eb" />
+              <Line type="monotone" dataKey="Plan" stroke="#94a3b8" strokeDasharray="5 3" strokeWidth={2} dot={false} />
+              <Line type="monotone" dataKey="Actuals" stroke="#005151" strokeWidth={2.5} dot={{ r: 4, fill: '#005151' }} activeDot={{ r: 6 }} />
+              <Line type="monotone" dataKey="Remaining" stroke="#dc2626" strokeWidth={2} dot={{ r: 4, fill: '#dc2626' }} activeDot={{ r: 6 }} connectNulls={false} />
+            </LineChart>
+          </ResponsiveContainer>
+        </div>
+      )}
+
+      {/* ── Business Epic Breakdown ── */}
+      {tab === 'epics' && (
+        <div className="bg-white rounded-lg shadow-sm border border-gray-100 p-5">
+          <div className="flex items-center justify-between mb-4">
+            <h2 className="font-semibold text-gray-700">Business Epic Breakdown — SWAG vs Actuals by Period</h2>
+            <div className="flex gap-2">
+              <button onClick={expandAll} className="text-xs px-2.5 py-1 rounded border border-gray-200 text-gray-500 hover:border-[#005151] hover:text-[#005151]">Expand all</button>
+              <button onClick={collapseAll} className="text-xs px-2.5 py-1 rounded border border-gray-200 text-gray-500 hover:border-[#005151] hover:text-[#005151]">Collapse all</button>
             </div>
+          </div>
+          <div className="overflow-x-auto rounded border border-gray-100">
+            <table className="w-full text-sm">
+              <thead>
+                <tr className="bg-gray-50 text-left">
+                  <th className="px-3 py-2 text-xs font-semibold text-gray-500 uppercase whitespace-nowrap">Epic</th>
+                  <th className="px-3 py-2 text-xs font-semibold text-gray-500 uppercase text-right">SWAG</th>
+                  {periods.map((p, pi) => (
+                    <th key={pi} className={`px-3 py-2 text-xs font-semibold uppercase text-right whitespace-nowrap ${pi === currentPeriodIdx ? 'text-[#005151]' : 'text-gray-500'}`}>
+                      {p}
+                    </th>
+                  ))}
+                  <th className="px-3 py-2 text-xs font-semibold text-gray-500 uppercase text-right">Total</th>
+                  <th className="px-3 py-2 text-xs font-semibold text-gray-500 uppercase text-right">%</th>
+                </tr>
+              </thead>
+              <tbody>
+                {epics.map((e, i) => {
+                  const pct = e.swag > 0 ? Math.round((e.totalActuals / e.swag) * 100) : 0;
+                  const isOpen = expanded.has(e.key);
+                  const epicColor = EPIC_COLORS[i % EPIC_COLORS.length];
+                  return (
+                    <>
+                      {/* ── Business Epic row ── */}
+                      <tr
+                        key={e.key}
+                        className="border-t border-gray-100 cursor-pointer hover:bg-teal-50/20 transition-colors"
+                        onClick={() => toggleExpand(e.key)}
+                      >
+                        <td className="px-3 py-2.5">
+                          <div className="flex items-center gap-2">
+                            <span className="text-gray-400 text-xs w-3 flex-shrink-0 select-none">
+                              {isOpen ? '▼' : '▶'}
+                            </span>
+                            <span className="inline-block w-2.5 h-2.5 rounded-full flex-shrink-0" style={{ background: epicColor }} />
+                            <a
+                              href={`${JIRA_BASE}/browse/${e.key}`}
+                              target="_blank" rel="noreferrer"
+                              onClick={ev => ev.stopPropagation()}
+                              className="text-[#005151] hover:underline font-semibold text-xs flex items-center gap-1"
+                            >
+                              {e.key} <ExternalLink size={10} className="text-gray-400" />
+                            </a>
+                            <span className="text-gray-700 text-xs font-medium truncate max-w-[220px]">{e.summary}</span>
+                            {e.psEpics?.length > 0 && (
+                              <span className="text-xs text-gray-400 flex-shrink-0">({e.psEpics.length} epics)</span>
+                            )}
+                          </div>
+                        </td>
+                        <td className="px-3 py-2.5 text-right text-xs font-semibold text-gray-700">{e.swag}</td>
+                        {periods.map((_, pi) => (
+                          <td key={pi} className={`px-3 py-2.5 text-right text-xs ${pi === currentPeriodIdx ? 'font-semibold text-[#005151]' : 'text-gray-600'}`}>
+                            {e.actuals[pi] > 0 ? e.actuals[pi] : <span className="text-gray-300">—</span>}
+                          </td>
+                        ))}
+                        <td className="px-3 py-2.5 text-right text-xs font-bold text-gray-800">{Math.round(e.totalActuals * 10) / 10}</td>
+                        <td className="px-3 py-2.5 text-right">
+                          <span className={`text-xs font-semibold ${pct >= 100 ? 'text-green-600' : pct >= timeElapsed ? 'text-blue-600' : 'text-amber-600'}`}>
+                            {pct}%
+                          </span>
+                        </td>
+                      </tr>
+
+                      {/* ── PS Epic child rows ── */}
+                      {isOpen && e.psEpics?.map((p, pi2) => (
+                        <tr key={p.key} className="border-t border-gray-50 bg-gray-50/60 hover:bg-teal-50/10">
+                          <td className="px-3 py-2">
+                            <div className="flex items-center gap-2 pl-8">
+                              <span className="inline-block w-1.5 h-1.5 rounded-full flex-shrink-0" style={{ background: epicColor, opacity: 0.5 }} />
+                              <a
+                                href={`${JIRA_BASE}/browse/${p.key}`}
+                                target="_blank" rel="noreferrer"
+                                className="text-[#005151]/80 hover:underline font-medium text-xs flex items-center gap-1 flex-shrink-0"
+                              >
+                                {p.key} <ExternalLink size={9} className="text-gray-400" />
+                              </a>
+                              <span className="text-gray-500 text-xs truncate max-w-[220px]">{p.summary}</span>
+                            </div>
+                          </td>
+                          <td className="px-3 py-2 text-right text-xs text-gray-300">—</td>
+                          {periods.map((_, pi) => (
+                            <td key={pi} className={`px-3 py-2 text-right text-xs ${pi === currentPeriodIdx ? 'font-medium text-[#005151]/70' : 'text-gray-500'}`}>
+                              {p.actuals[pi] > 0 ? p.actuals[pi] : <span className="text-gray-200">—</span>}
+                            </td>
+                          ))}
+                          <td className="px-3 py-2 text-right text-xs font-semibold text-gray-600">{Math.round(p.totalActuals * 10) / 10 || <span className="text-gray-300">—</span>}</td>
+                          <td className="px-3 py-2 text-right text-xs text-gray-300">—</td>
+                        </tr>
+                      ))}
+                    </>
+                  );
+                })}
+              </tbody>
+              <tfoot>
+                <tr style={{ background: '#13352C' }}>
+                  <td className="px-3 py-2 text-xs font-bold" style={{ color: '#CCFF00' }}>Total</td>
+                  <td className="px-3 py-2 text-right text-xs font-bold" style={{ color: '#CCFF00' }}>{totalSwag}</td>
+                  {periods.map((_, pi) => {
+                    const periodTotal = epics.reduce((s, e) => s + (e.actuals[pi] || 0), 0);
+                    return (
+                      <td key={pi} className="px-3 py-2 text-right text-xs font-bold" style={{ color: '#CCFF00' }}>
+                        {periodTotal > 0 ? periodTotal : <span style={{ color: '#4a7a5a' }}>—</span>}
+                      </td>
+                    );
+                  })}
+                  <td className="px-3 py-2 text-right text-xs font-bold" style={{ color: '#CCFF00' }}>{Math.round(totalActuals * 10) / 10}</td>
+                  <td className="px-3 py-2 text-right text-xs font-bold" style={{ color: '#CCFF00' }}>{pctDelivered}%</td>
+                </tr>
+              </tfoot>
+            </table>
+          </div>
+        </div>
+      )}
+
+      {/* ── Stories ── */}
+      {tab === 'stories' && (
+        <div className="bg-white rounded-lg shadow-sm border border-gray-100 p-5">
+          <div className="flex items-center justify-between mb-4">
+            <div>
+              <h2 className="font-semibold text-gray-700">Resolved Stories</h2>
+              <p className="text-xs text-gray-400 mt-0.5">
+                {data.storiesWithPoints} of {data.storiesAnalyzed} stories have story points
+              </p>
+            </div>
+            <input
+              type="text"
+              placeholder="Filter by key, summary, assignee, or epic…"
+              value={storyFilter}
+              onChange={e => setStoryFilter(e.target.value)}
+              className="text-xs border border-gray-200 rounded px-3 py-1.5 w-72 focus:outline-none focus:border-[#005151]"
+            />
+          </div>
+          <div className="overflow-x-auto rounded border border-gray-100">
+            <table className="w-full text-sm">
+              <thead>
+                <tr className="bg-gray-50 text-left">
+                  <SortHdr col="key" label="Key" />
+                  <th className="px-3 py-2 text-xs font-semibold text-gray-500 uppercase">Summary</th>
+                  <SortHdr col="beKey" label="Business Epic" />
+                  <SortHdr col="assignee" label="Assignee" />
+                  <SortHdr col="sp" label="SP" />
+                  <SortHdr col="resolutionDate" label="Resolved" />
+                  <SortHdr col="status" label="Status" />
+                </tr>
+              </thead>
+              <tbody className="divide-y divide-gray-50">
+                {filteredStories.length === 0 ? (
+                  <tr><td colSpan={7} className="px-3 py-6 text-center text-gray-400 text-xs italic">No stories match.</td></tr>
+                ) : filteredStories.map((s, i) => {
+                  const epicIdx = epics.findIndex(e => e.key === s.beKey);
+                  const epicColor = epicIdx >= 0 ? EPIC_COLORS[epicIdx % EPIC_COLORS.length] : '#94a3b8';
+                  return (
+                    <tr key={s.key} className={i % 2 === 0 ? 'bg-white' : 'bg-gray-50/40'}>
+                      <td className="px-3 py-2 whitespace-nowrap">
+                        <a href={`${JIRA_BASE}/browse/${s.key}`} target="_blank" rel="noreferrer"
+                          className="text-[#005151] font-medium hover:underline flex items-center gap-1 text-xs">
+                          {s.key} <ExternalLink size={10} className="text-gray-400" />
+                        </a>
+                      </td>
+                      <td className="px-3 py-2 max-w-xs">
+                        <span className="text-xs text-gray-700 line-clamp-2" title={s.summary}>{s.summary}</span>
+                      </td>
+                      <td className="px-3 py-2 whitespace-nowrap">
+                        {s.beKey ? (
+                          <span className="inline-flex items-center gap-1.5">
+                            <span className="inline-block w-2 h-2 rounded-full" style={{ background: epicColor }} />
+                            <a href={`${JIRA_BASE}/browse/${s.beKey}`} target="_blank" rel="noreferrer"
+                              className="text-xs hover:underline" style={{ color: epicColor }}>
+                              {s.beKey}
+                            </a>
+                          </span>
+                        ) : <span className="text-xs text-gray-300">—</span>}
+                      </td>
+                      <td className="px-3 py-2">
+                        <span className={`text-xs ${s.assignee === 'Unassigned' ? 'text-amber-500' : 'text-gray-600'}`}>
+                          {s.assignee}
+                        </span>
+                      </td>
+                      <td className="px-3 py-2 text-right">
+                        <span className={`text-xs font-semibold ${s.sp > 0 ? 'text-[#005151]' : 'text-gray-300'}`}>
+                          {s.sp > 0 ? s.sp : '—'}
+                        </span>
+                      </td>
+                      <td className="px-3 py-2 whitespace-nowrap text-xs text-gray-500">{s.resolutionDate || '—'}</td>
+                      <td className="px-3 py-2 text-xs text-gray-500">{s.status}</td>
+                    </tr>
+                  );
+                })}
+              </tbody>
+            </table>
+          </div>
+          {filteredStories.length > 0 && (
+            <p className="text-xs text-gray-400 mt-2">{filteredStories.length} of {stories.length} stories shown</p>
           )}
         </div>
-
-        <div className="bg-white rounded-lg shadow-sm border border-gray-100 p-5">
-          <h2 className="font-semibold text-gray-700 mb-4">By Assignee</h2>
-          {assigneeData.length > 0 ? (
-            <div className="space-y-2">
-              {assigneeData.map(({ name, count }) => (
-                <div key={name}>
-                  <div className="flex justify-between text-xs text-gray-600 mb-0.5">
-                    <span className={name === 'Unassigned' ? 'text-amber-500 font-medium' : ''}>{name}</span>
-                    <span className="font-semibold">{count}</span>
-                  </div>
-                  <div className="h-1.5 bg-gray-100 rounded-full overflow-hidden">
-                    <div className="h-full rounded-full" style={{ width: `${(count / (stats?.total || 1)) * 100}%`, background: color }} />
-                  </div>
-                </div>
-              ))}
-            </div>
-          ) : <p className="text-sm text-gray-400">No data</p>}
-        </div>
-      </div>
-
-      {/* Area breakdown */}
-      <div className="bg-white rounded-lg shadow-sm border border-gray-100 p-5 mb-4">
-        <h2 className="font-semibold text-gray-700 mb-4">Defects by Area</h2>
-        <ResponsiveContainer width="100%" height={180}>
-          <BarChart data={areaData} layout="vertical" margin={{ left: 120, right: 20 }}>
-            <XAxis type="number" tick={{ fontSize: 11 }} allowDecimals={false} />
-            <YAxis type="category" dataKey="name" tick={{ fontSize: 11 }} width={120} />
-            <Tooltip />
-            <Bar dataKey="count" fill={color} radius={[0, 3, 3, 0]} />
-          </BarChart>
-        </ResponsiveContainer>
-      </div>
-
-      {/* Open defects table */}
-      <div className="bg-white rounded-lg shadow-sm border border-gray-100 p-5">
-        <h2 className="font-semibold text-gray-700 mb-1">Open Defects — Live from Jira</h2>
-        <p className="text-xs text-gray-400 mb-4">All open {label} defects. Click any key to open in Jira.</p>
-        <DefectTable defects={defects} />
-      </div>
+      )}
     </div>
   );
 }

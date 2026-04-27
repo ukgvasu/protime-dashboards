@@ -13,6 +13,7 @@ import alertsRouter from './api/alerts.js';
 import ktloRouter from './api/ktlo.js';
 import customerImpactRouter from './api/customer-impact.js';
 import insightsRouter from './api/insights.js';
+import swagActualsRouter from './api/swag-actuals.js';
 import { startAutoSync } from './jobs/auto-sync.js';
 
 const app = express();
@@ -65,6 +66,7 @@ app.use('/api/alerts', alertsRouter);
 app.use('/api/ktlo', ktloRouter);
 app.use('/api/customer-impact', customerImpactRouter);
 app.use('/api/insights', insightsRouter);
+app.use('/api/swag-actuals', swagActualsRouter);
 
 // 404 handler
 app.use((req, res) => {

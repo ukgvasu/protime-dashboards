@@ -44,4 +44,7 @@ export const api = {
 
   // Chat
   chat: (message, context) => fetchAPI('/chat', { method: 'POST', body: JSON.stringify({ message, context }) }),
+
+  // SWAG vs Actuals
+  getSwagActualsUTAQ3: () => fetchAPI('/swag-actuals/uta-q3'),
 };
