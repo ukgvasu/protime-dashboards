@@ -1,0 +1,842 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pro Time Product Terms Report — 2025 &amp; 2026</title>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; }
+    body { margin: 0; padding: 0; background: #f0f2f5; font-family: Arial, sans-serif; color: #333; }
+    a { color: inherit; text-decoration: none; }
+
+    .page { max-width: 1160px; margin: 32px auto 56px; padding: 0 16px; }
+
+    /* Header */
+    .report-header { background: #1a3c5e; border-radius: 8px 8px 0 0; padding: 24px 36px 20px; color: #fff; }
+    .report-header .label { font-size: 11px; letter-spacing: 1.2px; text-transform: uppercase; color: #7fb3d3; margin: 0 0 6px; }
+    .report-header h1 { margin: 0; font-size: 22px; font-weight: 700; }
+    .report-header .meta { margin: 6px 0 0; font-size: 12px; color: #a8c8e0; }
+
+    .card { background: #fff; border-radius: 0 0 8px 8px; box-shadow: 0 2px 12px rgba(0,0,0,0.10); overflow: hidden; }
+    .card-body { padding: 32px 36px; }
+
+    /* Tiles */
+    .summary-grid { display: flex; flex-wrap: wrap; gap: 12px; margin-bottom: 32px; }
+    .tile { background: #f7f9fc; border: 1px solid #dde3ec; border-radius: 6px; padding: 14px 18px; min-width: 140px; }
+    .tile-value { font-size: 26px; font-weight: 700; color: #1a3c5e; line-height: 1; }
+    .tile-label { font-size: 12px; color: #555; margin-top: 4px; }
+    .tile-sub { font-size: 11px; color: #999; margin-top: 2px; }
+
+    /* Legend */
+    .legend-bar { display: flex; flex-wrap: wrap; gap: 8px 18px; margin-bottom: 28px; padding: 12px 16px; background: #f7f9fc; border: 1px solid #dde3ec; border-radius: 6px; }
+    .legend-item { display: flex; align-items: center; gap: 6px; font-size: 12px; color: #444; }
+    .legend-swatch { width: 13px; height: 13px; border-radius: 3px; flex-shrink: 0; }
+
+    /* Year section */
+    .year-section { margin-bottom: 48px; }
+    .year-heading { font-size: 20px; font-weight: 700; color: #fff; background: #1a3c5e; padding: 12px 20px; border-radius: 6px; margin: 0 0 20px; }
+
+    /* Section headings */
+    .section-title { font-size: 15px; font-weight: 700; color: #1a3c5e; margin: 32px 0 4px; padding-bottom: 6px; border-bottom: 2px solid #dde3ec; }
+    .section-sub { font-size: 12px; color: #888; margin: 0 0 16px; }
+
+    /* Overview chart */
+    .overview-wrap { position: relative; height: 280px; margin-bottom: 32px; }
+
+    /* Product block */
+    .product-block { margin-bottom: 40px; border: 1px solid #e0e6ef; border-radius: 6px; overflow: hidden; }
+    .product-header { display: flex; align-items: baseline; gap: 12px; background: #eef3fa; padding: 12px 16px; border-bottom: 1px solid #dde3ec; }
+    .product-name { font-size: 14px; font-weight: 700; color: #1a3c5e; }
+    .product-count { font-size: 12px; color: #666; }
+    .chart-wrap { position: relative; height: 220px; padding: 16px 16px 8px; background: #fff; }
+
+    /* Detail tables */
+    .detail-section { background: #fff; padding: 0 0 8px; }
+    .month-group { border-top: 1px solid #eef1f6; }
+    .month-label {
+      font-size: 12px; font-weight: 700; color: #2c5f8a; background: #f4f7fb;
+      padding: 7px 16px; letter-spacing: 0.3px;
+      cursor: pointer; user-select: none;
+      display: flex; align-items: center; gap: 6px;
+    }
+    .month-label:hover { background: #e6eef8; }
+    .toggle-arrow { font-size: 10px; color: #2c5f8a; transition: transform 0.15s; display: inline-block; }
+    .month-label.open .toggle-arrow { transform: rotate(90deg); }
+    table.detail-table { display: none; }
+    table.detail-table { width: 100%; border-collapse: collapse; font-size: 12px; }
+    table.detail-table thead tr { background: #2c5f8a; color: #fff; }
+    table.detail-table thead th { padding: 7px 12px; text-align: left; font-weight: 600; white-space: nowrap; }
+    table.detail-table tbody tr:nth-child(even) { background: #f9fbfd; }
+    table.detail-table tbody tr:hover { background: #eef3fa; }
+    table.detail-table tbody td { padding: 6px 12px; border-bottom: 1px solid #eee; vertical-align: top; }
+    td.cust-name { font-weight: 600; color: #1a3c5e; min-width: 220px; }
+    td.ar-num { font-family: monospace; color: #555; white-space: nowrap; }
+    td.notes { color: #666; font-size: 11px; font-style: italic; }
+
+    .reason-badge {
+      display: inline-block; padding: 2px 8px; border-radius: 10px;
+      color: #fff; font-size: 11px; font-weight: 600; white-space: nowrap;
+    }
+
+    /* Footer */
+    .report-footer { background: #f7f9fc; border-top: 1px solid #dde3ec; padding: 14px 36px; text-align: center; font-size: 11px; color: #999; }
+
+    @media (max-width: 700px) {
+      .card-body { padding: 18px 14px; }
+      .report-header { padding: 18px 20px; }
+      .overview-wrap { height: 200px; }
+    }
+  </style>
+</head>
+<body>
+<div class="page">
+
+  <div class="report-header">
+    <p class="label">Pro Time — Churn Analysis</p>
+    <h1>Product Terms Report — 2025 &amp; 2026</h1>
+    <p class="meta">Customers lost per product &nbsp;·&nbsp; by month &nbsp;·&nbsp; by term reason &nbsp;·&nbsp; with customer detail &nbsp;·&nbsp; Source: All Product Terms.xlsx</p>
+  </div>
+
+  <div class="card">
+    <div class="card-body">
+
+      <!-- Legend -->
+      <div class="legend-bar">
+        <div class="legend-item"><div class="legend-swatch" style="background:#c0392b;"></div>Left UKG</div>
+<div class="legend-item"><div class="legend-swatch" style="background:#16a085;"></div>Left UTA Only</div>
+<div class="legend-item"><div class="legend-swatch" style="background:#27ae60;"></div>Left UTM Only</div>
+<div class="legend-item"><div class="legend-swatch" style="background:#7f8c8d;"></div>Left WFM Classic Only</div>
+<div class="legend-item"><div class="legend-swatch" style="background:#8e44ad;"></div>WFC</div>
+<div class="legend-item"><div class="legend-swatch" style="background:#e67e22;"></div>WFD</div>
+<div class="legend-item"><div class="legend-swatch" style="background:#f39c12;"></div>WFD (Acquired)</div>
+<div class="legend-item"><div class="legend-swatch" style="background:#2980b9;"></div>WFR</div>
+      </div>
+
+      <!-- ====== 2025 ====== -->
+      <div class="year-section">
+        <div class="year-heading">2025 &mdash; 204 customers termed</div>
+
+        <div class="summary-grid"><div class="tile"><div class="tile-value">204</div><div class="tile-label">Total termed in 2025</div></div><div class="tile"><div class="tile-value">132</div><div class="tile-label">Time Management</div><div class="tile-sub">2025</div></div><div class="tile"><div class="tile-value">46</div><div class="tile-label">Time Classic</div><div class="tile-sub">2025</div></div><div class="tile"><div class="tile-value">26</div><div class="tile-label">Time &amp; Attendance</div><div class="tile-sub">2025</div></div></div>
+
+        <div class="section-title">Monthly Overview — All Products (2025)</div>
+        <p class="section-sub">All products combined, stacked by term reason</p>
+        <div class="overview-wrap"><canvas id="chartOverview2025"></canvas></div>
+
+        <div class="section-title">By Product — Charts &amp; Customer Detail (2025)</div>
+        <p class="section-sub">Each section shows a monthly chart and the full list of customers that termed, organised by month</p>
+
+        
+<div class="product-block">
+  <div class="product-header">
+    <span class="product-name">Time Management (UTM)</span>
+    <span class="product-count">132 customers termed</span>
+  </div>
+  <div class="chart-wrap"><canvas id="chart2025_0"></canvas></div>
+  <div class="detail-section">
+    <div class="month-group">
+<div class="month-label" onclick="toggleMonth(this)"><span class="toggle-arrow">&#9654;</span> Jan &mdash; 16 customers</div>
+<table class="detail-table">
+<thead><tr><th>Customer</th><th>AR #</th><th>Term Reason</th></tr></thead>
+<tbody>
+<tr><td class="cust-name">Avadim Holdings Inc.</td><td class="ar-num">AVA1002</td><td><span class="reason-badge" style="background:#c0392b;">Left UKG</span></td></tr>
+<tr><td class="cust-name">BIOLEGEND  INC.</td><td class="ar-num">BIO1004</td><td><span class="reason-badge" style="background:#c0392b;">Left UKG</span></td></tr>
+<tr><td class="cust-name">COLORESCIENCE</td><td class="ar-num">COL1016</td><td><span class="reason-badge" style="background:#c0392b;">Left UKG</span></td></tr>
+<tr><td class="cust-name">Chalk Mountain Services of Texas LLC</td><td class="ar-num">CHA1018</td><td><span class="reason-badge" style="background:#c0392b;">Left UKG</span></td></tr>
+<tr><td class="cust-name">Foulger-Pratt Companies LLC</td><td class="ar-num">FOU1006</td><td><span class="reason-badge" style="background:#c0392b;">Left UKG</span></td></tr>
+<tr><td class="cust-name">GUTHRIE THEATER FOUNDATION</td><td class="ar-num">GUT1000</td><td><span class="reason-badge" style="background:#c0392b;">Left UKG</span></td></tr>
+<tr><td class="cust-name">Intouch Group LLC</td><td class="ar-num">INT1042</td><td><span class="reason-badge" style="background:#c0392b;">Left UKG</span></td></tr>
+<tr><td class="cust-name">KANSAS ATHLETICS  INCORPORATED</td><td class="ar-num">KAN1002</td><td><span class="reason-badge" style="background:#c0392b;">Left UKG</span></td></tr>
+<tr><td class="cust-name">Numerix LLC</td><td class="ar-num">NUM1000</td><td><span class="reason-badge" style="background:#c0392b;">Left UKG</span></td></tr>
+<tr><td class="cust-name">POET  LLC</td><td class="ar-num">POE1000</td><td><span class="reason-badge" style="background:#c0392b;">Left UKG</span></td></tr>
+<tr><td class="cust-name">SUNSTAR ENGINEERING AMERICAS INC.</td><td class="ar-num">SUN1013</td><td><span class="reason-badge" style="background:#c0392b;">Left UKG</span></td></tr>
+<tr><td class="cust-name">US RETAIL  INC.</td><td class="ar-num">USR1000</td><td><span class="reason-badge" style="background:#c0392b;">Left UKG</span></td></tr>
+<tr><td class="cust-name">WOLD ARCHITECTS INCORPORATED</td><td class="ar-num">WOL1004</td><td><span class="reason-badge" style="background:#c0392b;">Left UKG</span></td></tr>
+<tr><td class="cust-name">SAFETY NATIONAL CASUALTY CORP</td><td class="ar-num">SAF1003</td><td><span class="reason-badge" style="background:#e67e22;">WFD</span></td></tr>
+<tr><td class="cust-name">STANDARD PROCESS</td><td class="ar-num">STA1020</td><td><span class="reason-badge" style="background:#e67e22;">WFD</span></td></tr>
+<tr><td class="cust-name">W. D. LARSON COMPANIES LTD.  INC.</td><td class="ar-num">WDL1000</td><td><span class="reason-badge" style="background:#e67e22;">WFD</span></td></tr>
+</tbody></table></div>
+<div class="month-group">
+<div class="month-label" onclick="toggleMonth(this)"><span class="toggle-arrow">&#9654;</span> Feb &mdash; 5 customers</div>
+<table class="detail-table">
+<thead><tr><th>Customer</th><th>AR #</th><th>Term Reason</th></tr></thead>
+<tbody>
+<tr><td class="cust-name">CAR SOUND EXHAUST SYSTEM  INC.</td><td class="ar-num">MAG1005</td><td><span class="reason-badge" style="background:#c0392b;">Left UKG</span></td></tr>
+<tr><td class="cust-name">COLLEGE FOUNDATION  INC.</td><td class="ar-num">COL1014</td><td><span class="reason-badge" style="background:#c0392b;">Left UKG</span></td></tr>
+<tr><td class="cust-name">Domo Inc.</td><td class="ar-num">DOM1000</td><td><span class="reason-badge" style="background:#c0392b;">Left UKG</span></td></tr>
+<tr><td class="cust-name">OPPORTUNITY ENTERPRISES  INC.</td><td class="ar-num">OPP1001</td><td><span class="reason-badge" style="background:#c0392b;">Left UKG</span></td></tr>
+<tr><td class="cust-name">ROBINSON EXPORT AND IMPORT CORPORATION</td><td class="ar-num">REI1000</td><td><span class="reason-badge" style="background:#c0392b;">Left UKG</span></td></tr>
+</tbody></table></div>
+<div class="month-group">
+<div class="month-label" onclick="toggleMonth(this)"><span class="toggle-arrow">&#9654;</span> Mar &mdash; 20 customers</div>
+<table class="detail-table">
+<thead><tr><th>Customer</th><th>AR #</th><th>Term Reason</th></tr></thead>
+<tbody>
+<tr><td class="cust-name">B. RILEY CORPORATE SERVICES Inc.</td><td class="ar-num">BRI1017</td><td><span class="reason-badge" style="background:#c0392b;">Left UKG</span></td></tr>
+<tr><td class="cust-name">CHARTER SCHOOL ASSOCIATES  INC.</td><td class="ar-num">CHA1021</td><td><span class="reason-badge" style="background:#c0392b;">Left UKG</span></td></tr>
+<tr><td class="cust-name">CHRISTENSEN FARM &amp; FEEDLOTS INC</td><td class="ar-num">CHR1009</td><td><span class="reason-badge" style="background:#c0392b;">Left UKG</span></td></tr>
+<tr><td class="cust-name">Children's Crisis Treatment Center Inc.</td><td class="ar-num">CHI1022</td><td><span class="reason-badge" style="background:#c0392b;">Left UKG</span></td></tr>
+<tr><td class="cust-name">Columbus Medical Services LLC</td><td class="ar-num">COL1028</td><td><span class="reason-badge" style="background:#c0392b;">Left UKG</span></td></tr>
+<tr><td class="cust-name">Concert Properties Ltd</td><td class="ar-num">CON5001</td><td><span class="reason-badge" style="background:#c0392b;">Left UKG</span></td></tr>
+<tr><td class="cust-name">Engles Management Corporation</td><td class="ar-num">EAG1003</td><td><span class="reason-badge" style="background:#c0392b;">Left UKG</span></td></tr>
+<tr><td class="cust-name">ISLANDS RESTAURANTS L.P.</td><td class="ar-num">ISL1000</td><td><span class="reason-badge" style="background:#c0392b;">Left UKG</span></td></tr>
+<tr><td class="cust-name">JX ENTERPRISES  INC.</td><td class="ar-num">JXE1000</td><td><span class="reason-badge" style="background:#c0392b;">Left UKG</span></td></tr>
+<tr><td class="cust-name">LAKEVIEW HEALTH SYSTEMS LLC</td><td class="ar-num">LAK1005</td><td><span class="reason-badge" style="background:#c0392b;">Left UKG</span></td></tr>
+<tr><td class="cust-name">Long Island Select Healthcare Inc.</td><td class="ar-num">LIS1000</td><td><span class="reason-badge" style="background:#c0392b;">Left UKG</span></td></tr>
+<tr><td class="cust-name">MONUMENT REAL ESTATE SERVICES LLC</td><td class="ar-num">MON1015</td><td><span class="reason-badge" style="background:#c0392b;">Left UKG</span></td></tr>
+<tr><td class="cust-name">Modern Transportation Services Inc.</td><td class="ar-num">MOD1005</td><td><span class="reason-badge" style="background:#c0392b;">Left UKG</span></td></tr>
+<tr><td class="cust-name">P.L. MARKETING</td><td class="ar-num">PLM1001</td><td><span class="reason-badge" style="background:#c0392b;">Left UKG</span></td></tr>
+<tr><td class="cust-name">SEASPINE HOLDINGS CORPORATION</td><td class="ar-num">SEA1009</td><td><span class="reason-badge" style="background:#c0392b;">Left UKG</span></td></tr>
+<tr><td class="cust-name">SIVANCE  LLC</td><td class="ar-num">GEN1013</td><td><span class="reason-badge" style="background:#c0392b;">Left UKG</span></td></tr>
+<tr><td class="cust-name">Sourceamerica</td><td class="ar-num">SOU1037</td><td><span class="reason-badge" style="background:#c0392b;">Left UKG</span></td></tr>
+<tr><td class="cust-name">T AIR INC</td><td class="ar-num">AIR1008</td><td><span class="reason-badge" style="background:#c0392b;">Left UKG</span></td></tr>
+<tr><td class="cust-name">AKERMAN LLP</td><td class="ar-num">AKE1000</td><td><span class="reason-badge" style="background:#e67e22;">WFD</span></td></tr>
+<tr><td class="cust-name">NATIONAL WILDLIFE FEDERATION INC</td><td class="ar-num">NAT1047</td><td><span class="reason-badge" style="background:#2980b9;">WFR</span></td></tr>
+</tbody></table></div>
+<div class="month-group">
+<div class="month-label" onclick="toggleMonth(this)"><span class="toggle-arrow">&#9654;</span> Apr &mdash; 15 customers</div>
+<table class="detail-table">
+<thead><tr><th>Customer</th><th>AR #</th><th>Term Reason</th></tr></thead>
+<tbody>
+<tr><td class="cust-name">Beckett Air Incorporated</td><td class="ar-num">BEC1004</td><td><span class="reason-badge" style="background:#c0392b;">Left UKG</span></td></tr>
+<tr><td class="cust-name">CHILDNET  INC.</td><td class="ar-num">CHI1014</td><td><span class="reason-badge" style="background:#c0392b;">Left UKG</span></td></tr>
+<tr><td class="cust-name">FIRST PARAGOULD BANKSHARES  INC.</td><td class="ar-num">FIR1047</td><td><span class="reason-badge" style="background:#c0392b;">Left UKG</span></td></tr>
+<tr><td class="cust-name">Mental Health Association of Rockland County Inc.</td><td class="ar-num">MEN1001</td><td><span class="reason-badge" style="background:#c0392b;">Left UKG</span></td></tr>
+<tr><td class="cust-name">NATIONAL CONSTRUCTION RENTALS  INC.</td><td class="ar-num">NAT1040</td><td><span class="reason-badge" style="background:#c0392b;">Left UKG</span></td></tr>
+<tr><td class="cust-name">PANDORA JEWELRY LLC</td><td class="ar-num">PAN1005</td><td><span class="reason-badge" style="background:#c0392b;">Left UKG</span></td></tr>
+<tr><td class="cust-name">PEAK TRAILER GROUP LLC</td><td class="ar-num">SUM1011</td><td><span class="reason-badge" style="background:#c0392b;">Left UKG</span></td></tr>
+<tr><td class="cust-name">R.W. Beckett Corporation</td><td class="ar-num">RWB1000</td><td><span class="reason-badge" style="background:#c0392b;">Left UKG</span></td></tr>
+<tr><td class="cust-name">Shc Services Inc.</td><td class="ar-num">SHC1000</td><td><span class="reason-badge" style="background:#c0392b;">Left UKG</span></td></tr>
+<tr><td class="cust-name">THOR INDUSTRIES INC</td><td class="ar-num">THO1016</td><td><span class="reason-badge" style="background:#c0392b;">Left UKG</span></td></tr>
+<tr><td class="cust-name">AJINOMOTO HEALTH &amp; NUTRITION NORTH AMERICA INC.</td><td class="ar-num">AJI1000</td><td><span class="reason-badge" style="background:#e67e22;">WFD</span></td></tr>
+<tr><td class="cust-name">CIM GROUP  INC.</td><td class="ar-num">CIM1000</td><td><span class="reason-badge" style="background:#e67e22;">WFD</span></td></tr>
+<tr><td class="cust-name">Carvaka LLC</td><td class="ar-num">NEC1002</td><td><span class="reason-badge" style="background:#e67e22;">WFD</span></td></tr>
+<tr><td class="cust-name">GOODWILL INDUSTRIES OF NORTHERN NEW ENGLAND</td><td class="ar-num">GOO1015</td><td><span class="reason-badge" style="background:#e67e22;">WFD</span></td></tr>
+<tr><td class="cust-name">HIRERIGHT LLC</td><td class="ar-num">HIR1002</td><td><span class="reason-badge" style="background:#e67e22;">WFD</span></td></tr>
+</tbody></table></div>
+<div class="month-group">
+<div class="month-label" onclick="toggleMonth(this)"><span class="toggle-arrow">&#9654;</span> May &mdash; 8 customers</div>
+<table class="detail-table">
+<thead><tr><th>Customer</th><th>AR #</th><th>Term Reason</th></tr></thead>
+<tbody>
+<tr><td class="cust-name">Affordable Care LLC</td><td class="ar-num">AFF1004</td><td><span class="reason-badge" style="background:#c0392b;">Left UKG</span></td></tr>
+<tr><td class="cust-name">Angel Oak Companies LLC</td><td class="ar-num">ANG1001</td><td><span class="reason-badge" style="background:#c0392b;">Left UKG</span></td></tr>
+<tr><td class="cust-name">CALIFORNIA FISH GRILL  LLC</td><td class="ar-num">CAL1014</td><td><span class="reason-badge" style="background:#c0392b;">Left UKG</span></td></tr>
+<tr><td class="cust-name">FLEXAN LLC</td><td class="ar-num">FLE1006</td><td><span class="reason-badge" style="background:#c0392b;">Left UKG</span></td></tr>
+<tr><td class="cust-name">Holmes Murphy and Associates LLC</td><td class="ar-num">HOL1006</td><td><span class="reason-badge" style="background:#c0392b;">Left UKG</span></td></tr>
+<tr><td class="cust-name">Legacy Reserves LP</td><td class="ar-num">LEG1006</td><td><span class="reason-badge" style="background:#c0392b;">Left UKG</span></td></tr>
+<tr><td class="cust-name">Ready Cap Lending LLC</td><td class="ar-num">REA1018</td><td><span class="reason-badge" style="background:#c0392b;">Left UKG</span></td></tr>
+<tr><td class="cust-name">THE BABY FOLD</td><td class="ar-num">BAB1001</td><td><span class="reason-badge" style="background:#c0392b;">Left UKG</span></td></tr>
+</tbody></table></div>
+<div class="month-group">
+<div class="month-label" onclick="toggleMonth(this)"><span class="toggle-arrow">&#9654;</span> Jun &mdash; 14 customers</div>
+<table class="detail-table">
+<thead><tr><th>Customer</th><th>AR #</th><th>Term Reason</th></tr></thead>
+<tbody>
+<tr><td class="cust-name">DRAPER AND KRAMER MORTGAGE CORP</td><td class="ar-num">DRA1003</td><td><span class="reason-badge" style="background:#c0392b;">Left UKG</span></td></tr>
+<tr><td class="cust-name">Fruit of The Earth Inc.</td><td class="ar-num">FRU1002</td><td><span class="reason-badge" style="background:#c0392b;">Left UKG</span></td></tr>
+<tr><td class="cust-name">LIBERTY OILFIELD SERVICES INC.</td><td class="ar-num">LIB1004</td><td><span class="reason-badge" style="background:#c0392b;">Left UKG</span></td></tr>
+<tr><td class="cust-name">NORTHWEST BANK</td><td class="ar-num">NOR1002</td><td><span class="reason-badge" style="background:#c0392b;">Left UKG</span></td></tr>
+<tr><td class="cust-name">QUALITY PORK PROCESSORS  INC</td><td class="ar-num">QUA1013</td><td><span class="reason-badge" style="background:#c0392b;">Left UKG</span></td></tr>
+<tr><td class="cust-name">REALTY INCOME CORPORATION</td><td class="ar-num">REA1008</td><td><span class="reason-badge" style="background:#c0392b;">Left UKG</span></td></tr>
+<tr><td class="cust-name">SAE INTERNATIONAL</td><td class="ar-num">SAE1001</td><td><span class="reason-badge" style="background:#c0392b;">Left UKG</span></td></tr>
+<tr><td class="cust-name">SAN ANTONIO SPURS LLC</td><td class="ar-num">SPU1000</td><td><span class="reason-badge" style="background:#c0392b;">Left UKG</span></td></tr>
+<tr><td class="cust-name">THE ARC OF SAN DIEGO</td><td class="ar-num">ARC1015</td><td><span class="reason-badge" style="background:#c0392b;">Left UKG</span></td></tr>
+<tr><td class="cust-name">THERAGENICS CORPORATION</td><td class="ar-num">THE1004</td><td><span class="reason-badge" style="background:#c0392b;">Left UKG</span></td></tr>
+<tr><td class="cust-name">VIRGINIA FARM BUREAU MUTUAL INSURANCE COMPANY</td><td class="ar-num">VIR1005</td><td><span class="reason-badge" style="background:#c0392b;">Left UKG</span></td></tr>
+<tr><td class="cust-name">AAK USA INC.</td><td class="ar-num">AAK1000</td><td><span class="reason-badge" style="background:#e67e22;">WFD</span></td></tr>
+<tr><td class="cust-name">CARGOJET AIRWAYS LTD</td><td class="ar-num">CAR5000</td><td><span class="reason-badge" style="background:#e67e22;">WFD</span></td></tr>
+<tr><td class="cust-name">IDAHO FOREST GROUP LLC</td><td class="ar-num">IDA1001</td><td><span class="reason-badge" style="background:#e67e22;">WFD</span></td></tr>
+</tbody></table></div>
+<div class="month-group">
+<div class="month-label" onclick="toggleMonth(this)"><span class="toggle-arrow">&#9654;</span> Jul &mdash; 15 customers</div>
+<table class="detail-table">
+<thead><tr><th>Customer</th><th>AR #</th><th>Term Reason</th></tr></thead>
+<tbody>
+<tr><td class="cust-name">Abel Mendoza Inc</td><td class="ar-num">ABE1002</td><td><span class="reason-badge" style="background:#c0392b;">Left UKG</span></td></tr>
+<tr><td class="cust-name">BARRACUDA NETWORKS INC</td><td class="ar-num">BAR1012</td><td><span class="reason-badge" style="background:#c0392b;">Left UKG</span></td></tr>
+<tr><td class="cust-name">Choice Financial Group</td><td class="ar-num">CHO1001</td><td><span class="reason-badge" style="background:#c0392b;">Left UKG</span></td></tr>
+<tr><td class="cust-name">ELEPHANT INSURANCE COMPANY LLC</td><td class="ar-num">ELE1009</td><td><span class="reason-badge" style="background:#c0392b;">Left UKG</span></td></tr>
+<tr><td class="cust-name">FIRST DERIVATIVES US INC</td><td class="ar-num">MAR1032</td><td><span class="reason-badge" style="background:#c0392b;">Left UKG</span></td></tr>
+<tr><td class="cust-name">First Fed Bank</td><td class="ar-num">FIR1038</td><td><span class="reason-badge" style="background:#c0392b;">Left UKG</span></td></tr>
+<tr><td class="cust-name">MELISSA &amp; DOUG  LLC</td><td class="ar-num">MEL1005</td><td><span class="reason-badge" style="background:#c0392b;">Left UKG</span></td></tr>
+<tr><td class="cust-name">RAYONIER INC.</td><td class="ar-num">RAY1002</td><td><span class="reason-badge" style="background:#c0392b;">Left UKG</span></td></tr>
+<tr><td class="cust-name">SCIENS BUILDING SOLUTIONS LLC</td><td class="ar-num">SCI1004</td><td><span class="reason-badge" style="background:#c0392b;">Left UKG</span></td></tr>
+<tr><td class="cust-name">Sharonview Federal Credit Union</td><td class="ar-num">SHA1005</td><td><span class="reason-badge" style="background:#c0392b;">Left UKG</span></td></tr>
+<tr><td class="cust-name">South Texas Radiology Group P.A.</td><td class="ar-num">SOU1055</td><td><span class="reason-badge" style="background:#c0392b;">Left UKG</span></td></tr>
+<tr><td class="cust-name">THE CHILDRENS VILLAGE</td><td class="ar-num">CHI1026</td><td><span class="reason-badge" style="background:#c0392b;">Left UKG</span></td></tr>
+<tr><td class="cust-name">THE HENRY M JACKSON FOUNDATION FOR THE ADVANCEMENT OF MILITARY MEDICINE INC</td><td class="ar-num">HEN1006</td><td><span class="reason-badge" style="background:#c0392b;">Left UKG</span></td></tr>
+<tr><td class="cust-name">Fox Rothschild LLP</td><td class="ar-num">FOX1001</td><td><span class="reason-badge" style="background:#e67e22;">WFD</span></td></tr>
+<tr><td class="cust-name">W. B. MASON CO.  INC.</td><td class="ar-num">WBM1000</td><td><span class="reason-badge" style="background:#e67e22;">WFD</span></td></tr>
+</tbody></table></div>
+<div class="month-group">
+<div class="month-label" onclick="toggleMonth(this)"><span class="toggle-arrow">&#9654;</span> Aug &mdash; 9 customers</div>
+<table class="detail-table">
+<thead><tr><th>Customer</th><th>AR #</th><th>Term Reason</th></tr></thead>
+<tbody>
+<tr><td class="cust-name">ADAC Plastics Inc.</td><td class="ar-num">ADA1001</td><td><span class="reason-badge" style="background:#c0392b;">Left UKG</span></td></tr>
+<tr><td class="cust-name">AMERICAN NUTRITION INC.</td><td class="ar-num">AME1099</td><td><span class="reason-badge" style="background:#c0392b;">Left UKG</span></td></tr>
+<tr><td class="cust-name">CHICAGO PUBLIC MEDIA INC.</td><td class="ar-num">CHI1025</td><td><span class="reason-badge" style="background:#c0392b;">Left UKG</span></td></tr>
+<tr><td class="cust-name">Conax Technologies LLC</td><td class="ar-num">CON1073</td><td><span class="reason-badge" style="background:#c0392b;">Left UKG</span></td></tr>
+<tr><td class="cust-name">FURNITURELAND SOUTH</td><td class="ar-num">FUR1001</td><td><span class="reason-badge" style="background:#c0392b;">Left UKG</span></td></tr>
+<tr><td class="cust-name">IMPAC MORTGAGE HOLDINGS  INC.</td><td class="ar-num">IMP1003</td><td><span class="reason-badge" style="background:#c0392b;">Left UKG</span></td></tr>
+<tr><td class="cust-name">LOWNDES DROSDICK DOSTER KANTOR &amp; REED PA</td><td class="ar-num">LOW1001</td><td><span class="reason-badge" style="background:#c0392b;">Left UKG</span></td></tr>
+<tr><td class="cust-name">Totes Isotoner Corporation</td><td class="ar-num">TOT1007</td><td><span class="reason-badge" style="background:#c0392b;">Left UKG</span></td></tr>
+<tr><td class="cust-name">DATA DIMENSIONS LLC</td><td class="ar-num">DAT1006</td><td><span class="reason-badge" style="background:#e67e22;">WFD</span></td></tr>
+</tbody></table></div>
+<div class="month-group">
+<div class="month-label" onclick="toggleMonth(this)"><span class="toggle-arrow">&#9654;</span> Sep &mdash; 5 customers</div>
+<table class="detail-table">
+<thead><tr><th>Customer</th><th>AR #</th><th>Term Reason</th></tr></thead>
+<tbody>
+<tr><td class="cust-name">ARCO CONSTRUCTION COMPANY</td><td class="ar-num">ARC1023</td><td><span class="reason-badge" style="background:#27ae60;">Left UTM Only</span></td></tr>
+<tr><td class="cust-name">LIONBRIDGE TECHNOLOGIES INC.</td><td class="ar-num">LIO1000</td><td><span class="reason-badge" style="background:#27ae60;">Left UTM Only</span></td></tr>
+<tr><td class="cust-name">PURATOS CORPORATION</td><td class="ar-num">PUR1001</td><td><span class="reason-badge" style="background:#e67e22;">WFD</span></td></tr>
+<tr><td class="cust-name">Professional Disposables International Inc.</td><td class="ar-num">NIC1003</td><td><span class="reason-badge" style="background:#e67e22;">WFD</span></td></tr>
+<tr><td class="cust-name">BLOMMER CHOCOLATES</td><td class="ar-num">BLO1003</td><td><span class="reason-badge" style="background:#2980b9;">WFR</span></td></tr>
+</tbody></table></div>
+<div class="month-group">
+<div class="month-label" onclick="toggleMonth(this)"><span class="toggle-arrow">&#9654;</span> Oct &mdash; 3 customers</div>
+<table class="detail-table">
+<thead><tr><th>Customer</th><th>AR #</th><th>Term Reason</th></tr></thead>
+<tbody>
+<tr><td class="cust-name">CASA CENTRAL SOCIAL SERVICES CORPORAT</td><td class="ar-num">CAS1014</td><td><span class="reason-badge" style="background:#c0392b;">Left UKG</span></td></tr>
+<tr><td class="cust-name">Sun Coast Resources Inc.</td><td class="ar-num">SUN1018</td><td><span class="reason-badge" style="background:#c0392b;">Left UKG</span></td></tr>
+<tr><td class="cust-name">ALABAMA SPACE SCIENCE EXHIBIT COMMISSION</td><td class="ar-num">ALA1012</td><td><span class="reason-badge" style="background:#e67e22;">WFD</span></td></tr>
+</tbody></table></div>
+<div class="month-group">
+<div class="month-label" onclick="toggleMonth(this)"><span class="toggle-arrow">&#9654;</span> Nov &mdash; 1 customer</div>
+<table class="detail-table">
+<thead><tr><th>Customer</th><th>AR #</th><th>Term Reason</th></tr></thead>
+<tbody>
+<tr><td class="cust-name">AMERICAN ISRAEL PUBLIC AFFAIRS COMMITTEE</td><td class="ar-num">AME1071</td><td><span class="reason-badge" style="background:#e67e22;">WFD</span></td></tr>
+</tbody></table></div>
+<div class="month-group">
+<div class="month-label" onclick="toggleMonth(this)"><span class="toggle-arrow">&#9654;</span> Dec &mdash; 21 customers</div>
+<table class="detail-table">
+<thead><tr><th>Customer</th><th>AR #</th><th>Term Reason</th></tr></thead>
+<tbody>
+<tr><td class="cust-name">ALFASIGMA USA INC.</td><td class="ar-num">PAM1000</td><td><span class="reason-badge" style="background:#c0392b;">Left UKG</span></td></tr>
+<tr><td class="cust-name">BAKERRIPLEY</td><td class="ar-num">NEI1004</td><td><span class="reason-badge" style="background:#c0392b;">Left UKG</span></td></tr>
+<tr><td class="cust-name">COSTA FARMS  LLC</td><td class="ar-num">COS1002</td><td><span class="reason-badge" style="background:#c0392b;">Left UKG</span></td></tr>
+<tr><td class="cust-name">COUSINS EMPLOYEES LLC</td><td class="ar-num">COU1003</td><td><span class="reason-badge" style="background:#c0392b;">Left UKG</span></td></tr>
+<tr><td class="cust-name">ENOVA POWER CORP</td><td class="ar-num">KIT5000</td><td><span class="reason-badge" style="background:#c0392b;">Left UKG</span></td></tr>
+<tr><td class="cust-name">Fox World Travel Inc.</td><td class="ar-num">FOX1003</td><td><span class="reason-badge" style="background:#c0392b;">Left UKG</span></td></tr>
+<tr><td class="cust-name">HUMANA INC</td><td class="ar-num">FAM1005</td><td><span class="reason-badge" style="background:#c0392b;">Left UKG</span></td></tr>
+<tr><td class="cust-name">INSURANCE COMPANY OF WEST</td><td class="ar-num">INS1011</td><td><span class="reason-badge" style="background:#c0392b;">Left UKG</span></td></tr>
+<tr><td class="cust-name">Ingram Entertainment Holdings Inc</td><td class="ar-num">ING1000</td><td><span class="reason-badge" style="background:#c0392b;">Left UKG</span></td></tr>
+<tr><td class="cust-name">KENCO MANAGEMENT SERVICES LLC</td><td class="ar-num">KEN1004</td><td><span class="reason-badge" style="background:#c0392b;">Left UKG</span></td></tr>
+<tr><td class="cust-name">LINWOOD CENTER INC</td><td class="ar-num">LIN1009</td><td><span class="reason-badge" style="background:#c0392b;">Left UKG</span></td></tr>
+<tr><td class="cust-name">PARAGON MEDICAL  INC.</td><td class="ar-num">PAR1043</td><td><span class="reason-badge" style="background:#c0392b;">Left UKG</span></td></tr>
+<tr><td class="cust-name">RITE-HITE HOLDING CORPORATION</td><td class="ar-num">RIT1001</td><td><span class="reason-badge" style="background:#c0392b;">Left UKG</span></td></tr>
+<tr><td class="cust-name">SRP Federal Credit Union</td><td class="ar-num">SRP1000</td><td><span class="reason-badge" style="background:#c0392b;">Left UKG</span></td></tr>
+<tr><td class="cust-name">Stellar Bank</td><td class="ar-num">ALL1019</td><td><span class="reason-badge" style="background:#c0392b;">Left UKG</span></td></tr>
+<tr><td class="cust-name">Virginia Garcia Memorial Health Center</td><td class="ar-num">VIR1008</td><td><span class="reason-badge" style="background:#c0392b;">Left UKG</span></td></tr>
+<tr><td class="cust-name">WEDGEWOOD</td><td class="ar-num">WED1002</td><td><span class="reason-badge" style="background:#c0392b;">Left UKG</span></td></tr>
+<tr><td class="cust-name">ncgCARE Inc.</td><td class="ar-num">NCG1000</td><td><span class="reason-badge" style="background:#c0392b;">Left UKG</span></td></tr>
+<tr><td class="cust-name">CORVEL CORPORATION</td><td class="ar-num">COR1025</td><td><span class="reason-badge" style="background:#e67e22;">WFD</span></td></tr>
+<tr><td class="cust-name">LANTHEUS MEDICAL IMAGING  INC.</td><td class="ar-num">LAN1018</td><td><span class="reason-badge" style="background:#e67e22;">WFD</span></td></tr>
+<tr><td class="cust-name">Precisely Software Incorporated</td><td class="ar-num">SYN1004</td><td><span class="reason-badge" style="background:#e67e22;">WFD</span></td></tr>
+</tbody></table></div>
+  </div>
+</div>
+<script>
+new Chart(document.getElementById('chart2025_0'), {
+  type: 'bar',
+  data: { labels: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"], datasets: [{"label": "Left UKG", "data": [13, 5, 18, 10, 8, 11, 13, 8, 0, 2, 0, 18], "backgroundColor": "#c0392b", "borderColor": "#fff", "borderWidth": 1, "borderRadius": 2}, {"label": "Left UTM Only", "data": [0, 0, 0, 0, 0, 0, 0, 0, 2, 0, 0, 0], "backgroundColor": "#27ae60", "borderColor": "#fff", "borderWidth": 1, "borderRadius": 2}, {"label": "WFD", "data": [3, 0, 1, 5, 0, 3, 2, 1, 2, 1, 1, 3], "backgroundColor": "#e67e22", "borderColor": "#fff", "borderWidth": 1, "borderRadius": 2}, {"label": "WFR", "data": [0, 0, 1, 0, 0, 0, 0, 0, 1, 0, 0, 0], "backgroundColor": "#2980b9", "borderColor": "#fff", "borderWidth": 1, "borderRadius": 2}] },
+  options: {
+    responsive: true, maintainAspectRatio: false,
+    plugins: {
+      legend: { display: false },
+      tooltip: { callbacks: { label: ctx => ' ' + ctx.dataset.label + ': ' + ctx.parsed.y + ' customer' + (ctx.parsed.y !== 1 ? 's' : '') } }
+    },
+    scales: {
+      x: { stacked: true, grid: { display: false }, ticks: { font: { family: 'Arial, sans-serif', size: 11 }, color: '#555' } },
+      y: { stacked: true, beginAtZero: true, max: 23, grid: { color: '#eee' },
+            ticks: { stepSize: 1, font: { family: 'Arial, sans-serif', size: 11 }, color: '#555', callback: v => Number.isInteger(v) ? v : '' },
+            title: { display: true, text: 'Customers', font: { family: 'Arial, sans-serif', size: 11 }, color: '#888' } }
+    }
+  }
+});</script>
+
+<div class="product-block">
+  <div class="product-header">
+    <span class="product-name">Time Classic (WFM-C)</span>
+    <span class="product-count">46 customers termed</span>
+  </div>
+  <div class="chart-wrap"><canvas id="chart2025_1"></canvas></div>
+  <div class="detail-section">
+    <div class="month-group">
+<div class="month-label" onclick="toggleMonth(this)"><span class="toggle-arrow">&#9654;</span> Jan &mdash; 2 customers</div>
+<table class="detail-table">
+<thead><tr><th>Customer</th><th>AR #</th><th>Term Reason</th></tr></thead>
+<tbody>
+<tr><td class="cust-name">SUNRISE WINDOWS LTD. L.L.C.</td><td class="ar-num">SUN1019</td><td><span class="reason-badge" style="background:#c0392b;">Left UKG</span></td></tr>
+<tr><td class="cust-name">USF FEDERAL CREDIT UNION</td><td class="ar-num">USF1002</td><td><span class="reason-badge" style="background:#c0392b;">Left UKG</span></td></tr>
+</tbody></table></div>
+<div class="month-group">
+<div class="month-label" onclick="toggleMonth(this)"><span class="toggle-arrow">&#9654;</span> Feb &mdash; 2 customers</div>
+<table class="detail-table">
+<thead><tr><th>Customer</th><th>AR #</th><th>Term Reason</th></tr></thead>
+<tbody>
+<tr><td class="cust-name">Norcare Enterprises Inc.</td><td class="ar-num">NOR1053</td><td><span class="reason-badge" style="background:#c0392b;">Left UKG</span></td></tr>
+<tr><td class="cust-name">Senior Star Management Company</td><td class="ar-num">SEN1003</td><td><span class="reason-badge" style="background:#c0392b;">Left UKG</span></td></tr>
+</tbody></table></div>
+<div class="month-group">
+<div class="month-label" onclick="toggleMonth(this)"><span class="toggle-arrow">&#9654;</span> Mar &mdash; 7 customers</div>
+<table class="detail-table">
+<thead><tr><th>Customer</th><th>AR #</th><th>Term Reason</th></tr></thead>
+<tbody>
+<tr><td class="cust-name">A. T. STILL UNIVERSITY OF HEALTH SCIENCES</td><td class="ar-num">ATS1000</td><td><span class="reason-badge" style="background:#c0392b;">Left UKG</span></td></tr>
+<tr><td class="cust-name">GOODWILL INDUSTRIES OF THE HEARTLAND</td><td class="ar-num">GOO1032</td><td><span class="reason-badge" style="background:#c0392b;">Left UKG</span></td></tr>
+<tr><td class="cust-name">INTEGRITY RESIDENTIAL SERVICES INC.</td><td class="ar-num">INT1072</td><td><span class="reason-badge" style="background:#c0392b;">Left UKG</span></td></tr>
+<tr><td class="cust-name">Kidkraft Inc.</td><td class="ar-num">KID1001</td><td><span class="reason-badge" style="background:#c0392b;">Left UKG</span></td></tr>
+<tr><td class="cust-name">ONSOLVE LLC</td><td class="ar-num">ONS1003</td><td><span class="reason-badge" style="background:#c0392b;">Left UKG</span></td></tr>
+<tr><td class="cust-name">Onni Property Management Services Ltd</td><td class="ar-num">ONN5000</td><td><span class="reason-badge" style="background:#c0392b;">Left UKG</span></td></tr>
+<tr><td class="cust-name">DESERT FINANCIAL FEDERAL CREDIT UNION</td><td class="ar-num">DES1004</td><td><span class="reason-badge" style="background:#8e44ad;">WFC</span></td></tr>
+</tbody></table></div>
+<div class="month-group">
+<div class="month-label" onclick="toggleMonth(this)"><span class="toggle-arrow">&#9654;</span> Apr &mdash; 4 customers</div>
+<table class="detail-table">
+<thead><tr><th>Customer</th><th>AR #</th><th>Term Reason</th></tr></thead>
+<tbody>
+<tr><td class="cust-name">BUILDER'S RESOURCE GROUP INC.</td><td class="ar-num">BUI1006</td><td><span class="reason-badge" style="background:#c0392b;">Left UKG</span></td></tr>
+<tr><td class="cust-name">Belflex Staffing Network LLC</td><td class="ar-num">BEL1010</td><td><span class="reason-badge" style="background:#c0392b;">Left UKG</span></td></tr>
+<tr><td class="cust-name">COLUMBIA HELICOPTERS INC.</td><td class="ar-num">COL1018</td><td><span class="reason-badge" style="background:#c0392b;">Left UKG</span></td></tr>
+<tr><td class="cust-name">SPECTRA LOGIC CORPORATION</td><td class="ar-num">SPE1024</td><td><span class="reason-badge" style="background:#e67e22;">WFD</span></td></tr>
+</tbody></table></div>
+<div class="month-group">
+<div class="month-label" onclick="toggleMonth(this)"><span class="toggle-arrow">&#9654;</span> May &mdash; 4 customers</div>
+<table class="detail-table">
+<thead><tr><th>Customer</th><th>AR #</th><th>Term Reason</th></tr></thead>
+<tbody>
+<tr><td class="cust-name">CLUBESSENTIAL  HOLDINGS LLC</td><td class="ar-num">CLU1001</td><td><span class="reason-badge" style="background:#c0392b;">Left UKG</span></td></tr>
+<tr><td class="cust-name">COUNTY OF SHELBY</td><td class="ar-num">SHE1006</td><td><span class="reason-badge" style="background:#c0392b;">Left UKG</span></td></tr>
+<tr><td class="cust-name">HOSPICE OF WASHINGTON COUNTY INC</td><td class="ar-num">HOS1016</td><td><span class="reason-badge" style="background:#c0392b;">Left UKG</span></td></tr>
+<tr><td class="cust-name">WILSON FUEL CO. LIMITED</td><td class="ar-num">WIL5000</td><td><span class="reason-badge" style="background:#c0392b;">Left UKG</span></td></tr>
+</tbody></table></div>
+<div class="month-group">
+<div class="month-label" onclick="toggleMonth(this)"><span class="toggle-arrow">&#9654;</span> Jun &mdash; 10 customers</div>
+<table class="detail-table">
+<thead><tr><th>Customer</th><th>AR #</th><th>Term Reason</th></tr></thead>
+<tbody>
+<tr><td class="cust-name">ALATION INC.</td><td class="ar-num">ALA1013</td><td><span class="reason-badge" style="background:#c0392b;">Left UKG</span></td></tr>
+<tr><td class="cust-name">CHERRY STREET SERVICES  INC.</td><td class="ar-num">CHE1016</td><td><span class="reason-badge" style="background:#c0392b;">Left UKG</span></td></tr>
+<tr><td class="cust-name">DANBY PRODUCTS LIMITED</td><td class="ar-num">DAN5001</td><td><span class="reason-badge" style="background:#c0392b;">Left UKG</span></td></tr>
+<tr><td class="cust-name">DERMATOLOGY MEDICAL PARTNERS LLC</td><td class="ar-num">DER1004</td><td><span class="reason-badge" style="background:#c0392b;">Left UKG</span></td></tr>
+<tr><td class="cust-name">HILLFIELD-STRATHALLAN COLLEGE</td><td class="ar-num">HIL5000</td><td><span class="reason-badge" style="background:#c0392b;">Left UKG</span></td></tr>
+<tr><td class="cust-name">LAMONICAS PIZZA DOUGH INTERNATIONAL LLC</td><td class="ar-num">LAM1002</td><td><span class="reason-badge" style="background:#c0392b;">Left UKG</span></td></tr>
+<tr><td class="cust-name">Mobile Housing Authority</td><td class="ar-num">MOB1003</td><td><span class="reason-badge" style="background:#c0392b;">Left UKG</span></td></tr>
+<tr><td class="cust-name">OVATION FERTILITY</td><td class="ar-num">OVA1000</td><td><span class="reason-badge" style="background:#c0392b;">Left UKG</span></td></tr>
+<tr><td class="cust-name">SULLIVAN &amp; WORCESTER LLP</td><td class="ar-num">SUL1000</td><td><span class="reason-badge" style="background:#c0392b;">Left UKG</span></td></tr>
+<tr><td class="cust-name">YGRENE ENERGY FUND INC.</td><td class="ar-num">YGR1000</td><td><span class="reason-badge" style="background:#c0392b;">Left UKG</span></td></tr>
+</tbody></table></div>
+<div class="month-group">
+<div class="month-label" onclick="toggleMonth(this)"><span class="toggle-arrow">&#9654;</span> Jul &mdash; 3 customers</div>
+<table class="detail-table">
+<thead><tr><th>Customer</th><th>AR #</th><th>Term Reason</th></tr></thead>
+<tbody>
+<tr><td class="cust-name">GUILD INCORPORATED</td><td class="ar-num">GUI1002</td><td><span class="reason-badge" style="background:#c0392b;">Left UKG</span></td></tr>
+<tr><td class="cust-name">IPRO TECH LLC</td><td class="ar-num">IPR1001</td><td><span class="reason-badge" style="background:#c0392b;">Left UKG</span></td></tr>
+<tr><td class="cust-name">Holt Texas Ltd.</td><td class="ar-num">HOL1001</td><td><span class="reason-badge" style="background:#e67e22;">WFD</span></td></tr>
+</tbody></table></div>
+<div class="month-group">
+<div class="month-label" onclick="toggleMonth(this)"><span class="toggle-arrow">&#9654;</span> Aug &mdash; 2 customers</div>
+<table class="detail-table">
+<thead><tr><th>Customer</th><th>AR #</th><th>Term Reason</th></tr></thead>
+<tbody>
+<tr><td class="cust-name">SACRAMENTO NATIVE AMERICAN HEALTH CENTER INC</td><td class="ar-num">SAC1002</td><td><span class="reason-badge" style="background:#c0392b;">Left UKG</span></td></tr>
+<tr><td class="cust-name">CROSSFIRST BANKSHARES  INC.</td><td class="ar-num">CRO1012</td><td><span class="reason-badge" style="background:#7f8c8d;">Left WFM Classic Only</span></td></tr>
+</tbody></table></div>
+<div class="month-group">
+<div class="month-label" onclick="toggleMonth(this)"><span class="toggle-arrow">&#9654;</span> Oct &mdash; 1 customer</div>
+<table class="detail-table">
+<thead><tr><th>Customer</th><th>AR #</th><th>Term Reason</th></tr></thead>
+<tbody>
+<tr><td class="cust-name">GLEN-GERY CORPORATION</td><td class="ar-num">GLE1002</td><td><span class="reason-badge" style="background:#e67e22;">WFD</span></td></tr>
+</tbody></table></div>
+<div class="month-group">
+<div class="month-label" onclick="toggleMonth(this)"><span class="toggle-arrow">&#9654;</span> Nov &mdash; 2 customers</div>
+<table class="detail-table">
+<thead><tr><th>Customer</th><th>AR #</th><th>Term Reason</th></tr></thead>
+<tbody>
+<tr><td class="cust-name">GLEN-GERY CORPORATION</td><td class="ar-num">GLE1002</td><td><span class="reason-badge" style="background:#e67e22;">WFD</span></td></tr>
+<tr><td class="cust-name">Sunset Management Inc.</td><td class="ar-num">SUN1022</td><td><span class="reason-badge" style="background:#e67e22;">WFD</span></td></tr>
+</tbody></table></div>
+<div class="month-group">
+<div class="month-label" onclick="toggleMonth(this)"><span class="toggle-arrow">&#9654;</span> Dec &mdash; 9 customers</div>
+<table class="detail-table">
+<thead><tr><th>Customer</th><th>AR #</th><th>Term Reason</th></tr></thead>
+<tbody>
+<tr><td class="cust-name">ARC RESOURCES LTD</td><td class="ar-num">ARC5000</td><td><span class="reason-badge" style="background:#c0392b;">Left UKG</span></td></tr>
+<tr><td class="cust-name">CAERUS OPERATING LLC</td><td class="ar-num">CAE1000</td><td><span class="reason-badge" style="background:#c0392b;">Left UKG</span></td></tr>
+<tr><td class="cust-name">Continental Battery Company</td><td class="ar-num">CON1067</td><td><span class="reason-badge" style="background:#c0392b;">Left UKG</span></td></tr>
+<tr><td class="cust-name">INSURANCE COMPANY OF WEST</td><td class="ar-num">INS1011</td><td><span class="reason-badge" style="background:#c0392b;">Left UKG</span></td></tr>
+<tr><td class="cust-name">KENT MOORE CABINETS  LTD.</td><td class="ar-num">KEN1009</td><td><span class="reason-badge" style="background:#c0392b;">Left UKG</span></td></tr>
+<tr><td class="cust-name">LUTHERAN FAMILY SERVICES OF VIRGINIA  INC.</td><td class="ar-num">LUT1010</td><td><span class="reason-badge" style="background:#c0392b;">Left UKG</span></td></tr>
+<tr><td class="cust-name">NEXT TRUCKING INC.</td><td class="ar-num">NEX1006</td><td><span class="reason-badge" style="background:#c0392b;">Left UKG</span></td></tr>
+<tr><td class="cust-name">NEXUS</td><td class="ar-num">NEX1007</td><td><span class="reason-badge" style="background:#c0392b;">Left UKG</span></td></tr>
+<tr><td class="cust-name">PIPER SANDLER &amp; CO.</td><td class="ar-num">PIP1000</td><td><span class="reason-badge" style="background:#c0392b;">Left UKG</span></td></tr>
+</tbody></table></div>
+  </div>
+</div>
+<script>
+new Chart(document.getElementById('chart2025_1'), {
+  type: 'bar',
+  data: { labels: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"], datasets: [{"label": "Left UKG", "data": [2, 2, 6, 3, 4, 10, 2, 1, 0, 0, 0, 9], "backgroundColor": "#c0392b", "borderColor": "#fff", "borderWidth": 1, "borderRadius": 2}, {"label": "Left WFM Classic Only", "data": [0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0], "backgroundColor": "#7f8c8d", "borderColor": "#fff", "borderWidth": 1, "borderRadius": 2}, {"label": "WFC", "data": [0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0], "backgroundColor": "#8e44ad", "borderColor": "#fff", "borderWidth": 1, "borderRadius": 2}, {"label": "WFD", "data": [0, 0, 0, 1, 0, 0, 1, 0, 0, 1, 2, 0], "backgroundColor": "#e67e22", "borderColor": "#fff", "borderWidth": 1, "borderRadius": 2}] },
+  options: {
+    responsive: true, maintainAspectRatio: false,
+    plugins: {
+      legend: { display: false },
+      tooltip: { callbacks: { label: ctx => ' ' + ctx.dataset.label + ': ' + ctx.parsed.y + ' customer' + (ctx.parsed.y !== 1 ? 's' : '') } }
+    },
+    scales: {
+      x: { stacked: true, grid: { display: false }, ticks: { font: { family: 'Arial, sans-serif', size: 11 }, color: '#555' } },
+      y: { stacked: true, beginAtZero: true, max: 12, grid: { color: '#eee' },
+            ticks: { stepSize: 1, font: { family: 'Arial, sans-serif', size: 11 }, color: '#555', callback: v => Number.isInteger(v) ? v : '' },
+            title: { display: true, text: 'Customers', font: { family: 'Arial, sans-serif', size: 11 }, color: '#888' } }
+    }
+  }
+});</script>
+
+<div class="product-block">
+  <div class="product-header">
+    <span class="product-name">Time &amp; Attendance (UTA)</span>
+    <span class="product-count">26 customers termed</span>
+  </div>
+  <div class="chart-wrap"><canvas id="chart2025_2"></canvas></div>
+  <div class="detail-section">
+    <div class="month-group">
+<div class="month-label" onclick="toggleMonth(this)"><span class="toggle-arrow">&#9654;</span> Jan &mdash; 1 customer</div>
+<table class="detail-table">
+<thead><tr><th>Customer</th><th>AR #</th><th>Term Reason</th></tr></thead>
+<tbody>
+<tr><td class="cust-name">USHG LLC</td><td class="ar-num">UNI1028</td><td><span class="reason-badge" style="background:#16a085;">Left UTA Only</span></td></tr>
+</tbody></table></div>
+<div class="month-group">
+<div class="month-label" onclick="toggleMonth(this)"><span class="toggle-arrow">&#9654;</span> Feb &mdash; 4 customers</div>
+<table class="detail-table">
+<thead><tr><th>Customer</th><th>AR #</th><th>Term Reason</th></tr></thead>
+<tbody>
+<tr><td class="cust-name">BC Tree Fruits Cooperative</td><td class="ar-num">BCT5000</td><td><span class="reason-badge" style="background:#c0392b;">Left UKG</span></td></tr>
+<tr><td class="cust-name">Capital Metropolitan Transportation Authority</td><td class="ar-num">CAP1003</td><td><span class="reason-badge" style="background:#c0392b;">Left UKG</span></td></tr>
+<tr><td class="cust-name">Syncrude Canada Ltd</td><td class="ar-num">SYN5001</td><td><span class="reason-badge" style="background:#c0392b;">Left UKG</span></td></tr>
+<tr><td class="cust-name">DANFOSS POWER SOLUTIONS (US) COMPANY</td><td class="ar-num">DAN1002</td><td><span class="reason-badge" style="background:#e67e22;">WFD</span></td></tr>
+</tbody></table></div>
+<div class="month-group">
+<div class="month-label" onclick="toggleMonth(this)"><span class="toggle-arrow">&#9654;</span> Mar &mdash; 1 customer</div>
+<table class="detail-table">
+<thead><tr><th>Customer</th><th>AR #</th><th>Term Reason</th></tr></thead>
+<tbody>
+<tr><td class="cust-name">BENIHANA INC.</td><td class="ar-num">BEN1011</td><td><span class="reason-badge" style="background:#c0392b;">Left UKG</span></td></tr>
+</tbody></table></div>
+<div class="month-group">
+<div class="month-label" onclick="toggleMonth(this)"><span class="toggle-arrow">&#9654;</span> Apr &mdash; 3 customers</div>
+<table class="detail-table">
+<thead><tr><th>Customer</th><th>AR #</th><th>Term Reason</th></tr></thead>
+<tbody>
+<tr><td class="cust-name">DAVIS WRIGHT TREMAINE LLP</td><td class="ar-num">DAV1003</td><td><span class="reason-badge" style="background:#c0392b;">Left UKG</span></td></tr>
+<tr><td class="cust-name">J M SMITH CORPORATION</td><td class="ar-num">JMS1000</td><td><span class="reason-badge" style="background:#c0392b;">Left UKG</span></td></tr>
+<tr><td class="cust-name">GEORGE M. LEADER FAMILY CORPORATION</td><td class="ar-num">GEO1014</td><td><span class="reason-badge" style="background:#e67e22;">WFD</span></td></tr>
+</tbody></table></div>
+<div class="month-group">
+<div class="month-label" onclick="toggleMonth(this)"><span class="toggle-arrow">&#9654;</span> May &mdash; 1 customer</div>
+<table class="detail-table">
+<thead><tr><th>Customer</th><th>AR #</th><th>Term Reason</th></tr></thead>
+<tbody>
+<tr><td class="cust-name">Tennessee Health Management Inc.</td><td class="ar-num">TEN1002</td><td><span class="reason-badge" style="background:#e67e22;">WFD</span></td></tr>
+</tbody></table></div>
+<div class="month-group">
+<div class="month-label" onclick="toggleMonth(this)"><span class="toggle-arrow">&#9654;</span> Jun &mdash; 5 customers</div>
+<table class="detail-table">
+<thead><tr><th>Customer</th><th>AR #</th><th>Term Reason</th></tr></thead>
+<tbody>
+<tr><td class="cust-name">CARL BUDDIG AND COMPANY</td><td class="ar-num">CAR1033</td><td><span class="reason-badge" style="background:#c0392b;">Left UKG</span></td></tr>
+<tr><td class="cust-name">Games Workshop America Inc.</td><td class="ar-num">GAM1001</td><td><span class="reason-badge" style="background:#c0392b;">Left UKG</span></td></tr>
+<tr><td class="cust-name">KOR HOTEL MANAGEMENT  L.L.C.</td><td class="ar-num">VIC1004</td><td><span class="reason-badge" style="background:#c0392b;">Left UKG</span></td></tr>
+<tr><td class="cust-name">ND PAPER LLC</td><td class="ar-num">NDP1000</td><td><span class="reason-badge" style="background:#c0392b;">Left UKG</span></td></tr>
+<tr><td class="cust-name">Royal Management Corporation</td><td class="ar-num">ROY1007</td><td><span class="reason-badge" style="background:#c0392b;">Left UKG</span></td></tr>
+</tbody></table></div>
+<div class="month-group">
+<div class="month-label" onclick="toggleMonth(this)"><span class="toggle-arrow">&#9654;</span> Jul &mdash; 4 customers</div>
+<table class="detail-table">
+<thead><tr><th>Customer</th><th>AR #</th><th>Term Reason</th></tr></thead>
+<tbody>
+<tr><td class="cust-name">EDWARD DON AND CO</td><td class="ar-num">EDW1000</td><td><span class="reason-badge" style="background:#c0392b;">Left UKG</span></td></tr>
+<tr><td class="cust-name">HOUSTONIAN CAMPUS  LLC</td><td class="ar-num">HOU1004</td><td><span class="reason-badge" style="background:#c0392b;">Left UKG</span></td></tr>
+<tr><td class="cust-name">FPI Management Inc.</td><td class="ar-num">FPI1000</td><td><span class="reason-badge" style="background:#e67e22;">WFD</span></td></tr>
+<tr><td class="cust-name">REDSAIL TECHNOLOGIES LLC / Smith Tech Acquisition</td><td class="ar-num">SMI1009</td><td><span class="reason-badge" style="background:#e67e22;">WFD</span></td></tr>
+</tbody></table></div>
+<div class="month-group">
+<div class="month-label" onclick="toggleMonth(this)"><span class="toggle-arrow">&#9654;</span> Sep &mdash; 1 customer</div>
+<table class="detail-table">
+<thead><tr><th>Customer</th><th>AR #</th><th>Term Reason</th></tr></thead>
+<tbody>
+<tr><td class="cust-name">FORMICA CORP</td><td class="ar-num">FOR1010</td><td><span class="reason-badge" style="background:#e67e22;">WFD</span></td></tr>
+</tbody></table></div>
+<div class="month-group">
+<div class="month-label" onclick="toggleMonth(this)"><span class="toggle-arrow">&#9654;</span> Dec &mdash; 6 customers</div>
+<table class="detail-table">
+<thead><tr><th>Customer</th><th>AR #</th><th>Term Reason</th></tr></thead>
+<tbody>
+<tr><td class="cust-name">BGF INDUSTRIES  INC.</td><td class="ar-num">BGF1000</td><td><span class="reason-badge" style="background:#c0392b;">Left UKG</span></td></tr>
+<tr><td class="cust-name">Soulcycle Inc.</td><td class="ar-num">SOU1035</td><td><span class="reason-badge" style="background:#c0392b;">Left UKG</span></td></tr>
+<tr><td class="cust-name">Lanxess Corporation</td><td class="ar-num">LAN1006</td><td><span class="reason-badge" style="background:#16a085;">Left UTA Only</span></td></tr>
+<tr><td class="cust-name">SWEETGREEN  INC.</td><td class="ar-num">SWE1005</td><td><span class="reason-badge" style="background:#16a085;">Left UTA Only</span></td></tr>
+<tr><td class="cust-name">A.M CASTLE &amp; CO</td><td class="ar-num">AMC1003</td><td><span class="reason-badge" style="background:#e67e22;">WFD</span></td></tr>
+<tr><td class="cust-name">THERMA-TRU CORP.</td><td class="ar-num">THE1003</td><td><span class="reason-badge" style="background:#f39c12;">WFD (Acquired)</span></td></tr>
+</tbody></table></div>
+  </div>
+</div>
+<script>
+new Chart(document.getElementById('chart2025_2'), {
+  type: 'bar',
+  data: { labels: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"], datasets: [{"label": "Left UKG", "data": [0, 3, 1, 2, 0, 5, 2, 0, 0, 0, 0, 2], "backgroundColor": "#c0392b", "borderColor": "#fff", "borderWidth": 1, "borderRadius": 2}, {"label": "Left UTA Only", "data": [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2], "backgroundColor": "#16a085", "borderColor": "#fff", "borderWidth": 1, "borderRadius": 2}, {"label": "WFD", "data": [0, 1, 0, 1, 1, 0, 2, 0, 1, 0, 0, 1], "backgroundColor": "#e67e22", "borderColor": "#fff", "borderWidth": 1, "borderRadius": 2}, {"label": "WFD (Acquired)", "data": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1], "backgroundColor": "#f39c12", "borderColor": "#fff", "borderWidth": 1, "borderRadius": 2}] },
+  options: {
+    responsive: true, maintainAspectRatio: false,
+    plugins: {
+      legend: { display: false },
+      tooltip: { callbacks: { label: ctx => ' ' + ctx.dataset.label + ': ' + ctx.parsed.y + ' customer' + (ctx.parsed.y !== 1 ? 's' : '') } }
+    },
+    scales: {
+      x: { stacked: true, grid: { display: false }, ticks: { font: { family: 'Arial, sans-serif', size: 11 }, color: '#555' } },
+      y: { stacked: true, beginAtZero: true, max: 8, grid: { color: '#eee' },
+            ticks: { stepSize: 1, font: { family: 'Arial, sans-serif', size: 11 }, color: '#555', callback: v => Number.isInteger(v) ? v : '' },
+            title: { display: true, text: 'Customers', font: { family: 'Arial, sans-serif', size: 11 }, color: '#888' } }
+    }
+  }
+});</script>
+
+
+      </div>
+
+      <!-- ====== 2026 ====== -->
+      <div class="year-section">
+        <div class="year-heading">2026 &mdash; 29 customers termed</div>
+
+        <div class="summary-grid"><div class="tile"><div class="tile-value">29</div><div class="tile-label">Total termed in 2026</div></div><div class="tile"><div class="tile-value">14</div><div class="tile-label">Time Management</div><div class="tile-sub">2026</div></div><div class="tile"><div class="tile-value">12</div><div class="tile-label">Time Classic</div><div class="tile-sub">2026</div></div><div class="tile"><div class="tile-value">3</div><div class="tile-label">Time &amp; Attendance</div><div class="tile-sub">2026</div></div></div>
+
+        <div class="section-title">Monthly Overview — All Products (2026)</div>
+        <p class="section-sub">All products combined, stacked by term reason</p>
+        <div class="overview-wrap"><canvas id="chartOverview2026"></canvas></div>
+
+        <div class="section-title">By Product — Charts &amp; Customer Detail (2026)</div>
+        <p class="section-sub">Each section shows a monthly chart and the full list of customers that termed, organised by month</p>
+
+        
+<div class="product-block">
+  <div class="product-header">
+    <span class="product-name">Time Management (UTM)</span>
+    <span class="product-count">14 customers termed</span>
+  </div>
+  <div class="chart-wrap"><canvas id="chart2026_0"></canvas></div>
+  <div class="detail-section">
+    <div class="month-group">
+<div class="month-label" onclick="toggleMonth(this)"><span class="toggle-arrow">&#9654;</span> Jan &mdash; 13 customers</div>
+<table class="detail-table">
+<thead><tr><th>Customer</th><th>AR #</th><th>Term Reason</th></tr></thead>
+<tbody>
+<tr><td class="cust-name">BARNHARDT MANUFACTURING COMPANY</td><td class="ar-num">BAR1014</td><td><span class="reason-badge" style="background:#c0392b;">Left UKG</span></td></tr>
+<tr><td class="cust-name">Colavria</td><td class="ar-num">COL1029</td><td><span class="reason-badge" style="background:#c0392b;">Left UKG</span></td></tr>
+<tr><td class="cust-name">Continental Aerospace Technologies, Inc.</td><td class="ar-num">TEL1004</td><td><span class="reason-badge" style="background:#c0392b;">Left UKG</span></td></tr>
+<tr><td class="cust-name">Experity, Inc.</td><td class="ar-num">PRA1003</td><td><span class="reason-badge" style="background:#c0392b;">Left UKG</span></td></tr>
+<tr><td class="cust-name">MORTENSON FAMILY DENTAL HOLDINGS  INC.</td><td class="ar-num">MOR1014</td><td><span class="reason-badge" style="background:#c0392b;">Left UKG</span></td></tr>
+<tr><td class="cust-name">RAYONIER INC.</td><td class="ar-num">RAY1002</td><td><span class="reason-badge" style="background:#c0392b;">Left UKG</span></td></tr>
+<tr><td class="cust-name">Svs Services Group LLC</td><td class="ar-num">SVS1000</td><td><span class="reason-badge" style="background:#c0392b;">Left UKG</span></td></tr>
+<tr><td class="cust-name">THE CHRISTIAN CHURCH HOMES OF NORTHERN CALIFORNIA</td><td class="ar-num">CHR1006</td><td><span class="reason-badge" style="background:#c0392b;">Left UKG</span></td></tr>
+<tr><td class="cust-name">Western Electricity Coordinating Council</td><td class="ar-num">WES1020</td><td><span class="reason-badge" style="background:#c0392b;">Left UKG</span></td></tr>
+<tr><td class="cust-name">COVANTAGE CREDIT UNION</td><td class="ar-num">COV1003</td><td><span class="reason-badge" style="background:#e67e22;">WFD</span></td></tr>
+<tr><td class="cust-name">CROSSCOUNTRY Freight Solutions, Inc.</td><td class="ar-num">CRO1008</td><td><span class="reason-badge" style="background:#e67e22;">WFD</span></td></tr>
+<tr><td class="cust-name">MAJESTIC STEEL USA  INC.</td><td class="ar-num">MAJ1001</td><td><span class="reason-badge" style="background:#e67e22;">WFD</span></td></tr>
+<tr><td class="cust-name">MASTRONARDI PRODUCE LIMITED</td><td class="ar-num">MAS5000</td><td><span class="reason-badge" style="background:#e67e22;">WFD</span></td></tr>
+</tbody></table></div>
+<div class="month-group">
+<div class="month-label" onclick="toggleMonth(this)"><span class="toggle-arrow">&#9654;</span> Feb &mdash; 1 customer</div>
+<table class="detail-table">
+<thead><tr><th>Customer</th><th>AR #</th><th>Term Reason</th></tr></thead>
+<tbody>
+<tr><td class="cust-name">VOLUNTEERS OF AMERICA TEXAS  INC.</td><td class="ar-num">VOA1000</td><td><span class="reason-badge" style="background:#c0392b;">Left UKG</span></td></tr>
+</tbody></table></div>
+  </div>
+</div>
+<script>
+new Chart(document.getElementById('chart2026_0'), {
+  type: 'bar',
+  data: { labels: ["Jan", "Feb", "Mar", "Jul"], datasets: [{"label": "Left UKG", "data": [9, 1, 0, 0], "backgroundColor": "#c0392b", "borderColor": "#fff", "borderWidth": 1, "borderRadius": 2}, {"label": "WFD", "data": [4, 0, 0, 0], "backgroundColor": "#e67e22", "borderColor": "#fff", "borderWidth": 1, "borderRadius": 2}] },
+  options: {
+    responsive: true, maintainAspectRatio: false,
+    plugins: {
+      legend: { display: false },
+      tooltip: { callbacks: { label: ctx => ' ' + ctx.dataset.label + ': ' + ctx.parsed.y + ' customer' + (ctx.parsed.y !== 1 ? 's' : '') } }
+    },
+    scales: {
+      x: { stacked: true, grid: { display: false }, ticks: { font: { family: 'Arial, sans-serif', size: 11 }, color: '#555' } },
+      y: { stacked: true, beginAtZero: true, max: 15, grid: { color: '#eee' },
+            ticks: { stepSize: 1, font: { family: 'Arial, sans-serif', size: 11 }, color: '#555', callback: v => Number.isInteger(v) ? v : '' },
+            title: { display: true, text: 'Customers', font: { family: 'Arial, sans-serif', size: 11 }, color: '#888' } }
+    }
+  }
+});</script>
+
+<div class="product-block">
+  <div class="product-header">
+    <span class="product-name">Time Classic (WFM-C)</span>
+    <span class="product-count">12 customers termed</span>
+  </div>
+  <div class="chart-wrap"><canvas id="chart2026_1"></canvas></div>
+  <div class="detail-section">
+    <div class="month-group">
+<div class="month-label" onclick="toggleMonth(this)"><span class="toggle-arrow">&#9654;</span> Jan &mdash; 7 customers</div>
+<table class="detail-table">
+<thead><tr><th>Customer</th><th>AR #</th><th>Term Reason</th></tr></thead>
+<tbody>
+<tr><td class="cust-name">CLOVIS ONCOLOGY  INC.</td><td class="ar-num">CLO1003</td><td><span class="reason-badge" style="background:#c0392b;">Left UKG</span></td></tr>
+<tr><td class="cust-name">THE TIME GROUP</td><td class="ar-num">TIM1001</td><td><span class="reason-badge" style="background:#c0392b;">Left UKG</span></td></tr>
+<tr><td class="cust-name">AGRIVISION FARM MANAGEMENT LLC</td><td class="ar-num">AGR1004</td><td><span class="reason-badge" style="background:#e67e22;">WFD</span></td></tr>
+<tr><td class="cust-name">Jaynes Corporation</td><td class="ar-num">JAY1002</td><td><span class="reason-badge" style="background:#e67e22;">WFD</span></td></tr>
+<tr><td class="cust-name">Prelude Fertility, Inc.</td><td class="ar-num">PRE1027</td><td><span class="reason-badge" style="background:#e67e22;">WFD</span></td></tr>
+<tr><td class="cust-name">FAMILY RESOURCE CENTER OF SOUTH FLORIDA  INC.</td><td class="ar-num">FAM1010</td><td><span class="reason-badge" style="background:#2980b9;">WFR</span></td></tr>
+<tr><td class="cust-name">TREX CO INC</td><td class="ar-num">TRE1006</td><td><span class="reason-badge" style="background:#2980b9;">WFR</span></td></tr>
+</tbody></table></div>
+<div class="month-group">
+<div class="month-label" onclick="toggleMonth(this)"><span class="toggle-arrow">&#9654;</span> Feb &mdash; 2 customers</div>
+<table class="detail-table">
+<thead><tr><th>Customer</th><th>AR #</th><th>Term Reason</th></tr></thead>
+<tbody>
+<tr><td class="cust-name">NRRM  LLC</td><td class="ar-num">NRR1000</td><td><span class="reason-badge" style="background:#c0392b;">Left UKG</span></td></tr>
+<tr><td class="cust-name">Movati Athletic (Group) Inc</td><td class="ar-num">MOV5000</td><td><span class="reason-badge" style="background:#7f8c8d;">Left WFM Classic Only</span></td></tr>
+</tbody></table></div>
+<div class="month-group">
+<div class="month-label" onclick="toggleMonth(this)"><span class="toggle-arrow">&#9654;</span> Mar &mdash; 2 customers</div>
+<table class="detail-table">
+<thead><tr><th>Customer</th><th>AR #</th><th>Term Reason</th></tr></thead>
+<tbody>
+<tr><td class="cust-name">CAPITAL CITY BANK</td><td class="ar-num">CAP1020</td><td><span class="reason-badge" style="background:#7f8c8d;">Left WFM Classic Only</span></td></tr>
+<tr><td class="cust-name">THE DREES COMPANY</td><td class="ar-num">DRE1000</td><td><span class="reason-badge" style="background:#7f8c8d;">Left WFM Classic Only</span></td></tr>
+</tbody></table></div>
+<div class="month-group">
+<div class="month-label" onclick="toggleMonth(this)"><span class="toggle-arrow">&#9654;</span> Jul &mdash; 1 customer</div>
+<table class="detail-table">
+<thead><tr><th>Customer</th><th>AR #</th><th>Term Reason</th></tr></thead>
+<tbody>
+<tr><td class="cust-name">STEEL DYNAMICS  INC.</td><td class="ar-num">STE1006</td><td><span class="reason-badge" style="background:#e67e22;">WFD</span></td></tr>
+</tbody></table></div>
+  </div>
+</div>
+<script>
+new Chart(document.getElementById('chart2026_1'), {
+  type: 'bar',
+  data: { labels: ["Jan", "Feb", "Mar", "Jul"], datasets: [{"label": "Left UKG", "data": [2, 1, 0, 0], "backgroundColor": "#c0392b", "borderColor": "#fff", "borderWidth": 1, "borderRadius": 2}, {"label": "Left WFM Classic Only", "data": [0, 1, 2, 0], "backgroundColor": "#7f8c8d", "borderColor": "#fff", "borderWidth": 1, "borderRadius": 2}, {"label": "WFD", "data": [3, 0, 0, 1], "backgroundColor": "#e67e22", "borderColor": "#fff", "borderWidth": 1, "borderRadius": 2}, {"label": "WFR", "data": [2, 0, 0, 0], "backgroundColor": "#2980b9", "borderColor": "#fff", "borderWidth": 1, "borderRadius": 2}] },
+  options: {
+    responsive: true, maintainAspectRatio: false,
+    plugins: {
+      legend: { display: false },
+      tooltip: { callbacks: { label: ctx => ' ' + ctx.dataset.label + ': ' + ctx.parsed.y + ' customer' + (ctx.parsed.y !== 1 ? 's' : '') } }
+    },
+    scales: {
+      x: { stacked: true, grid: { display: false }, ticks: { font: { family: 'Arial, sans-serif', size: 11 }, color: '#555' } },
+      y: { stacked: true, beginAtZero: true, max: 9, grid: { color: '#eee' },
+            ticks: { stepSize: 1, font: { family: 'Arial, sans-serif', size: 11 }, color: '#555', callback: v => Number.isInteger(v) ? v : '' },
+            title: { display: true, text: 'Customers', font: { family: 'Arial, sans-serif', size: 11 }, color: '#888' } }
+    }
+  }
+});</script>
+
+<div class="product-block">
+  <div class="product-header">
+    <span class="product-name">Time &amp; Attendance (UTA)</span>
+    <span class="product-count">3 customers termed</span>
+  </div>
+  <div class="chart-wrap"><canvas id="chart2026_2"></canvas></div>
+  <div class="detail-section">
+    <div class="month-group">
+<div class="month-label" onclick="toggleMonth(this)"><span class="toggle-arrow">&#9654;</span> Jan &mdash; 3 customers</div>
+<table class="detail-table">
+<thead><tr><th>Customer</th><th>AR #</th><th>Term Reason</th></tr></thead>
+<tbody>
+<tr><td class="cust-name">SPRINGSTONE  INC.</td><td class="ar-num">SPR1004</td><td><span class="reason-badge" style="background:#c0392b;">Left UKG</span></td></tr>
+<tr><td class="cust-name">WHITE DRIVE MOTORS &amp; STEERING, LLC</td><td class="ar-num">WHI1011</td><td><span class="reason-badge" style="background:#c0392b;">Left UKG</span></td></tr>
+<tr><td class="cust-name">HUSCH BLACKWELL LLP</td><td class="ar-num">HUS1001</td><td><span class="reason-badge" style="background:#e67e22;">WFD</span></td></tr>
+</tbody></table></div>
+  </div>
+</div>
+<script>
+new Chart(document.getElementById('chart2026_2'), {
+  type: 'bar',
+  data: { labels: ["Jan", "Feb", "Mar", "Jul"], datasets: [{"label": "Left UKG", "data": [2, 0, 0, 0], "backgroundColor": "#c0392b", "borderColor": "#fff", "borderWidth": 1, "borderRadius": 2}, {"label": "WFD", "data": [1, 0, 0, 0], "backgroundColor": "#e67e22", "borderColor": "#fff", "borderWidth": 1, "borderRadius": 2}] },
+  options: {
+    responsive: true, maintainAspectRatio: false,
+    plugins: {
+      legend: { display: false },
+      tooltip: { callbacks: { label: ctx => ' ' + ctx.dataset.label + ': ' + ctx.parsed.y + ' customer' + (ctx.parsed.y !== 1 ? 's' : '') } }
+    },
+    scales: {
+      x: { stacked: true, grid: { display: false }, ticks: { font: { family: 'Arial, sans-serif', size: 11 }, color: '#555' } },
+      y: { stacked: true, beginAtZero: true, max: 5, grid: { color: '#eee' },
+            ticks: { stepSize: 1, font: { family: 'Arial, sans-serif', size: 11 }, color: '#555', callback: v => Number.isInteger(v) ? v : '' },
+            title: { display: true, text: 'Customers', font: { family: 'Arial, sans-serif', size: 11 }, color: '#888' } }
+    }
+  }
+});</script>
+
+      </div>
+
+    </div>
+
+    <div class="report-footer">
+      Generated by Claude &nbsp;&middot;&nbsp; Source: All Product Terms.xlsx &nbsp;&middot;&nbsp; 2025 All Product Terms &amp; 2026 All Product Terms tabs &nbsp;&middot;&nbsp; 233 total records
+    </div>
+  </div>
+
+</div>
+
+<script>
+
+new Chart(document.getElementById('chartOverview2025'), {
+  type: 'bar',
+  data: { labels: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"], datasets: [{"label": "Left UKG", "data": [15, 10, 25, 15, 12, 26, 17, 9, 0, 2, 0, 29], "backgroundColor": "#c0392b", "borderColor": "#fff", "borderWidth": 1, "borderRadius": 2}, {"label": "Left UTA Only", "data": [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2], "backgroundColor": "#16a085", "borderColor": "#fff", "borderWidth": 1, "borderRadius": 2}, {"label": "Left UTM Only", "data": [0, 0, 0, 0, 0, 0, 0, 0, 2, 0, 0, 0], "backgroundColor": "#27ae60", "borderColor": "#fff", "borderWidth": 1, "borderRadius": 2}, {"label": "Left WFM Classic Only", "data": [0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0], "backgroundColor": "#7f8c8d", "borderColor": "#fff", "borderWidth": 1, "borderRadius": 2}, {"label": "WFC", "data": [0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0], "backgroundColor": "#8e44ad", "borderColor": "#fff", "borderWidth": 1, "borderRadius": 2}, {"label": "WFD", "data": [3, 1, 1, 7, 1, 3, 5, 1, 3, 2, 3, 4], "backgroundColor": "#e67e22", "borderColor": "#fff", "borderWidth": 1, "borderRadius": 2}, {"label": "WFD (Acquired)", "data": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1], "backgroundColor": "#f39c12", "borderColor": "#fff", "borderWidth": 1, "borderRadius": 2}, {"label": "WFR", "data": [0, 0, 1, 0, 0, 0, 0, 0, 1, 0, 0, 0], "backgroundColor": "#2980b9", "borderColor": "#fff", "borderWidth": 1, "borderRadius": 2}] },
+  options: {
+    responsive: true, maintainAspectRatio: false,
+    plugins: {
+      legend: { display: false },
+      tooltip: { callbacks: { label: ctx => ' ' + ctx.dataset.label + ': ' + ctx.parsed.y + ' customer' + (ctx.parsed.y !== 1 ? 's' : '') } }
+    },
+    scales: {
+      x: { stacked: true, grid: { display: false }, ticks: { font: { family: 'Arial, sans-serif', size: 11 }, color: '#555' } },
+      y: { stacked: true, beginAtZero: true, grid: { color: '#eee' },
+            ticks: { stepSize: 5, font: { family: 'Arial, sans-serif', size: 11 }, color: '#555', callback: v => Number.isInteger(v) ? v : '' },
+            title: { display: true, text: 'Customers', font: { family: 'Arial, sans-serif', size: 11 }, color: '#888' } }
+    }
+  }
+});
+
+new Chart(document.getElementById('chartOverview2026'), {
+  type: 'bar',
+  data: { labels: ["Jan", "Feb", "Mar", "Jul"], datasets: [{"label": "Left UKG", "data": [13, 2, 0, 0], "backgroundColor": "#c0392b", "borderColor": "#fff", "borderWidth": 1, "borderRadius": 2}, {"label": "Left WFM Classic Only", "data": [0, 1, 2, 0], "backgroundColor": "#7f8c8d", "borderColor": "#fff", "borderWidth": 1, "borderRadius": 2}, {"label": "WFD", "data": [8, 0, 0, 1], "backgroundColor": "#e67e22", "borderColor": "#fff", "borderWidth": 1, "borderRadius": 2}, {"label": "WFR", "data": [2, 0, 0, 0], "backgroundColor": "#2980b9", "borderColor": "#fff", "borderWidth": 1, "borderRadius": 2}] },
+  options: {
+    responsive: true, maintainAspectRatio: false,
+    plugins: {
+      legend: { display: false },
+      tooltip: { callbacks: { label: ctx => ' ' + ctx.dataset.label + ': ' + ctx.parsed.y + ' customer' + (ctx.parsed.y !== 1 ? 's' : '') } }
+    },
+    scales: {
+      x: { stacked: true, grid: { display: false }, ticks: { font: { family: 'Arial, sans-serif', size: 11 }, color: '#555' } },
+      y: { stacked: true, beginAtZero: true, grid: { color: '#eee' },
+            ticks: { stepSize: 2, font: { family: 'Arial, sans-serif', size: 11 }, color: '#555', callback: v => Number.isInteger(v) ? v : '' },
+            title: { display: true, text: 'Customers', font: { family: 'Arial, sans-serif', size: 11 }, color: '#888' } }
+    }
+  }
+});
+</script>
+
+<script>
+function toggleMonth(el) {
+  el.classList.toggle('open');
+  var table = el.parentElement.querySelector('table.detail-table');
+  if (table) {
+    table.style.display = table.style.display === 'table' ? 'none' : 'table';
+  }
+}
+</script>
+</body>
+</html>

@@ -11,6 +11,7 @@ import SecurityDashboard from './pages/SecurityDashboard';
 import KTLOAnalysisDashboard from './pages/KTLOAnalysisDashboard';
 import CustomerImpactDashboard from './pages/CustomerImpactDashboard';
 import AllProductsDashboard from './pages/AllProductsDashboard';
+import CustomerTrends from './pages/CustomerTrends';
 
 function App() {
   return (
@@ -18,6 +19,7 @@ function App() {
       <Routes>
         <Route path="/" element={<Layout />}>
           <Route index element={<LeadershipDashboard />} />
+          <Route path="customer-trends" element={<CustomerTrends />} />
           <Route path="all-products" element={<AllProductsDashboard />} />
           <Route path="uta" element={<UTADashboard />} />
           <Route path="uta/upgrade-tracker" element={<UTAUpgradeTracker />} />

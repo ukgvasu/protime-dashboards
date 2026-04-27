@@ -64,6 +64,9 @@ export default function Layout() {
           <div className="pt-1 pb-1">
             <div className="text-xs font-semibold text-gray-400 uppercase tracking-wider px-3">Protime Summary</div>
           </div>
+          <NavLink to="/customer-trends" className={navLinkClass}>
+            <TrendingUp size={16} /> Customer Trends
+          </NavLink>
           <NavLink to="/leadership" className={navLinkClass}>
             <LayoutDashboard size={16} /> Defect Summary
           </NavLink>
