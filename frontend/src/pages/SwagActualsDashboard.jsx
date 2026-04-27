@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import {
   BarChart, Bar, XAxis, YAxis, Tooltip, Legend, ResponsiveContainer,
   LineChart, Line, CartesianGrid, ReferenceLine,
+  PieChart, Pie, Cell,
 } from 'recharts';
 import { ExternalLink } from 'lucide-react';
 import { api } from '../services/api';
@@ -140,6 +141,33 @@ export default function SwagActualsDashboard() {
     </th>
   );
 
+  // ── Epic pie data ─────────────────────────────────────────────────────────
+  const epicPieData = epics.map((e, i) => {
+    const pct = e.swag > 0 ? Math.round((e.totalActuals / e.swag) * 100) : 0;
+    const expected = timeElapsed;
+    let statusColor, status;
+    if (expected === 0) { statusColor = '#94a3b8'; status = 'Not Started'; }
+    else if (pct >= expected) { statusColor = '#16a34a'; status = 'On Track'; }
+    else if (pct >= expected * 0.5) { statusColor = '#f59e0b'; status = 'At Risk'; }
+    else { statusColor = '#dc2626'; status = 'Behind'; }
+    return { key: e.key, summary: e.summary, value: e.swag, swag: e.swag, actuals: e.totalActuals, pct, statusColor, status, epicColor: EPIC_COLORS[i % EPIC_COLORS.length] };
+  });
+
+  const PieTooltip = ({ active, payload }) => {
+    if (!active || !payload?.length) return null;
+    const d = payload[0].payload;
+    return (
+      <div className="bg-white border border-gray-200 rounded shadow-sm p-2.5 text-xs">
+        <div className="font-semibold text-gray-700 mb-1">{d.key} — {d.summary}</div>
+        <div className="text-gray-500">SWAG: <span className="font-medium text-gray-700">{d.swag} pts</span></div>
+        <div className="text-gray-500">Actuals: <span className="font-medium text-gray-700">{Math.round(d.actuals * 10) / 10} pts</span></div>
+        <div className="mt-1" style={{ color: d.statusColor }}>
+          <span className="font-semibold">{d.pct}% delivered</span> · {d.status}
+        </div>
+      </div>
+    );
+  };
+
   return (
     <div className="p-6 max-w-7xl mx-auto">
       {/* Header */}
@@ -157,6 +185,68 @@ export default function SwagActualsDashboard() {
         <StatCard label="% Delivered" value={`${pctDelivered}%`} sublabel={`vs ${timeElapsed}% time elapsed`} color={pctDelivered >= timeElapsed ? '#16a34a' : '#dc2626'} />
         <StatCard label="Remaining" value={`${Math.round(remaining)} pts`} sublabel="SWAG – Actuals" color="#0369a1" />
         <StatCard label="Variance" value={`${variance >= 0 ? '+' : ''}${Math.round(variance)} pts`} sublabel={variance >= 0 ? 'Ahead of plan' : 'Behind plan'} color={variance >= 0 ? '#16a34a' : '#dc2626'} />
+      </div>
+
+      {/* Epic Progress Overview */}
+      <div className="bg-white rounded-lg shadow-sm border border-gray-100 p-5 mb-5">
+        <div className="mb-3">
+          <h2 className="font-semibold text-gray-700">Business Epic Progress Overview</h2>
+          <p className="text-xs text-gray-400 mt-0.5">Slice size = SWAG commitment · Color = on-track status vs {timeElapsed}% time elapsed</p>
+        </div>
+        <div className="flex gap-6 items-center">
+          {/* Donut pie */}
+          <div style={{ width: 200, height: 200 }} className="flex-shrink-0">
+            <ResponsiveContainer width="100%" height="100%">
+              <PieChart>
+                <Pie data={epicPieData} cx="50%" cy="50%" innerRadius={52} outerRadius={92} dataKey="value" paddingAngle={2}>
+                  {epicPieData.map((entry, i) => (
+                    <Cell key={i} fill={entry.epicColor} stroke="white" strokeWidth={1.5} />
+                  ))}
+                </Pie>
+                <Tooltip content={<PieTooltip />} />
+              </PieChart>
+            </ResponsiveContainer>
+          </div>
+          {/* Legend / breakdown table */}
+          <div className="flex-1 min-w-0">
+            <table className="w-full text-xs">
+              <thead>
+                <tr className="border-b border-gray-100">
+                  <th className="text-left pb-2 pr-3 font-semibold text-gray-400 uppercase tracking-wide">Epic</th>
+                  <th className="text-right pb-2 px-2 font-semibold text-gray-400 uppercase tracking-wide">SWAG</th>
+                  <th className="text-right pb-2 px-2 font-semibold text-gray-400 uppercase tracking-wide">Actuals</th>
+                  <th className="text-right pb-2 px-2 font-semibold text-gray-400 uppercase tracking-wide">Expected</th>
+                  <th className="text-right pb-2 px-2 font-semibold text-gray-400 uppercase tracking-wide">Delivered</th>
+                  <th className="text-center pb-2 pl-2 font-semibold text-gray-400 uppercase tracking-wide">Status</th>
+                </tr>
+              </thead>
+              <tbody className="divide-y divide-gray-50">
+                {epicPieData.map((e) => (
+                  <tr key={e.key}>
+                    <td className="py-1.5 pr-3">
+                      <div className="flex items-center gap-1.5 min-w-0">
+                        <span className="inline-block w-2 h-2 rounded-full flex-shrink-0" style={{ background: e.epicColor }} />
+                        <a href={`${JIRA_BASE}/browse/${e.key}`} target="_blank" rel="noreferrer"
+                          className="text-[#005151] hover:underline font-semibold flex-shrink-0">{e.key}</a>
+                        <span className="text-gray-500 truncate">{e.summary}</span>
+                      </div>
+                    </td>
+                    <td className="py-1.5 px-2 text-right font-medium text-gray-700">{e.swag}</td>
+                    <td className="py-1.5 px-2 text-right text-gray-600">{Math.round(e.actuals * 10) / 10}</td>
+                    <td className="py-1.5 px-2 text-right text-gray-400">{Math.round(e.swag * timeElapsed / 100)}</td>
+                    <td className="py-1.5 px-2 text-right font-semibold" style={{ color: e.statusColor }}>{e.pct}%</td>
+                    <td className="py-1.5 pl-2 text-center">
+                      <span className="inline-block px-2 py-0.5 rounded-full font-medium whitespace-nowrap"
+                        style={{ background: e.statusColor + '22', color: e.statusColor }}>
+                        {e.status}
+                      </span>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </div>
       </div>
 
       {/* Tabs */}
