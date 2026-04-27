@@ -55,7 +55,7 @@ export default function Layout() {
           </div>
           <div>
             <div className="font-bold text-[#005151] text-sm">ProTime</div>
-            <div className="text-xs text-gray-500">Defect Dashboard</div>
+            <div className="text-xs text-gray-500">Dashboard</div>
           </div>
         </div>
 

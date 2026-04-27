@@ -34,7 +34,7 @@ export default function SwagActualsDashboard() {
   const [data, setData] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [tab, setTab] = useState('period');
+  const [tab, setTab] = useState('cumulative');
   const [storyFilter, setStoryFilter] = useState('');
   const [storySort, setStorySort] = useState({ key: 'resolutionDate', dir: 'desc' });
   const [expanded, setExpanded] = useState(new Set());
@@ -45,6 +45,13 @@ export default function SwagActualsDashboard() {
   });
   const expandAll = () => setExpanded(new Set(data?.epics?.map(e => e.key) || []));
   const collapseAll = () => setExpanded(new Set());
+
+  const [collapsedGroups, setCollapsedGroups] = useState(new Set());
+  const toggleGroup = (key) => setCollapsedGroups(prev => {
+    const next = new Set(prev);
+    next.has(key) ? next.delete(key) : next.add(key);
+    return next;
+  });
 
   useEffect(() => {
     setLoading(true);
@@ -155,9 +162,9 @@ export default function SwagActualsDashboard() {
       {/* Tabs */}
       <div className="border-b border-gray-200 mb-5 flex gap-1">
         {[
-          { id: 'period', label: 'By Period' },
           { id: 'cumulative', label: 'Cumulative' },
           { id: 'epics', label: 'Business Epic Breakdown' },
+          { id: 'period', label: 'By Period' },
           { id: 'stories', label: `Stories (${stories.length})` },
         ].map(t => (
           <button key={t.id} className={TAB_CLASSES(tab === t.id)} onClick={() => setTab(t.id)}>
@@ -337,87 +344,145 @@ export default function SwagActualsDashboard() {
       )}
 
       {/* ── Stories ── */}
-      {tab === 'stories' && (
-        <div className="bg-white rounded-lg shadow-sm border border-gray-100 p-5">
-          <div className="flex items-center justify-between mb-4">
-            <div>
-              <h2 className="font-semibold text-gray-700">Resolved Stories</h2>
-              <p className="text-xs text-gray-400 mt-0.5">
-                {data.storiesWithPoints} of {data.storiesAnalyzed} stories have story points
-              </p>
+      {tab === 'stories' && (() => {
+        // Group filtered stories by business epic, in epic order, unattributed last
+        // Build ordered PS epic list (inheriting color from parent BE)
+        const psEpicList = [];
+        epics.forEach((e, i) => {
+          const color = EPIC_COLORS[i % EPIC_COLORS.length];
+          (e.psEpics || []).forEach(p => {
+            psEpicList.push({ key: p.key, summary: p.summary, color, beKey: e.key, beSummary: e.summary });
+          });
+        });
+
+        // Group filtered stories by epicLink (PS epic), in PS epic order
+        const storyGroups = psEpicList
+          .map(p => ({
+            groupKey: p.key,
+            epicKey: p.key,
+            summary: p.summary,
+            color: p.color,
+            beKey: p.beKey,
+            beSummary: p.beSummary,
+            stories: filteredStories.filter(s => s.epicLink === p.key),
+          }))
+          .filter(g => g.stories.length > 0);
+        const unattributed = filteredStories.filter(s => !s.epicLink);
+        if (unattributed.length > 0) {
+          storyGroups.push({ groupKey: '__none__', epicKey: null, summary: 'Unattributed', color: '#94a3b8', stories: unattributed });
+        }
+
+        return (
+          <div className="bg-white rounded-lg shadow-sm border border-gray-100 p-5">
+            <div className="flex items-center justify-between mb-4">
+              <div>
+                <h2 className="font-semibold text-gray-700">Resolved Stories</h2>
+                <p className="text-xs text-gray-400 mt-0.5">
+                  {data.storiesWithPoints} of {data.storiesAnalyzed} stories have story points · grouped by epic
+                </p>
+              </div>
+              <input
+                type="text"
+                placeholder="Filter by key, summary, assignee, or epic…"
+                value={storyFilter}
+                onChange={e => setStoryFilter(e.target.value)}
+                className="text-xs border border-gray-200 rounded px-3 py-1.5 w-72 focus:outline-none focus:border-[#005151]"
+              />
             </div>
-            <input
-              type="text"
-              placeholder="Filter by key, summary, assignee, or epic…"
-              value={storyFilter}
-              onChange={e => setStoryFilter(e.target.value)}
-              className="text-xs border border-gray-200 rounded px-3 py-1.5 w-72 focus:outline-none focus:border-[#005151]"
-            />
+            <div className="overflow-x-auto rounded border border-gray-100">
+              <table className="w-full text-sm">
+                <thead>
+                  <tr className="bg-gray-50 text-left">
+                    <SortHdr col="key" label="Key" />
+                    <th className="px-3 py-2 text-xs font-semibold text-gray-500 uppercase">Summary</th>
+                    <SortHdr col="assignee" label="Assignee" />
+                    <SortHdr col="sp" label="SP" />
+                    <SortHdr col="resolutionDate" label="Resolved" />
+                    <SortHdr col="status" label="Status" />
+                  </tr>
+                </thead>
+                <tbody>
+                  {filteredStories.length === 0 ? (
+                    <tr><td colSpan={6} className="px-3 py-6 text-center text-gray-400 text-xs italic">No stories match.</td></tr>
+                  ) : storyGroups.map(group => {
+                    const isOpen = !collapsedGroups.has(group.groupKey);
+                    const groupSP = group.stories.reduce((s, st) => s + (st.sp || 0), 0);
+                    return (
+                      <>
+                        {/* ── Epic group header ── */}
+                        <tr
+                          key={`grp-${group.groupKey}`}
+                          className="cursor-pointer select-none"
+                          style={{ background: group.color + '18' }}
+                          onClick={() => toggleGroup(group.groupKey)}
+                        >
+                          <td colSpan={6} className="px-3 py-2">
+                            <div className="flex items-center gap-2">
+                              <span className="text-gray-500 text-xs w-3 flex-shrink-0">
+                                {isOpen ? '▼' : '▶'}
+                              </span>
+                              <span className="inline-block w-2.5 h-2.5 rounded-full flex-shrink-0" style={{ background: group.color }} />
+                              {group.epicKey ? (
+                                <a
+                                  href={`${JIRA_BASE}/browse/${group.epicKey}`}
+                                  target="_blank" rel="noreferrer"
+                                  onClick={ev => ev.stopPropagation()}
+                                  className="text-xs font-bold hover:underline flex items-center gap-1 flex-shrink-0"
+                                  style={{ color: group.color }}
+                                >
+                                  {group.epicKey} <ExternalLink size={10} className="opacity-60" />
+                                </a>
+                              ) : null}
+                              <span className="text-xs font-semibold text-gray-700">{group.summary}</span>
+                              {group.beSummary && (
+                                <span className="text-xs text-gray-400">· {group.beSummary}</span>
+                              )}
+                              <span className="text-xs text-gray-400 ml-1">
+                                {group.stories.length} {group.stories.length === 1 ? 'story' : 'stories'}
+                                {groupSP > 0 ? ` · ${Math.round(groupSP * 10) / 10} pts` : ''}
+                              </span>
+                            </div>
+                          </td>
+                        </tr>
+
+                        {/* ── Story rows ── */}
+                        {isOpen && group.stories.map((s, i) => (
+                          <tr key={s.key} className={i % 2 === 0 ? 'bg-white' : 'bg-gray-50/40'}>
+                            <td className="px-3 py-2 whitespace-nowrap pl-8">
+                              <a href={`${JIRA_BASE}/browse/${s.key}`} target="_blank" rel="noreferrer"
+                                className="text-[#005151] font-medium hover:underline flex items-center gap-1 text-xs">
+                                {s.key} <ExternalLink size={10} className="text-gray-400" />
+                              </a>
+                            </td>
+                            <td className="px-3 py-2 max-w-xs">
+                              <span className="text-xs text-gray-700 line-clamp-2" title={s.summary}>{s.summary}</span>
+                            </td>
+                            <td className="px-3 py-2">
+                              <span className={`text-xs ${s.assignee === 'Unassigned' ? 'text-amber-500' : 'text-gray-600'}`}>
+                                {s.assignee}
+                              </span>
+                            </td>
+                            <td className="px-3 py-2 text-right">
+                              <span className={`text-xs font-semibold ${s.sp > 0 ? 'text-[#005151]' : 'text-gray-300'}`}>
+                                {s.sp > 0 ? s.sp : '—'}
+                              </span>
+                            </td>
+                            <td className="px-3 py-2 whitespace-nowrap text-xs text-gray-500">{s.resolutionDate || '—'}</td>
+                            <td className="px-3 py-2 text-xs text-gray-500">{s.status}</td>
+                          </tr>
+                        ))}
+                      </>
+                    );
+                  })}
+                </tbody>
+              </table>
+            </div>
+            {filteredStories.length > 0 && (
+              <p className="text-xs text-gray-400 mt-2">{filteredStories.length} of {stories.length} stories shown across {storyGroups.length} epics</p>
+            )}
           </div>
-          <div className="overflow-x-auto rounded border border-gray-100">
-            <table className="w-full text-sm">
-              <thead>
-                <tr className="bg-gray-50 text-left">
-                  <SortHdr col="key" label="Key" />
-                  <th className="px-3 py-2 text-xs font-semibold text-gray-500 uppercase">Summary</th>
-                  <SortHdr col="beKey" label="Business Epic" />
-                  <SortHdr col="assignee" label="Assignee" />
-                  <SortHdr col="sp" label="SP" />
-                  <SortHdr col="resolutionDate" label="Resolved" />
-                  <SortHdr col="status" label="Status" />
-                </tr>
-              </thead>
-              <tbody className="divide-y divide-gray-50">
-                {filteredStories.length === 0 ? (
-                  <tr><td colSpan={7} className="px-3 py-6 text-center text-gray-400 text-xs italic">No stories match.</td></tr>
-                ) : filteredStories.map((s, i) => {
-                  const epicIdx = epics.findIndex(e => e.key === s.beKey);
-                  const epicColor = epicIdx >= 0 ? EPIC_COLORS[epicIdx % EPIC_COLORS.length] : '#94a3b8';
-                  return (
-                    <tr key={s.key} className={i % 2 === 0 ? 'bg-white' : 'bg-gray-50/40'}>
-                      <td className="px-3 py-2 whitespace-nowrap">
-                        <a href={`${JIRA_BASE}/browse/${s.key}`} target="_blank" rel="noreferrer"
-                          className="text-[#005151] font-medium hover:underline flex items-center gap-1 text-xs">
-                          {s.key} <ExternalLink size={10} className="text-gray-400" />
-                        </a>
-                      </td>
-                      <td className="px-3 py-2 max-w-xs">
-                        <span className="text-xs text-gray-700 line-clamp-2" title={s.summary}>{s.summary}</span>
-                      </td>
-                      <td className="px-3 py-2 whitespace-nowrap">
-                        {s.beKey ? (
-                          <span className="inline-flex items-center gap-1.5">
-                            <span className="inline-block w-2 h-2 rounded-full" style={{ background: epicColor }} />
-                            <a href={`${JIRA_BASE}/browse/${s.beKey}`} target="_blank" rel="noreferrer"
-                              className="text-xs hover:underline" style={{ color: epicColor }}>
-                              {s.beKey}
-                            </a>
-                          </span>
-                        ) : <span className="text-xs text-gray-300">—</span>}
-                      </td>
-                      <td className="px-3 py-2">
-                        <span className={`text-xs ${s.assignee === 'Unassigned' ? 'text-amber-500' : 'text-gray-600'}`}>
-                          {s.assignee}
-                        </span>
-                      </td>
-                      <td className="px-3 py-2 text-right">
-                        <span className={`text-xs font-semibold ${s.sp > 0 ? 'text-[#005151]' : 'text-gray-300'}`}>
-                          {s.sp > 0 ? s.sp : '—'}
-                        </span>
-                      </td>
-                      <td className="px-3 py-2 whitespace-nowrap text-xs text-gray-500">{s.resolutionDate || '—'}</td>
-                      <td className="px-3 py-2 text-xs text-gray-500">{s.status}</td>
-                    </tr>
-                  );
-                })}
-              </tbody>
-            </table>
-          </div>
-          {filteredStories.length > 0 && (
-            <p className="text-xs text-gray-400 mt-2">{filteredStories.length} of {stories.length} stories shown</p>
-          )}
-        </div>
-      )}
+        );
+      })()}
     </div>
   );
 }
