@@ -61,8 +61,11 @@ export default function Layout() {
 
         {/* Nav */}
         <nav className="flex-1 p-3 space-y-1">
+          <div className="pt-1 pb-1">
+            <div className="text-xs font-semibold text-gray-400 uppercase tracking-wider px-3">Protime Summary</div>
+          </div>
           <NavLink to="/leadership" className={navLinkClass}>
-            <LayoutDashboard size={16} /> Leadership
+            <LayoutDashboard size={16} /> Defect Summary
           </NavLink>
           <NavLink to="/all-products" className={navLinkClass}>
             <TrendingUp size={16} /> All Products
