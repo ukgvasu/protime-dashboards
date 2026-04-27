@@ -32,9 +32,9 @@ const TAB_CLASSES = (active) =>
   }`;
 
 const PRODUCT_CONFIG = {
-  uta:       { title: 'UTA Q3 — SWAG vs Actuals',         apiCall: () => api.getSwagActualsUTAQ3() },
-  utm:       { title: 'UTM Q3 — SWAG vs Actuals',         apiCall: () => api.getSwagActualsUTMQ3() },
-  wfmClassic:{ title: 'WFM Classic Q3 — SWAG vs Actuals', apiCall: () => api.getSwagActualsWFCQ3() },
+  uta:       { title: 'UTA Q3 — Development Dashboard',         apiCall: () => api.getSwagActualsUTAQ3() },
+  utm:       { title: 'UTM Q3 — Development Dashboard',         apiCall: () => api.getSwagActualsUTMQ3() },
+  wfmClassic:{ title: 'WFM Classic Q3 — Development Dashboard', apiCall: () => api.getSwagActualsWFCQ3() },
 };
 
 export default function SwagActualsDashboard({ product = 'uta' }) {
@@ -324,7 +324,7 @@ export default function SwagActualsDashboard({ product = 'uta' }) {
       {tab === 'epics' && (
         <div className="bg-white rounded-lg shadow-sm border border-gray-100 p-5">
           <div className="flex items-center justify-between mb-4">
-            <h2 className="font-semibold text-gray-700">Business Epic Breakdown — SWAG vs Actuals by Period</h2>
+            <h2 className="font-semibold text-gray-700">Business Epic Breakdown — Development Dashboard by Period</h2>
             <div className="flex gap-2">
               <button onClick={expandAll} className="text-xs px-2.5 py-1 rounded border border-gray-200 text-gray-500 hover:border-[#005151] hover:text-[#005151]">Expand all</button>
               <button onClick={collapseAll} className="text-xs px-2.5 py-1 rounded border border-gray-200 text-gray-500 hover:border-[#005151] hover:text-[#005151]">Collapse all</button>
