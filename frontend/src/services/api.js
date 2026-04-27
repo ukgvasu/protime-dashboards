@@ -47,4 +47,6 @@ export const api = {
 
   // SWAG vs Actuals
   getSwagActualsUTAQ3: () => fetchAPI('/swag-actuals/uta-q3'),
+  getSwagActualsUTMQ3: () => fetchAPI('/swag-actuals/utm-q3'),
+  getSwagActualsWFCQ3: () => fetchAPI('/swag-actuals/wfc-q3'),
 };

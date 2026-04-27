@@ -31,7 +31,15 @@ const TAB_CLASSES = (active) =>
       : 'border-transparent text-gray-500 hover:text-gray-700'
   }`;
 
-export default function SwagActualsDashboard() {
+const PRODUCT_CONFIG = {
+  uta:       { title: 'UTA Q3 — SWAG vs Actuals',         apiCall: () => api.getSwagActualsUTAQ3() },
+  utm:       { title: 'UTM Q3 — SWAG vs Actuals',         apiCall: () => api.getSwagActualsUTMQ3() },
+  wfmClassic:{ title: 'WFM Classic Q3 — SWAG vs Actuals', apiCall: () => api.getSwagActualsWFCQ3() },
+};
+
+export default function SwagActualsDashboard({ product = 'uta' }) {
+  const config = PRODUCT_CONFIG[product] || PRODUCT_CONFIG.uta;
+
   const [data, setData] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -57,13 +65,15 @@ export default function SwagActualsDashboard() {
   useEffect(() => {
     setLoading(true);
     setError(null);
-    api.getSwagActualsUTAQ3()
+    setData(null);
+    setTab('cumulative');
+    config.apiCall()
       .then(setData)
       .catch(err => setError(err.message))
       .finally(() => setLoading(false));
-  }, []);
+  }, [product]);
 
-  if (loading) return <div className="p-8 text-center text-gray-500">Loading UTA Q3 SWAG vs Actuals…</div>;
+  if (loading) return <div className="p-8 text-center text-gray-500">Loading {config.title}…</div>;
   if (error) return <div className="p-8 text-center text-red-500">Error: {error}</div>;
   if (!data) return null;
 
@@ -172,7 +182,7 @@ export default function SwagActualsDashboard() {
     <div className="p-6 max-w-7xl mx-auto">
       {/* Header */}
       <div className="mb-6">
-        <h1 className="text-2xl font-bold text-[#005151]">UTA Q3 — SWAG vs Actuals</h1>
+        <h1 className="text-2xl font-bold text-[#005151]">{config.title}</h1>
         <p className="text-sm text-gray-500 mt-1">
           FY26 Q3 (Apr 1 – Jun 30) · As of {asOf} · {timeElapsed}% of quarter elapsed
         </p>
