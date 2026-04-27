@@ -37,13 +37,14 @@ async function buildQ3Data(beLabel, titlePrefixes, q3Start = '2026-04-01', q3End
   const beIssues = await fetchIssues(
     `project = EP AND issuetype = "Business Epic" AND labels = "${beLabel}"`,
     50,
-    ['summary', 'customfield_18302']
+    ['summary', 'customfield_18302', 'customfield_19049']
   );
 
   const businessEpics = beIssues.map(issue => ({
     key: issue.key,
     summary: stripPrefix(issue.fields?.summary || issue.key, titlePrefixes),
     swag: parseFloat(issue.fields?.customfield_18302) || 0,
+    spDone: parseFloat(issue.fields?.customfield_19049) || 0,
   }));
 
   const beKeys = businessEpics.map(b => b.key);
@@ -142,7 +143,7 @@ async function buildQ3Data(beLabel, titlePrefixes, q3Start = '2026-04-01', q3End
       summary: be.summary,
       swag: be.swag,
       actuals: beActuals[be.key] || periods.map(() => 0),
-      totalActuals: (beActuals[be.key] || []).reduce((s, v) => s + v, 0),
+      totalActuals: be.spDone,
       psEpics: psEpics
         .filter(p => p.fields?.customfield_15506 === be.key)
         .map(p => ({
