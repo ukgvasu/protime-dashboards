@@ -104,7 +104,7 @@ export default function Layout() {
             {expandedSections.uta && (
               <div className="space-y-0.5 mt-0.5">
                 <NavLink to="/swag-actuals" className={subNavLinkClass}>Development Dashboard</NavLink>
-                <NavLink to="/uta" end className={subNavLinkClass}>Dashboard</NavLink>
+                <NavLink to="/uta" end className={subNavLinkClass}>Defect Dashboard</NavLink>
                 <NavLink to="/uta/upgrade-tracker" className={subNavLinkClass}><ArrowUpCircle size={12} /> Upgrade Tracker</NavLink>
                 <NavLink to="/customer-impact" className={subNavLinkClass}><Users size={12} /> Customer Impact</NavLink>
                 <NavLink to="/swag-actuals-leadership" className={subNavLinkClass}>SWAG Leadership</NavLink>
@@ -121,7 +121,7 @@ export default function Layout() {
             {expandedSections.utm && (
               <div className="space-y-0.5 mt-0.5">
                 <NavLink to="/utm/swag-actuals" className={subNavLinkClass}>Development Dashboard</NavLink>
-                <NavLink to="/utm" end className={subNavLinkClass}>Dashboard</NavLink>
+                <NavLink to="/utm" end className={subNavLinkClass}>Defect Dashboard</NavLink>
                 <NavLink to="/utm/customer-impact" className={subNavLinkClass}>Customer Impact</NavLink>
               </div>
             )}
@@ -136,7 +136,7 @@ export default function Layout() {
             {expandedSections.wfm && (
               <div className="space-y-0.5 mt-0.5">
                 <NavLink to="/wfm-classic/swag-actuals" className={subNavLinkClass}>Development Dashboard</NavLink>
-                <NavLink to="/wfm-classic" end className={subNavLinkClass}>Dashboard</NavLink>
+                <NavLink to="/wfm-classic" end className={subNavLinkClass}>Defect Dashboard</NavLink>
                 <NavLink to="/wfm-classic/customer-impact" className={subNavLinkClass}>Customer Impact</NavLink>
               </div>
             )}
