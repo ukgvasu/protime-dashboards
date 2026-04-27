@@ -113,6 +113,177 @@
 <div class="legend-item"><div class="legend-swatch" style="background:#2980b9;"></div>WFR</div>
       </div>
 
+      <div class="year-section">
+        <div class="year-heading">2026 &mdash; 29 customers termed</div>
+
+        <div class="summary-grid"><div class="tile"><div class="tile-value">29</div><div class="tile-label">Total termed in 2026</div></div><div class="tile"><div class="tile-value">14</div><div class="tile-label">Time Management</div><div class="tile-sub">2026</div></div><div class="tile"><div class="tile-value">12</div><div class="tile-label">Time Classic</div><div class="tile-sub">2026</div></div><div class="tile"><div class="tile-value">3</div><div class="tile-label">Time &amp; Attendance</div><div class="tile-sub">2026</div></div></div>
+
+        <div class="section-title">Monthly Overview — All Products (2026)</div>
+        <p class="section-sub">All products combined, stacked by term reason</p>
+        <div class="overview-wrap"><canvas id="chartOverview2026"></canvas></div>
+
+        <div class="section-title">By Product — Charts &amp; Customer Detail (2026)</div>
+        <p class="section-sub">Each section shows a monthly chart and the full list of customers that termed, organised by month</p>
+
+        
+<div class="product-block">
+  <div class="product-header">
+    <span class="product-name">Time Management (UTM)</span>
+    <span class="product-count">14 customers termed</span>
+  </div>
+  <div class="chart-wrap"><canvas id="chart2026_0"></canvas></div>
+  <div class="detail-section">
+    <div class="month-group">
+<div class="month-label" onclick="toggleMonth(this)"><span class="toggle-arrow">&#9654;</span> Jan &mdash; 13 customers</div>
+<table class="detail-table">
+<thead><tr><th>Customer</th><th>AR #</th><th>Term Reason</th></tr></thead>
+<tbody>
+<tr><td class="cust-name">BARNHARDT MANUFACTURING COMPANY</td><td class="ar-num">BAR1014</td><td><span class="reason-badge" style="background:#c0392b;">Left UKG</span></td></tr>
+<tr><td class="cust-name">Colavria</td><td class="ar-num">COL1029</td><td><span class="reason-badge" style="background:#c0392b;">Left UKG</span></td></tr>
+<tr><td class="cust-name">Continental Aerospace Technologies, Inc.</td><td class="ar-num">TEL1004</td><td><span class="reason-badge" style="background:#c0392b;">Left UKG</span></td></tr>
+<tr><td class="cust-name">Experity, Inc.</td><td class="ar-num">PRA1003</td><td><span class="reason-badge" style="background:#c0392b;">Left UKG</span></td></tr>
+<tr><td class="cust-name">MORTENSON FAMILY DENTAL HOLDINGS  INC.</td><td class="ar-num">MOR1014</td><td><span class="reason-badge" style="background:#c0392b;">Left UKG</span></td></tr>
+<tr><td class="cust-name">RAYONIER INC.</td><td class="ar-num">RAY1002</td><td><span class="reason-badge" style="background:#c0392b;">Left UKG</span></td></tr>
+<tr><td class="cust-name">Svs Services Group LLC</td><td class="ar-num">SVS1000</td><td><span class="reason-badge" style="background:#c0392b;">Left UKG</span></td></tr>
+<tr><td class="cust-name">THE CHRISTIAN CHURCH HOMES OF NORTHERN CALIFORNIA</td><td class="ar-num">CHR1006</td><td><span class="reason-badge" style="background:#c0392b;">Left UKG</span></td></tr>
+<tr><td class="cust-name">Western Electricity Coordinating Council</td><td class="ar-num">WES1020</td><td><span class="reason-badge" style="background:#c0392b;">Left UKG</span></td></tr>
+<tr><td class="cust-name">COVANTAGE CREDIT UNION</td><td class="ar-num">COV1003</td><td><span class="reason-badge" style="background:#e67e22;">WFD</span></td></tr>
+<tr><td class="cust-name">CROSSCOUNTRY Freight Solutions, Inc.</td><td class="ar-num">CRO1008</td><td><span class="reason-badge" style="background:#e67e22;">WFD</span></td></tr>
+<tr><td class="cust-name">MAJESTIC STEEL USA  INC.</td><td class="ar-num">MAJ1001</td><td><span class="reason-badge" style="background:#e67e22;">WFD</span></td></tr>
+<tr><td class="cust-name">MASTRONARDI PRODUCE LIMITED</td><td class="ar-num">MAS5000</td><td><span class="reason-badge" style="background:#e67e22;">WFD</span></td></tr>
+</tbody></table></div>
+<div class="month-group">
+<div class="month-label" onclick="toggleMonth(this)"><span class="toggle-arrow">&#9654;</span> Feb &mdash; 1 customer</div>
+<table class="detail-table">
+<thead><tr><th>Customer</th><th>AR #</th><th>Term Reason</th></tr></thead>
+<tbody>
+<tr><td class="cust-name">VOLUNTEERS OF AMERICA TEXAS  INC.</td><td class="ar-num">VOA1000</td><td><span class="reason-badge" style="background:#c0392b;">Left UKG</span></td></tr>
+</tbody></table></div>
+  </div>
+</div>
+<script>
+new Chart(document.getElementById('chart2026_0'), {
+  type: 'bar',
+  data: { labels: ["Jan", "Feb", "Mar", "Jul"], datasets: [{"label": "Left UKG", "data": [9, 1, 0, 0], "backgroundColor": "#c0392b", "borderColor": "#fff", "borderWidth": 1, "borderRadius": 2}, {"label": "WFD", "data": [4, 0, 0, 0], "backgroundColor": "#e67e22", "borderColor": "#fff", "borderWidth": 1, "borderRadius": 2}] },
+  options: {
+    responsive: true, maintainAspectRatio: false,
+    plugins: {
+      legend: { display: false },
+      tooltip: { callbacks: { label: ctx => ' ' + ctx.dataset.label + ': ' + ctx.parsed.y + ' customer' + (ctx.parsed.y !== 1 ? 's' : '') } }
+    },
+    scales: {
+      x: { stacked: true, grid: { display: false }, ticks: { font: { family: 'Arial, sans-serif', size: 11 }, color: '#555' } },
+      y: { stacked: true, beginAtZero: true, max: 15, grid: { color: '#eee' },
+            ticks: { stepSize: 1, font: { family: 'Arial, sans-serif', size: 11 }, color: '#555', callback: v => Number.isInteger(v) ? v : '' },
+            title: { display: true, text: 'Customers', font: { family: 'Arial, sans-serif', size: 11 }, color: '#888' } }
+    }
+  }
+});</script>
+
+<div class="product-block">
+  <div class="product-header">
+    <span class="product-name">Time Classic (WFM-C)</span>
+    <span class="product-count">12 customers termed</span>
+  </div>
+  <div class="chart-wrap"><canvas id="chart2026_1"></canvas></div>
+  <div class="detail-section">
+    <div class="month-group">
+<div class="month-label" onclick="toggleMonth(this)"><span class="toggle-arrow">&#9654;</span> Jan &mdash; 7 customers</div>
+<table class="detail-table">
+<thead><tr><th>Customer</th><th>AR #</th><th>Term Reason</th></tr></thead>
+<tbody>
+<tr><td class="cust-name">CLOVIS ONCOLOGY  INC.</td><td class="ar-num">CLO1003</td><td><span class="reason-badge" style="background:#c0392b;">Left UKG</span></td></tr>
+<tr><td class="cust-name">THE TIME GROUP</td><td class="ar-num">TIM1001</td><td><span class="reason-badge" style="background:#c0392b;">Left UKG</span></td></tr>
+<tr><td class="cust-name">AGRIVISION FARM MANAGEMENT LLC</td><td class="ar-num">AGR1004</td><td><span class="reason-badge" style="background:#e67e22;">WFD</span></td></tr>
+<tr><td class="cust-name">Jaynes Corporation</td><td class="ar-num">JAY1002</td><td><span class="reason-badge" style="background:#e67e22;">WFD</span></td></tr>
+<tr><td class="cust-name">Prelude Fertility, Inc.</td><td class="ar-num">PRE1027</td><td><span class="reason-badge" style="background:#e67e22;">WFD</span></td></tr>
+<tr><td class="cust-name">FAMILY RESOURCE CENTER OF SOUTH FLORIDA  INC.</td><td class="ar-num">FAM1010</td><td><span class="reason-badge" style="background:#2980b9;">WFR</span></td></tr>
+<tr><td class="cust-name">TREX CO INC</td><td class="ar-num">TRE1006</td><td><span class="reason-badge" style="background:#2980b9;">WFR</span></td></tr>
+</tbody></table></div>
+<div class="month-group">
+<div class="month-label" onclick="toggleMonth(this)"><span class="toggle-arrow">&#9654;</span> Feb &mdash; 2 customers</div>
+<table class="detail-table">
+<thead><tr><th>Customer</th><th>AR #</th><th>Term Reason</th></tr></thead>
+<tbody>
+<tr><td class="cust-name">NRRM  LLC</td><td class="ar-num">NRR1000</td><td><span class="reason-badge" style="background:#c0392b;">Left UKG</span></td></tr>
+<tr><td class="cust-name">Movati Athletic (Group) Inc</td><td class="ar-num">MOV5000</td><td><span class="reason-badge" style="background:#7f8c8d;">Left WFM Classic Only</span></td></tr>
+</tbody></table></div>
+<div class="month-group">
+<div class="month-label" onclick="toggleMonth(this)"><span class="toggle-arrow">&#9654;</span> Mar &mdash; 2 customers</div>
+<table class="detail-table">
+<thead><tr><th>Customer</th><th>AR #</th><th>Term Reason</th></tr></thead>
+<tbody>
+<tr><td class="cust-name">CAPITAL CITY BANK</td><td class="ar-num">CAP1020</td><td><span class="reason-badge" style="background:#7f8c8d;">Left WFM Classic Only</span></td></tr>
+<tr><td class="cust-name">THE DREES COMPANY</td><td class="ar-num">DRE1000</td><td><span class="reason-badge" style="background:#7f8c8d;">Left WFM Classic Only</span></td></tr>
+</tbody></table></div>
+<div class="month-group">
+<div class="month-label" onclick="toggleMonth(this)"><span class="toggle-arrow">&#9654;</span> Jul &mdash; 1 customer</div>
+<table class="detail-table">
+<thead><tr><th>Customer</th><th>AR #</th><th>Term Reason</th></tr></thead>
+<tbody>
+<tr><td class="cust-name">STEEL DYNAMICS  INC.</td><td class="ar-num">STE1006</td><td><span class="reason-badge" style="background:#e67e22;">WFD</span></td></tr>
+</tbody></table></div>
+  </div>
+</div>
+<script>
+new Chart(document.getElementById('chart2026_1'), {
+  type: 'bar',
+  data: { labels: ["Jan", "Feb", "Mar", "Jul"], datasets: [{"label": "Left UKG", "data": [2, 1, 0, 0], "backgroundColor": "#c0392b", "borderColor": "#fff", "borderWidth": 1, "borderRadius": 2}, {"label": "Left WFM Classic Only", "data": [0, 1, 2, 0], "backgroundColor": "#7f8c8d", "borderColor": "#fff", "borderWidth": 1, "borderRadius": 2}, {"label": "WFD", "data": [3, 0, 0, 1], "backgroundColor": "#e67e22", "borderColor": "#fff", "borderWidth": 1, "borderRadius": 2}, {"label": "WFR", "data": [2, 0, 0, 0], "backgroundColor": "#2980b9", "borderColor": "#fff", "borderWidth": 1, "borderRadius": 2}] },
+  options: {
+    responsive: true, maintainAspectRatio: false,
+    plugins: {
+      legend: { display: false },
+      tooltip: { callbacks: { label: ctx => ' ' + ctx.dataset.label + ': ' + ctx.parsed.y + ' customer' + (ctx.parsed.y !== 1 ? 's' : '') } }
+    },
+    scales: {
+      x: { stacked: true, grid: { display: false }, ticks: { font: { family: 'Arial, sans-serif', size: 11 }, color: '#555' } },
+      y: { stacked: true, beginAtZero: true, max: 9, grid: { color: '#eee' },
+            ticks: { stepSize: 1, font: { family: 'Arial, sans-serif', size: 11 }, color: '#555', callback: v => Number.isInteger(v) ? v : '' },
+            title: { display: true, text: 'Customers', font: { family: 'Arial, sans-serif', size: 11 }, color: '#888' } }
+    }
+  }
+});</script>
+
+<div class="product-block">
+  <div class="product-header">
+    <span class="product-name">Time &amp; Attendance (UTA)</span>
+    <span class="product-count">3 customers termed</span>
+  </div>
+  <div class="chart-wrap"><canvas id="chart2026_2"></canvas></div>
+  <div class="detail-section">
+    <div class="month-group">
+<div class="month-label" onclick="toggleMonth(this)"><span class="toggle-arrow">&#9654;</span> Jan &mdash; 3 customers</div>
+<table class="detail-table">
+<thead><tr><th>Customer</th><th>AR #</th><th>Term Reason</th></tr></thead>
+<tbody>
+<tr><td class="cust-name">SPRINGSTONE  INC.</td><td class="ar-num">SPR1004</td><td><span class="reason-badge" style="background:#c0392b;">Left UKG</span></td></tr>
+<tr><td class="cust-name">WHITE DRIVE MOTORS &amp; STEERING, LLC</td><td class="ar-num">WHI1011</td><td><span class="reason-badge" style="background:#c0392b;">Left UKG</span></td></tr>
+<tr><td class="cust-name">HUSCH BLACKWELL LLP</td><td class="ar-num">HUS1001</td><td><span class="reason-badge" style="background:#e67e22;">WFD</span></td></tr>
+</tbody></table></div>
+  </div>
+</div>
+<script>
+new Chart(document.getElementById('chart2026_2'), {
+  type: 'bar',
+  data: { labels: ["Jan", "Feb", "Mar", "Jul"], datasets: [{"label": "Left UKG", "data": [2, 0, 0, 0], "backgroundColor": "#c0392b", "borderColor": "#fff", "borderWidth": 1, "borderRadius": 2}, {"label": "WFD", "data": [1, 0, 0, 0], "backgroundColor": "#e67e22", "borderColor": "#fff", "borderWidth": 1, "borderRadius": 2}] },
+  options: {
+    responsive: true, maintainAspectRatio: false,
+    plugins: {
+      legend: { display: false },
+      tooltip: { callbacks: { label: ctx => ' ' + ctx.dataset.label + ': ' + ctx.parsed.y + ' customer' + (ctx.parsed.y !== 1 ? 's' : '') } }
+    },
+    scales: {
+      x: { stacked: true, grid: { display: false }, ticks: { font: { family: 'Arial, sans-serif', size: 11 }, color: '#555' } },
+      y: { stacked: true, beginAtZero: true, max: 5, grid: { color: '#eee' },
+            ticks: { stepSize: 1, font: { family: 'Arial, sans-serif', size: 11 }, color: '#555', callback: v => Number.isInteger(v) ? v : '' },
+            title: { display: true, text: 'Customers', font: { family: 'Arial, sans-serif', size: 11 }, color: '#888' } }
+    }
+  }
+});</script>
+
+      </div>
+
+      <!-- ====== 2026 ====== -->
       <!-- ====== 2025 ====== -->
       <div class="year-section">
         <div class="year-heading">2025 &mdash; 204 customers termed</div>
@@ -607,177 +778,6 @@ new Chart(document.getElementById('chart2025_2'), {
   }
 });</script>
 
-
-      </div>
-
-      <!-- ====== 2026 ====== -->
-      <div class="year-section">
-        <div class="year-heading">2026 &mdash; 29 customers termed</div>
-
-        <div class="summary-grid"><div class="tile"><div class="tile-value">29</div><div class="tile-label">Total termed in 2026</div></div><div class="tile"><div class="tile-value">14</div><div class="tile-label">Time Management</div><div class="tile-sub">2026</div></div><div class="tile"><div class="tile-value">12</div><div class="tile-label">Time Classic</div><div class="tile-sub">2026</div></div><div class="tile"><div class="tile-value">3</div><div class="tile-label">Time &amp; Attendance</div><div class="tile-sub">2026</div></div></div>
-
-        <div class="section-title">Monthly Overview — All Products (2026)</div>
-        <p class="section-sub">All products combined, stacked by term reason</p>
-        <div class="overview-wrap"><canvas id="chartOverview2026"></canvas></div>
-
-        <div class="section-title">By Product — Charts &amp; Customer Detail (2026)</div>
-        <p class="section-sub">Each section shows a monthly chart and the full list of customers that termed, organised by month</p>
-
-        
-<div class="product-block">
-  <div class="product-header">
-    <span class="product-name">Time Management (UTM)</span>
-    <span class="product-count">14 customers termed</span>
-  </div>
-  <div class="chart-wrap"><canvas id="chart2026_0"></canvas></div>
-  <div class="detail-section">
-    <div class="month-group">
-<div class="month-label" onclick="toggleMonth(this)"><span class="toggle-arrow">&#9654;</span> Jan &mdash; 13 customers</div>
-<table class="detail-table">
-<thead><tr><th>Customer</th><th>AR #</th><th>Term Reason</th></tr></thead>
-<tbody>
-<tr><td class="cust-name">BARNHARDT MANUFACTURING COMPANY</td><td class="ar-num">BAR1014</td><td><span class="reason-badge" style="background:#c0392b;">Left UKG</span></td></tr>
-<tr><td class="cust-name">Colavria</td><td class="ar-num">COL1029</td><td><span class="reason-badge" style="background:#c0392b;">Left UKG</span></td></tr>
-<tr><td class="cust-name">Continental Aerospace Technologies, Inc.</td><td class="ar-num">TEL1004</td><td><span class="reason-badge" style="background:#c0392b;">Left UKG</span></td></tr>
-<tr><td class="cust-name">Experity, Inc.</td><td class="ar-num">PRA1003</td><td><span class="reason-badge" style="background:#c0392b;">Left UKG</span></td></tr>
-<tr><td class="cust-name">MORTENSON FAMILY DENTAL HOLDINGS  INC.</td><td class="ar-num">MOR1014</td><td><span class="reason-badge" style="background:#c0392b;">Left UKG</span></td></tr>
-<tr><td class="cust-name">RAYONIER INC.</td><td class="ar-num">RAY1002</td><td><span class="reason-badge" style="background:#c0392b;">Left UKG</span></td></tr>
-<tr><td class="cust-name">Svs Services Group LLC</td><td class="ar-num">SVS1000</td><td><span class="reason-badge" style="background:#c0392b;">Left UKG</span></td></tr>
-<tr><td class="cust-name">THE CHRISTIAN CHURCH HOMES OF NORTHERN CALIFORNIA</td><td class="ar-num">CHR1006</td><td><span class="reason-badge" style="background:#c0392b;">Left UKG</span></td></tr>
-<tr><td class="cust-name">Western Electricity Coordinating Council</td><td class="ar-num">WES1020</td><td><span class="reason-badge" style="background:#c0392b;">Left UKG</span></td></tr>
-<tr><td class="cust-name">COVANTAGE CREDIT UNION</td><td class="ar-num">COV1003</td><td><span class="reason-badge" style="background:#e67e22;">WFD</span></td></tr>
-<tr><td class="cust-name">CROSSCOUNTRY Freight Solutions, Inc.</td><td class="ar-num">CRO1008</td><td><span class="reason-badge" style="background:#e67e22;">WFD</span></td></tr>
-<tr><td class="cust-name">MAJESTIC STEEL USA  INC.</td><td class="ar-num">MAJ1001</td><td><span class="reason-badge" style="background:#e67e22;">WFD</span></td></tr>
-<tr><td class="cust-name">MASTRONARDI PRODUCE LIMITED</td><td class="ar-num">MAS5000</td><td><span class="reason-badge" style="background:#e67e22;">WFD</span></td></tr>
-</tbody></table></div>
-<div class="month-group">
-<div class="month-label" onclick="toggleMonth(this)"><span class="toggle-arrow">&#9654;</span> Feb &mdash; 1 customer</div>
-<table class="detail-table">
-<thead><tr><th>Customer</th><th>AR #</th><th>Term Reason</th></tr></thead>
-<tbody>
-<tr><td class="cust-name">VOLUNTEERS OF AMERICA TEXAS  INC.</td><td class="ar-num">VOA1000</td><td><span class="reason-badge" style="background:#c0392b;">Left UKG</span></td></tr>
-</tbody></table></div>
-  </div>
-</div>
-<script>
-new Chart(document.getElementById('chart2026_0'), {
-  type: 'bar',
-  data: { labels: ["Jan", "Feb", "Mar", "Jul"], datasets: [{"label": "Left UKG", "data": [9, 1, 0, 0], "backgroundColor": "#c0392b", "borderColor": "#fff", "borderWidth": 1, "borderRadius": 2}, {"label": "WFD", "data": [4, 0, 0, 0], "backgroundColor": "#e67e22", "borderColor": "#fff", "borderWidth": 1, "borderRadius": 2}] },
-  options: {
-    responsive: true, maintainAspectRatio: false,
-    plugins: {
-      legend: { display: false },
-      tooltip: { callbacks: { label: ctx => ' ' + ctx.dataset.label + ': ' + ctx.parsed.y + ' customer' + (ctx.parsed.y !== 1 ? 's' : '') } }
-    },
-    scales: {
-      x: { stacked: true, grid: { display: false }, ticks: { font: { family: 'Arial, sans-serif', size: 11 }, color: '#555' } },
-      y: { stacked: true, beginAtZero: true, max: 15, grid: { color: '#eee' },
-            ticks: { stepSize: 1, font: { family: 'Arial, sans-serif', size: 11 }, color: '#555', callback: v => Number.isInteger(v) ? v : '' },
-            title: { display: true, text: 'Customers', font: { family: 'Arial, sans-serif', size: 11 }, color: '#888' } }
-    }
-  }
-});</script>
-
-<div class="product-block">
-  <div class="product-header">
-    <span class="product-name">Time Classic (WFM-C)</span>
-    <span class="product-count">12 customers termed</span>
-  </div>
-  <div class="chart-wrap"><canvas id="chart2026_1"></canvas></div>
-  <div class="detail-section">
-    <div class="month-group">
-<div class="month-label" onclick="toggleMonth(this)"><span class="toggle-arrow">&#9654;</span> Jan &mdash; 7 customers</div>
-<table class="detail-table">
-<thead><tr><th>Customer</th><th>AR #</th><th>Term Reason</th></tr></thead>
-<tbody>
-<tr><td class="cust-name">CLOVIS ONCOLOGY  INC.</td><td class="ar-num">CLO1003</td><td><span class="reason-badge" style="background:#c0392b;">Left UKG</span></td></tr>
-<tr><td class="cust-name">THE TIME GROUP</td><td class="ar-num">TIM1001</td><td><span class="reason-badge" style="background:#c0392b;">Left UKG</span></td></tr>
-<tr><td class="cust-name">AGRIVISION FARM MANAGEMENT LLC</td><td class="ar-num">AGR1004</td><td><span class="reason-badge" style="background:#e67e22;">WFD</span></td></tr>
-<tr><td class="cust-name">Jaynes Corporation</td><td class="ar-num">JAY1002</td><td><span class="reason-badge" style="background:#e67e22;">WFD</span></td></tr>
-<tr><td class="cust-name">Prelude Fertility, Inc.</td><td class="ar-num">PRE1027</td><td><span class="reason-badge" style="background:#e67e22;">WFD</span></td></tr>
-<tr><td class="cust-name">FAMILY RESOURCE CENTER OF SOUTH FLORIDA  INC.</td><td class="ar-num">FAM1010</td><td><span class="reason-badge" style="background:#2980b9;">WFR</span></td></tr>
-<tr><td class="cust-name">TREX CO INC</td><td class="ar-num">TRE1006</td><td><span class="reason-badge" style="background:#2980b9;">WFR</span></td></tr>
-</tbody></table></div>
-<div class="month-group">
-<div class="month-label" onclick="toggleMonth(this)"><span class="toggle-arrow">&#9654;</span> Feb &mdash; 2 customers</div>
-<table class="detail-table">
-<thead><tr><th>Customer</th><th>AR #</th><th>Term Reason</th></tr></thead>
-<tbody>
-<tr><td class="cust-name">NRRM  LLC</td><td class="ar-num">NRR1000</td><td><span class="reason-badge" style="background:#c0392b;">Left UKG</span></td></tr>
-<tr><td class="cust-name">Movati Athletic (Group) Inc</td><td class="ar-num">MOV5000</td><td><span class="reason-badge" style="background:#7f8c8d;">Left WFM Classic Only</span></td></tr>
-</tbody></table></div>
-<div class="month-group">
-<div class="month-label" onclick="toggleMonth(this)"><span class="toggle-arrow">&#9654;</span> Mar &mdash; 2 customers</div>
-<table class="detail-table">
-<thead><tr><th>Customer</th><th>AR #</th><th>Term Reason</th></tr></thead>
-<tbody>
-<tr><td class="cust-name">CAPITAL CITY BANK</td><td class="ar-num">CAP1020</td><td><span class="reason-badge" style="background:#7f8c8d;">Left WFM Classic Only</span></td></tr>
-<tr><td class="cust-name">THE DREES COMPANY</td><td class="ar-num">DRE1000</td><td><span class="reason-badge" style="background:#7f8c8d;">Left WFM Classic Only</span></td></tr>
-</tbody></table></div>
-<div class="month-group">
-<div class="month-label" onclick="toggleMonth(this)"><span class="toggle-arrow">&#9654;</span> Jul &mdash; 1 customer</div>
-<table class="detail-table">
-<thead><tr><th>Customer</th><th>AR #</th><th>Term Reason</th></tr></thead>
-<tbody>
-<tr><td class="cust-name">STEEL DYNAMICS  INC.</td><td class="ar-num">STE1006</td><td><span class="reason-badge" style="background:#e67e22;">WFD</span></td></tr>
-</tbody></table></div>
-  </div>
-</div>
-<script>
-new Chart(document.getElementById('chart2026_1'), {
-  type: 'bar',
-  data: { labels: ["Jan", "Feb", "Mar", "Jul"], datasets: [{"label": "Left UKG", "data": [2, 1, 0, 0], "backgroundColor": "#c0392b", "borderColor": "#fff", "borderWidth": 1, "borderRadius": 2}, {"label": "Left WFM Classic Only", "data": [0, 1, 2, 0], "backgroundColor": "#7f8c8d", "borderColor": "#fff", "borderWidth": 1, "borderRadius": 2}, {"label": "WFD", "data": [3, 0, 0, 1], "backgroundColor": "#e67e22", "borderColor": "#fff", "borderWidth": 1, "borderRadius": 2}, {"label": "WFR", "data": [2, 0, 0, 0], "backgroundColor": "#2980b9", "borderColor": "#fff", "borderWidth": 1, "borderRadius": 2}] },
-  options: {
-    responsive: true, maintainAspectRatio: false,
-    plugins: {
-      legend: { display: false },
-      tooltip: { callbacks: { label: ctx => ' ' + ctx.dataset.label + ': ' + ctx.parsed.y + ' customer' + (ctx.parsed.y !== 1 ? 's' : '') } }
-    },
-    scales: {
-      x: { stacked: true, grid: { display: false }, ticks: { font: { family: 'Arial, sans-serif', size: 11 }, color: '#555' } },
-      y: { stacked: true, beginAtZero: true, max: 9, grid: { color: '#eee' },
-            ticks: { stepSize: 1, font: { family: 'Arial, sans-serif', size: 11 }, color: '#555', callback: v => Number.isInteger(v) ? v : '' },
-            title: { display: true, text: 'Customers', font: { family: 'Arial, sans-serif', size: 11 }, color: '#888' } }
-    }
-  }
-});</script>
-
-<div class="product-block">
-  <div class="product-header">
-    <span class="product-name">Time &amp; Attendance (UTA)</span>
-    <span class="product-count">3 customers termed</span>
-  </div>
-  <div class="chart-wrap"><canvas id="chart2026_2"></canvas></div>
-  <div class="detail-section">
-    <div class="month-group">
-<div class="month-label" onclick="toggleMonth(this)"><span class="toggle-arrow">&#9654;</span> Jan &mdash; 3 customers</div>
-<table class="detail-table">
-<thead><tr><th>Customer</th><th>AR #</th><th>Term Reason</th></tr></thead>
-<tbody>
-<tr><td class="cust-name">SPRINGSTONE  INC.</td><td class="ar-num">SPR1004</td><td><span class="reason-badge" style="background:#c0392b;">Left UKG</span></td></tr>
-<tr><td class="cust-name">WHITE DRIVE MOTORS &amp; STEERING, LLC</td><td class="ar-num">WHI1011</td><td><span class="reason-badge" style="background:#c0392b;">Left UKG</span></td></tr>
-<tr><td class="cust-name">HUSCH BLACKWELL LLP</td><td class="ar-num">HUS1001</td><td><span class="reason-badge" style="background:#e67e22;">WFD</span></td></tr>
-</tbody></table></div>
-  </div>
-</div>
-<script>
-new Chart(document.getElementById('chart2026_2'), {
-  type: 'bar',
-  data: { labels: ["Jan", "Feb", "Mar", "Jul"], datasets: [{"label": "Left UKG", "data": [2, 0, 0, 0], "backgroundColor": "#c0392b", "borderColor": "#fff", "borderWidth": 1, "borderRadius": 2}, {"label": "WFD", "data": [1, 0, 0, 0], "backgroundColor": "#e67e22", "borderColor": "#fff", "borderWidth": 1, "borderRadius": 2}] },
-  options: {
-    responsive: true, maintainAspectRatio: false,
-    plugins: {
-      legend: { display: false },
-      tooltip: { callbacks: { label: ctx => ' ' + ctx.dataset.label + ': ' + ctx.parsed.y + ' customer' + (ctx.parsed.y !== 1 ? 's' : '') } }
-    },
-    scales: {
-      x: { stacked: true, grid: { display: false }, ticks: { font: { family: 'Arial, sans-serif', size: 11 }, color: '#555' } },
-      y: { stacked: true, beginAtZero: true, max: 5, grid: { color: '#eee' },
-            ticks: { stepSize: 1, font: { family: 'Arial, sans-serif', size: 11 }, color: '#555', callback: v => Number.isInteger(v) ? v : '' },
-            title: { display: true, text: 'Customers', font: { family: 'Arial, sans-serif', size: 11 }, color: '#888' } }
-    }
-  }
-});</script>
 
       </div>
 
