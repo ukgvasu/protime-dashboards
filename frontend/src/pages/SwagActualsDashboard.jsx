@@ -174,7 +174,7 @@ export default function SwagActualsDashboard({ product = 'uta' }) {
       <div className="bg-white border border-gray-200 rounded shadow-sm p-2.5 text-xs">
         <div className="font-semibold text-gray-700 mb-1">{d.key} — {d.summary}</div>
         <div className="text-gray-500">SWAG: <span className="font-medium text-gray-700">{d.swag} pts</span></div>
-        <div className="text-gray-500">Actuals: <span className="font-medium text-gray-700">{Math.round(d.actuals * 10) / 10} hrs</span></div>
+        <div className="text-gray-500">Actuals: <span className="font-medium text-gray-700">{Math.round(d.actuals * 10) / 10} pts</span></div>
         <div className="mt-1" style={{ color: d.statusColor }}>
           <span className="font-semibold">{d.pct}% delivered</span> · {d.status}
         </div>
@@ -195,7 +195,7 @@ export default function SwagActualsDashboard({ product = 'uta' }) {
       {/* Stat cards */}
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
         <StatCard label="Total SWAG" value={`${totalSwag} pts`} sublabel="Committed capacity" color="#005151" />
-        <StatCard label="Actuals to Date" value={`${Math.round(totalActuals * 10) / 10} hrs`} sublabel="Hours logged on resolved stories" color="#0d9488" />
+        <StatCard label="Actuals to Date" value={`${Math.round(totalActuals * 10) / 10} pts`} sublabel="Logged hours ÷ 6" color="#0d9488" />
         <StatCard label="% Delivered" value={`${pctDelivered}%`} sublabel={`vs ${timeElapsed}% time elapsed`} color={pctDelivered >= timeElapsed ? '#16a34a' : '#dc2626'} />
         <StatCard label="Remaining" value={`${Math.round(remaining)} pts`} sublabel="SWAG – Actuals" color="#0369a1" />
       </div>
@@ -279,14 +279,14 @@ export default function SwagActualsDashboard({ product = 'uta' }) {
       {/* ── By Period ── */}
       {tab === 'period' && (
         <div className="bg-white rounded-lg shadow-sm border border-gray-100 p-5">
-          <h2 className="font-semibold text-gray-700 mb-1">Hours Logged — By 2-Week Period</h2>
-          <p className="text-xs text-gray-400 mb-4">Each bar shows points resolved per business epic in that bi-weekly window</p>
+          <h2 className="font-semibold text-gray-700 mb-1">Points Delivered — By 2-Week Period</h2>
+          <p className="text-xs text-gray-400 mb-4">Each bar shows points (logged hours ÷ 6) per business epic in that bi-weekly window</p>
           <ResponsiveContainer width="100%" height={320}>
             <BarChart data={byPeriodData} barGap={2}>
               <CartesianGrid strokeDasharray="3 3" stroke="#f0f0f0" />
               <XAxis dataKey="period" tick={{ fontSize: 10 }} />
               <YAxis tick={{ fontSize: 11 }} />
-              <Tooltip formatter={(val, name) => [`${Math.round(val * 10) / 10} hrs`, name]} />
+              <Tooltip formatter={(val, name) => [`${Math.round(val * 10) / 10} pts`, name]} />
               <Legend wrapperStyle={{ fontSize: 11 }} />
               {currentPeriodIdx >= 0 && (
                 <ReferenceLine x={periods[currentPeriodIdx]} stroke="#CCFF00" strokeWidth={2} strokeDasharray="4 2" label={{ value: 'Today', fontSize: 10, fill: '#888' }} />
@@ -302,14 +302,14 @@ export default function SwagActualsDashboard({ product = 'uta' }) {
       {/* ── Cumulative ── */}
       {tab === 'cumulative' && (
         <div className="bg-white rounded-lg shadow-sm border border-gray-100 p-5">
-          <h2 className="font-semibold text-gray-700 mb-1">Cumulative Hours Logged — Actuals vs Plan · Remaining Burndown</h2>
+          <h2 className="font-semibold text-gray-700 mb-1">Cumulative Points Delivered — Actuals vs Plan · Remaining Burndown</h2>
           <p className="text-xs text-gray-400 mb-4">Plan = SWAG ({totalSwag} pts) distributed evenly across {periods.length} periods · Remaining starts at {totalSwag} pts and falls as work is completed</p>
           <ResponsiveContainer width="100%" height={360}>
             <LineChart data={cumulativeData}>
               <CartesianGrid strokeDasharray="3 3" stroke="#f0f0f0" />
               <XAxis dataKey="period" tick={{ fontSize: 10 }} />
               <YAxis tick={{ fontSize: 11 }} allowDecimals={false} domain={[0, totalSwag]} />
-              <Tooltip formatter={(val, name) => [val === null ? '—' : `${Math.round(val * 10) / 10} hrs`, name]} />
+              <Tooltip formatter={(val, name) => [val === null ? '—' : `${Math.round(val * 10) / 10} pts`, name]} />
               <Legend wrapperStyle={{ fontSize: 11 }} />
               {currentPeriodIdx >= 0 && (
                 <ReferenceLine x={periods[currentPeriodIdx]} stroke="#CCFF00" strokeWidth={2} strokeDasharray="4 2" label={{ value: 'Today', fontSize: 10, fill: '#888' }} />
@@ -499,7 +499,7 @@ export default function SwagActualsDashboard({ product = 'uta' }) {
                     <SortHdr col="key" label="Key" />
                     <th className="px-3 py-2 text-xs font-semibold text-gray-500 uppercase">Summary</th>
                     <SortHdr col="assignee" label="Assignee" />
-                    <SortHdr col="logged" label="Logged (h)" />
+                    <SortHdr col="logged" label="Points" />
                     <SortHdr col="resolutionDate" label="Resolved" />
                     <SortHdr col="status" label="Status" />
                   </tr>
@@ -542,7 +542,7 @@ export default function SwagActualsDashboard({ product = 'uta' }) {
                               )}
                               <span className="text-xs text-gray-400 ml-1">
                                 {group.stories.length} {group.stories.length === 1 ? 'story' : 'stories'}
-                                {groupSP > 0 ? ` · ${Math.round(groupSP * 10) / 10}h logged` : ''}
+                                {groupSP > 0 ? ` · ${Math.round(groupSP * 10) / 10} pts` : ''}
                               </span>
                             </div>
                           </td>
@@ -567,7 +567,7 @@ export default function SwagActualsDashboard({ product = 'uta' }) {
                             </td>
                             <td className="px-3 py-2 text-right">
                               <span className={`text-xs font-semibold ${s.logged > 0 ? 'text-[#005151]' : 'text-gray-300'}`}>
-                                {s.logged > 0 ? `${Math.round(s.logged * 100) / 100}h` : '—'}
+                                {s.logged > 0 ? `${Math.round(s.logged * 100) / 100} pts` : '—'}
                               </span>
                             </td>
                             <td className="px-3 py-2 whitespace-nowrap text-xs text-gray-500">{s.resolutionDate || '—'}</td>

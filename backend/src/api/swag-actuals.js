@@ -109,7 +109,7 @@ async function buildQ3Data(beLabel, titlePrefixes, q3Start = '2026-04-01', q3End
     const rawEpicLink = story.fields?.customfield_12507;
     const epicLink = typeof rawEpicLink === 'string' ? rawEpicLink : (rawEpicLink?.value || null);
     const beKey = psEpicToBe[epicLink];
-    const logged = (story.fields?.timetracking?.timeSpentSeconds || 0) / 3600;
+    const logged = (story.fields?.timetracking?.timeSpentSeconds || 0) / 21600; // hours ÷ 6 = points
     const resDate = story.fields?.resolutiondate?.split('T')[0];
 
     storyDetail.push({
