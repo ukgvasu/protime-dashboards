@@ -88,7 +88,7 @@ async function buildQ3Data(beLabel, titlePrefixes, q3Start = '2026-04-01', q3End
   let stories = [];
   if (psEpicKeys.length > 0) {
     stories = await fetchIssues(
-      `project = PS AND issuetype in (Story, Task, "Sub-task") AND cf[12507] in (${psEpicKeys.join(', ')}) AND resolutiondate >= "${q3Start}" ORDER BY resolutiondate ASC`,
+      `project = PS AND issuetype not in (Epic, "Business Epic") AND cf[12507] in (${psEpicKeys.join(', ')}) AND resolutiondate >= "${q3Start}" ORDER BY resolutiondate ASC`,
       2000,
       ['summary', 'status', 'resolutiondate', 'timetracking', 'customfield_12507', 'assignee']
     );
