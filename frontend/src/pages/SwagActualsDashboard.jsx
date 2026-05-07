@@ -175,9 +175,7 @@ export default function SwagActualsDashboard({ product = 'uta' }) {
         <div className="font-semibold text-gray-700 mb-1">{d.key} — {d.summary}</div>
         <div className="text-gray-500">SWAG: <span className="font-medium text-gray-700">{d.swag} pts</span></div>
         <div className="text-gray-500">Actuals: <span className="font-medium text-gray-700">{Math.round(d.actuals * 10) / 10} pts</span></div>
-        <div className="mt-1" style={{ color: d.statusColor }}>
-          <span className="font-semibold">{d.pct}% delivered</span> · {d.status}
-        </div>
+        <div className="mt-1 font-semibold" style={{ color: d.statusColor }}>{d.pct}% delivered</div>
       </div>
     );
   };
@@ -204,7 +202,7 @@ export default function SwagActualsDashboard({ product = 'uta' }) {
       <div className="bg-white rounded-lg shadow-sm border border-gray-100 p-5 mb-5">
         <div className="mb-3">
           <h2 className="font-semibold text-gray-700">Business Epic Progress Overview</h2>
-          <p className="text-xs text-gray-400 mt-0.5">Slice size = SWAG commitment · Color = on-track status vs {timeElapsed}% time elapsed</p>
+          <p className="text-xs text-gray-400 mt-0.5">Slice size = SWAG commitment</p>
         </div>
         <div className="flex gap-6 items-center">
           {/* Donut pie */}
@@ -230,7 +228,6 @@ export default function SwagActualsDashboard({ product = 'uta' }) {
                   <th className="text-right pb-2 px-2 font-semibold text-gray-400 uppercase tracking-wide">Actuals</th>
                   <th className="text-right pb-2 px-2 font-semibold text-gray-400 uppercase tracking-wide">Expected</th>
                   <th className="text-right pb-2 px-2 font-semibold text-gray-400 uppercase tracking-wide">Delivered</th>
-                  <th className="text-center pb-2 pl-2 font-semibold text-gray-400 uppercase tracking-wide">Status</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-gray-50">
@@ -248,12 +245,6 @@ export default function SwagActualsDashboard({ product = 'uta' }) {
                     <td className="py-1.5 px-2 text-right text-gray-600">{Math.round(e.actuals * 10) / 10}</td>
                     <td className="py-1.5 px-2 text-right text-gray-400">{Math.round(e.swag * timeElapsed / 100)}</td>
                     <td className="py-1.5 px-2 text-right font-semibold" style={{ color: e.statusColor }}>{e.pct}%</td>
-                    <td className="py-1.5 pl-2 text-center">
-                      <span className="inline-block px-2 py-0.5 rounded-full font-medium whitespace-nowrap"
-                        style={{ background: e.statusColor + '22', color: e.statusColor }}>
-                        {e.status}
-                      </span>
-                    </td>
                   </tr>
                 ))}
               </tbody>
