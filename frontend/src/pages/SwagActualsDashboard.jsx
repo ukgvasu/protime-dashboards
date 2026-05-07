@@ -10,8 +10,8 @@ import { api } from '../services/api';
 const JIRA_BASE = 'https://engjira.int.kronos.com';
 
 const EPIC_COLORS = [
-  '#005151', '#0d9488', '#0369a1', '#7c3aed',
-  '#b45309', '#be185d', '#1d4ed8', '#065f46',
+  '#0d9488', '#f59e0b', '#7c3aed', '#dc2626',
+  '#2563eb', '#be185d', '#16a34a', '#ea580c',
 ];
 
 function StatCard({ label, value, sublabel, color = '#005151' }) {
@@ -79,10 +79,14 @@ export default function SwagActualsDashboard({ product = 'uta' }) {
 
   const { periods, periodDates, totalSwag, asOf, timeElapsed, epics, stories } = data;
 
+  const fmtDate = (iso) => new Date(iso + 'T12:00:00').toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+  const q3Range = periodDates.length > 0
+    ? `${fmtDate(periodDates[0].start)} – ${fmtDate(periodDates[periodDates.length - 1].end)}`
+    : 'Q3';
+
   const totalActuals = epics.reduce((s, e) => s + e.totalActuals, 0);
   const pctDelivered = totalSwag > 0 ? Math.round((totalActuals / totalSwag) * 100) : 0;
   const remaining = Math.max(0, totalSwag - totalActuals);
-  const variance = totalActuals - totalSwag;
 
   // Find which period index is "current" (today falls in)
   const todayStr = asOf;
@@ -170,7 +174,7 @@ export default function SwagActualsDashboard({ product = 'uta' }) {
       <div className="bg-white border border-gray-200 rounded shadow-sm p-2.5 text-xs">
         <div className="font-semibold text-gray-700 mb-1">{d.key} — {d.summary}</div>
         <div className="text-gray-500">SWAG: <span className="font-medium text-gray-700">{d.swag} pts</span></div>
-        <div className="text-gray-500">Actuals: <span className="font-medium text-gray-700">{Math.round(d.actuals * 10) / 10} pts</span></div>
+        <div className="text-gray-500">Actuals: <span className="font-medium text-gray-700">{Math.round(d.actuals * 10) / 10} hrs</span></div>
         <div className="mt-1" style={{ color: d.statusColor }}>
           <span className="font-semibold">{d.pct}% delivered</span> · {d.status}
         </div>
@@ -184,17 +188,16 @@ export default function SwagActualsDashboard({ product = 'uta' }) {
       <div className="mb-6">
         <h1 className="text-2xl font-bold text-[#005151]">{config.title}</h1>
         <p className="text-sm text-gray-500 mt-1">
-          FY26 Q3 (Apr 1 – Jun 30) · As of {asOf} · {timeElapsed}% of quarter elapsed
+          FY26 Q3 ({q3Range}) · As of {asOf} · {timeElapsed}% of quarter elapsed
         </p>
       </div>
 
       {/* Stat cards */}
-      <div className="grid grid-cols-2 md:grid-cols-5 gap-4 mb-6">
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
         <StatCard label="Total SWAG" value={`${totalSwag} pts`} sublabel="Committed capacity" color="#005151" />
-        <StatCard label="Actuals to Date" value={`${Math.round(totalActuals * 10) / 10} pts`} sublabel="Story points resolved" color="#0d9488" />
+        <StatCard label="Actuals to Date" value={`${Math.round(totalActuals * 10) / 10} hrs`} sublabel="Hours logged on resolved stories" color="#0d9488" />
         <StatCard label="% Delivered" value={`${pctDelivered}%`} sublabel={`vs ${timeElapsed}% time elapsed`} color={pctDelivered >= timeElapsed ? '#16a34a' : '#dc2626'} />
         <StatCard label="Remaining" value={`${Math.round(remaining)} pts`} sublabel="SWAG – Actuals" color="#0369a1" />
-        <StatCard label="Variance" value={`${variance >= 0 ? '+' : ''}${Math.round(variance)} pts`} sublabel={variance >= 0 ? 'Ahead of plan' : 'Behind plan'} color={variance >= 0 ? '#16a34a' : '#dc2626'} />
       </div>
 
       {/* Epic Progress Overview */}
@@ -276,14 +279,14 @@ export default function SwagActualsDashboard({ product = 'uta' }) {
       {/* ── By Period ── */}
       {tab === 'period' && (
         <div className="bg-white rounded-lg shadow-sm border border-gray-100 p-5">
-          <h2 className="font-semibold text-gray-700 mb-1">Story Points Delivered — By 2-Week Period</h2>
+          <h2 className="font-semibold text-gray-700 mb-1">Hours Logged — By 2-Week Period</h2>
           <p className="text-xs text-gray-400 mb-4">Each bar shows points resolved per business epic in that bi-weekly window</p>
           <ResponsiveContainer width="100%" height={320}>
             <BarChart data={byPeriodData} barGap={2}>
               <CartesianGrid strokeDasharray="3 3" stroke="#f0f0f0" />
               <XAxis dataKey="period" tick={{ fontSize: 10 }} />
-              <YAxis tick={{ fontSize: 11 }} allowDecimals={false} />
-              <Tooltip />
+              <YAxis tick={{ fontSize: 11 }} />
+              <Tooltip formatter={(val, name) => [`${Math.round(val * 10) / 10} hrs`, name]} />
               <Legend wrapperStyle={{ fontSize: 11 }} />
               {currentPeriodIdx >= 0 && (
                 <ReferenceLine x={periods[currentPeriodIdx]} stroke="#CCFF00" strokeWidth={2} strokeDasharray="4 2" label={{ value: 'Today', fontSize: 10, fill: '#888' }} />
@@ -299,14 +302,14 @@ export default function SwagActualsDashboard({ product = 'uta' }) {
       {/* ── Cumulative ── */}
       {tab === 'cumulative' && (
         <div className="bg-white rounded-lg shadow-sm border border-gray-100 p-5">
-          <h2 className="font-semibold text-gray-700 mb-1">Cumulative Story Points — Actuals vs Plan · Remaining Burndown</h2>
+          <h2 className="font-semibold text-gray-700 mb-1">Cumulative Hours Logged — Actuals vs Plan · Remaining Burndown</h2>
           <p className="text-xs text-gray-400 mb-4">Plan = SWAG ({totalSwag} pts) distributed evenly across {periods.length} periods · Remaining starts at {totalSwag} pts and falls as work is completed</p>
           <ResponsiveContainer width="100%" height={360}>
             <LineChart data={cumulativeData}>
               <CartesianGrid strokeDasharray="3 3" stroke="#f0f0f0" />
               <XAxis dataKey="period" tick={{ fontSize: 10 }} />
               <YAxis tick={{ fontSize: 11 }} allowDecimals={false} domain={[0, totalSwag]} />
-              <Tooltip formatter={(val, name) => [val === null ? '—' : `${val} pts`, name]} />
+              <Tooltip formatter={(val, name) => [val === null ? '—' : `${Math.round(val * 10) / 10} hrs`, name]} />
               <Legend wrapperStyle={{ fontSize: 11 }} />
               {currentPeriodIdx >= 0 && (
                 <ReferenceLine x={periods[currentPeriodIdx]} stroke="#CCFF00" strokeWidth={2} strokeDasharray="4 2" label={{ value: 'Today', fontSize: 10, fill: '#888' }} />
@@ -478,7 +481,7 @@ export default function SwagActualsDashboard({ product = 'uta' }) {
               <div>
                 <h2 className="font-semibold text-gray-700">Resolved Stories</h2>
                 <p className="text-xs text-gray-400 mt-0.5">
-                  {data.storiesWithPoints} of {data.storiesAnalyzed} stories have story points · grouped by epic
+                  {data.storiesWithTime} of {data.storiesAnalyzed} stories have logged time · grouped by epic
                 </p>
               </div>
               <input
@@ -496,7 +499,7 @@ export default function SwagActualsDashboard({ product = 'uta' }) {
                     <SortHdr col="key" label="Key" />
                     <th className="px-3 py-2 text-xs font-semibold text-gray-500 uppercase">Summary</th>
                     <SortHdr col="assignee" label="Assignee" />
-                    <SortHdr col="sp" label="SP" />
+                    <SortHdr col="logged" label="Logged (h)" />
                     <SortHdr col="resolutionDate" label="Resolved" />
                     <SortHdr col="status" label="Status" />
                   </tr>
@@ -506,7 +509,7 @@ export default function SwagActualsDashboard({ product = 'uta' }) {
                     <tr><td colSpan={6} className="px-3 py-6 text-center text-gray-400 text-xs italic">No stories match.</td></tr>
                   ) : storyGroups.map(group => {
                     const isOpen = !collapsedGroups.has(group.groupKey);
-                    const groupSP = group.stories.reduce((s, st) => s + (st.sp || 0), 0);
+                    const groupSP = group.stories.reduce((s, st) => s + (st.logged || 0), 0);
                     return (
                       <>
                         {/* ── Epic group header ── */}
@@ -539,7 +542,7 @@ export default function SwagActualsDashboard({ product = 'uta' }) {
                               )}
                               <span className="text-xs text-gray-400 ml-1">
                                 {group.stories.length} {group.stories.length === 1 ? 'story' : 'stories'}
-                                {groupSP > 0 ? ` · ${Math.round(groupSP * 10) / 10} pts` : ''}
+                                {groupSP > 0 ? ` · ${Math.round(groupSP * 10) / 10}h logged` : ''}
                               </span>
                             </div>
                           </td>
@@ -563,8 +566,8 @@ export default function SwagActualsDashboard({ product = 'uta' }) {
                               </span>
                             </td>
                             <td className="px-3 py-2 text-right">
-                              <span className={`text-xs font-semibold ${s.sp > 0 ? 'text-[#005151]' : 'text-gray-300'}`}>
-                                {s.sp > 0 ? s.sp : '—'}
+                              <span className={`text-xs font-semibold ${s.logged > 0 ? 'text-[#005151]' : 'text-gray-300'}`}>
+                                {s.logged > 0 ? `${Math.round(s.logged * 100) / 100}h` : '—'}
                               </span>
                             </td>
                             <td className="px-3 py-2 whitespace-nowrap text-xs text-gray-500">{s.resolutionDate || '—'}</td>
