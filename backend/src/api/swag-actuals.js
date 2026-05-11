@@ -194,7 +194,7 @@ router.get('/utm-q3', async (req, res) => {
 // GET /api/swag-actuals/wfc-q3
 router.get('/wfc-q3', async (req, res) => {
   try {
-    const data = await buildQ3Data('WFMC_2026_Q3', ['WFM Classic FY26 Q3 - ', 'WFMC FY26 Q3 - '], '2026-03-25', '2026-06-23', 'WFMC 26.3');
+    const data = await buildQ3Data('WFMC_2026_Q3', ['WFM Classic FY26 Q3 - ', 'WFMC FY26 Q3 - '], '2026-03-25', '2026-06-23', 'WFM Classic 26.3');
     res.json(data);
   } catch (err) {
     console.error('[swag-actuals/wfc-q3] error:', err.message);
