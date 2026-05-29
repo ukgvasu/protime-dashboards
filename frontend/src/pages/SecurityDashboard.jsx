@@ -152,7 +152,7 @@ export default function SecurityDashboard({ product = null }) {
           </div>
         </div>
 
-        <div className="grid grid-cols-3 gap-4 mb-6">
+        <div className="grid grid-cols-2 gap-4 mb-6">
           <div className="bg-white rounded-lg shadow-sm border border-gray-100 p-5 flex items-center gap-4">
             <div className="w-12 h-12 rounded-full flex items-center justify-center" style={{ background: `${config.color}18` }}>
               <Shield size={24} style={{ color: config.color }} />
@@ -169,17 +169,6 @@ export default function SecurityDashboard({ product = null }) {
             <div>
               <div className="text-3xl font-bold text-red-600">{data.critical}</div>
               <div className="text-sm text-gray-500">Critical (S1+S2)</div>
-            </div>
-          </div>
-          <div className="bg-white rounded-lg shadow-sm border border-gray-100 p-5 flex items-center gap-4">
-            <div className="w-12 h-12 rounded-full flex items-center justify-center" style={{ background: '#dbeafe' }}>
-              <span style={{ fontSize: 13, fontWeight: 800, color: '#1d4ed8' }}>TVE</span>
-            </div>
-            <div>
-              <div className="text-3xl font-bold" style={{ color: '#1d4ed8' }}>
-                {data.defects.filter(d => d.tveSubmitted).length}
-              </div>
-              <div className="text-sm text-gray-500">TVE Submitted</div>
             </div>
           </div>
         </div>
@@ -208,7 +197,7 @@ export default function SecurityDashboard({ product = null }) {
       </div>
 
       {/* Summary stat cards */}
-      <div className="grid grid-cols-3 gap-4 mb-4">
+      <div className="grid grid-cols-2 gap-4 mb-4">
         <div className="bg-white rounded-lg shadow-sm border border-gray-100 p-5 flex items-center gap-4">
           <div className="w-12 h-12 rounded-full bg-red-100 flex items-center justify-center">
             <AlertTriangle className="text-red-600" size={24} />
@@ -225,17 +214,6 @@ export default function SecurityDashboard({ product = null }) {
           <div>
             <div className="text-3xl font-bold text-orange-600">{data.critical}</div>
             <div className="text-sm text-gray-500">Critical (S1+S2)</div>
-          </div>
-        </div>
-        <div className="bg-white rounded-lg shadow-sm border border-gray-100 p-5 flex items-center gap-4">
-          <div className="w-12 h-12 rounded-full flex items-center justify-center" style={{ background: '#dbeafe' }}>
-            <span style={{ fontSize: 13, fontWeight: 800, color: '#1d4ed8' }}>TVE</span>
-          </div>
-          <div>
-            <div className="text-3xl font-bold" style={{ color: '#1d4ed8' }}>
-              {data.defects.filter(d => d.tveSubmitted).length}
-            </div>
-            <div className="text-sm text-gray-500">TVE Submitted</div>
           </div>
         </div>
       </div>
