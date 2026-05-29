@@ -145,8 +145,8 @@ export default function SwagActualsLeadershipDashboard() {
   return (
     <div className="p-6 max-w-7xl mx-auto">
       <div className="mb-6">
-        <h1 className="text-2xl font-bold text-gray-800">SWAG vs Actuals — Leadership View</h1>
-        <p className="text-sm text-gray-500 mt-1">Cross-product defect health and monthly trends — live from Jira</p>
+        <h1 className="text-2xl font-bold text-gray-800">Cross-product - Readout</h1>
+        <p className="text-sm text-gray-500 mt-1">Defect health and monthly trends — live from Jira</p>
       </div>
 
       {/* Portfolio totals */}
