@@ -7,6 +7,26 @@ const PRODUCT_LABELS = { uta: 'UTA', utm: 'UTM', wfmClassic: 'WFM Classic' };
 const CAT_COLORS = { security: '#dc2626', techDebt: '#7c3aed', customerReported: '#005151', operational: '#6b7280' };
 const CAT_LABELS = { security: 'Security', techDebt: 'Tech Debt', customerReported: 'Customer Reported', operational: 'Operational' };
 
+const JIRA_BASE = 'https://engjira.int.kronos.com';
+
+const PRODUCT_BASE_JQL = {
+  uta: 'cf[22500] = "UTA" AND issuetype in (Bug, Defect) AND statusCategory != Done',
+  utm: 'cf[22500] = "UTM" AND (issuetype in (Bug, Defect) OR labels in ("RCA-Type-Defect")) AND statusCategory != Done',
+  wfmClassic: 'cf[22500] = "ProTime India" AND (issuetype in (Bug, Defect) OR labels in ("RCA-Type-Defect")) AND statusCategory != Done',
+};
+
+const CAT_JQL_SUFFIX = {
+  security: ' AND labels in (Checkmarx, SCA, CVE, Security, SAST, DAST)',
+  techDebt: ' AND labels in ("tech-debt", refactor, cleanup)',
+  customerReported: ' AND labels in ("RCA-Type-Defect") AND NOT labels in (Checkmarx, SCA, CVE, Security, SAST, DAST)',
+  operational: ' AND NOT labels in (Checkmarx, SCA, CVE, Security, SAST, DAST, "tech-debt", refactor, cleanup, "RCA-Type-Defect")',
+};
+
+function jiraUrl(product, cat) {
+  const jql = PRODUCT_BASE_JQL[product] + (cat ? CAT_JQL_SUFFIX[cat] : '');
+  return `${JIRA_BASE}/issues/?jql=${encodeURIComponent(jql)}`;
+}
+
 export default function KTLOAnalysisDashboard() {
   const [data, setData] = useState({});
   const [loading, setLoading] = useState(true);
@@ -40,7 +60,10 @@ export default function KTLOAnalysisDashboard() {
               <h2 className="font-bold text-lg mb-1" style={{ color: { uta: '#005151', utm: '#0d9488', wfmClassic: '#b7950b' }[product] }}>
                 {PRODUCT_LABELS[product]}
               </h2>
-              <div className="text-3xl font-bold text-gray-800 mb-4">{d.total} <span className="text-sm font-normal text-gray-400">open defects</span></div>
+              <div className="text-3xl font-bold text-gray-800 mb-4">
+                <a href={jiraUrl(product, null)} target="_blank" rel="noopener noreferrer" className="hover:underline">{d.total}</a>
+                {' '}<span className="text-sm font-normal text-gray-400">open defects</span>
+              </div>
               <ResponsiveContainer width="100%" height={180}>
                 <PieChart>
                   <Pie data={pieData} dataKey="value" nameKey="name" cx="50%" cy="50%" outerRadius={70}>
@@ -54,7 +77,7 @@ export default function KTLOAnalysisDashboard() {
                 {Object.entries(d.breakdown || {}).map(([cat, count]) => (
                   <div key={cat} className="flex justify-between text-sm">
                     <span className="text-gray-600">{CAT_LABELS[cat] || cat}</span>
-                    <span className="font-semibold">{count}</span>
+                    <a href={jiraUrl(product, cat)} target="_blank" rel="noopener noreferrer" className="font-semibold hover:underline" style={{ color: CAT_COLORS[cat] || '#374151' }}>{count}</a>
                   </div>
                 ))}
               </div>
