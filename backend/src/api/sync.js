@@ -36,6 +36,19 @@ async function syncProduct(product, createSnapshot = false) {
       DefectModel.insert(defect);
     }
 
+    // Also fetch recently-closed issues (last 14 days) so the DB status stays current.
+    // The main JQL excludes statusCategory = Done, so closed issues would otherwise
+    // remain in the DB with their last-open status and show up as still open.
+    const closedJql = boardConfig.jql
+      .replace('statusCategory != Done', 'statusCategory = Done')
+      .replace('ORDER BY', 'AND updated >= "-14d" ORDER BY');
+    const recentlyClosed = await fetchIssues(closedJql);
+    console.log(`  Fetched ${recentlyClosed.length} recently-closed issues for ${product}`);
+    for (const issue of recentlyClosed) {
+      const defect = transformIssue(issue, product);
+      DefectModel.insert(defect);
+    }
+
     if (createSnapshot) {
       SnapshotModel.insert({
         product,
