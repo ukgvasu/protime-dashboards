@@ -68,6 +68,9 @@ async function syncProduct(product, createSnapshot = false) {
 
     dbManager.save();
     cacheService.invalidate(`stats:${product}`);
+    cacheService.invalidate(`ktlo:${product}`);
+    cacheService.invalidate(`insights:${product}`);
+    cacheService.invalidate(`customer-impact:${product}`);
     cacheService.invalidate('leadership');
     cacheService.invalidate(`upgrade-tracker:${product}`);
 
@@ -109,6 +112,7 @@ router.post('/', async (req, res) => {
     }
 
     cacheService.invalidate('upgrade-tracker:');
+    cacheService.invalidate('security');
     lastSyncStatus = { status: 'success', completedAt: new Date().toISOString(), recordsSynced: totalRecords };
   } catch (error) {
     console.error('Sync error:', error);
