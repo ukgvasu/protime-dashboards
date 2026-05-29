@@ -67,12 +67,6 @@ export default function Layout() {
           <NavLink to="/customer-trends" className={navLinkClass}>
             <TrendingUp size={16} /> Customer Trends
           </NavLink>
-          <NavLink to="/leadership" className={navLinkClass}>
-            <LayoutDashboard size={16} /> Defect Summary
-          </NavLink>
-          <NavLink to="/all-products" className={navLinkClass}>
-            <TrendingUp size={16} /> All Products
-          </NavLink>
           <NavLink to="/ktlo-analysis" className={navLinkClass}>
             <TrendingUp size={16} /> KTLO Analysis
           </NavLink>
@@ -91,7 +85,6 @@ export default function Layout() {
               <div className="space-y-0.5 mt-0.5">
                 <NavLink to="/swag-actuals" className={subNavLinkClass}>Development Dashboard</NavLink>
                 <NavLink to="/uta" end className={subNavLinkClass}>Defect Dashboard</NavLink>
-                <NavLink to="/uta/upgrade-tracker" className={subNavLinkClass}><ArrowUpCircle size={12} /> Upgrade Tracker</NavLink>
                 <NavLink to="/customer-impact" className={subNavLinkClass}><Users size={12} /> Customer Impact</NavLink>
                 <NavLink to="/swag-actuals-leadership" className={subNavLinkClass}>SWAG Leadership</NavLink>
               </div>
