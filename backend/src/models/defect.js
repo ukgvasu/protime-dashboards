@@ -152,6 +152,10 @@ export class DefectModel {
     );
   }
 
+  static markClosed(key) {
+    dbManager.run(`UPDATE defects SET status = 'Closed', updated_at = ? WHERE key = ?`, [new Date().toISOString(), key]);
+  }
+
   static insert(defect) {
     const existing = dbManager.get('SELECT id FROM defects WHERE key = ?', [defect.key]);
     if (existing) {

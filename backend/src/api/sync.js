@@ -36,17 +36,19 @@ async function syncProduct(product, createSnapshot = false) {
       DefectModel.insert(defect);
     }
 
-    // Also fetch recently-closed issues (last 14 days) so the DB status stays current.
-    // The main JQL excludes statusCategory = Done, so closed issues would otherwise
-    // remain in the DB with their last-open status and show up as still open.
-    const closedJql = boardConfig.jql
-      .replace('statusCategory != Done', 'statusCategory = Done')
-      .replace('ORDER BY', 'AND updated >= "-14d" ORDER BY');
-    const recentlyClosed = await fetchIssues(closedJql);
-    console.log(`  Fetched ${recentlyClosed.length} recently-closed issues for ${product}`);
-    for (const issue of recentlyClosed) {
-      const defect = transformIssue(issue, product);
-      DefectModel.insert(defect);
+    // Mark any DB records that are no longer in Jira's open list as Closed.
+    // The board JQL filters statusCategory != Done, so when an issue gets closed in Jira
+    // it drops off the list and the DB entry keeps a stale open status indefinitely.
+    const openKeys = new Set(issues.map(i => i.key));
+    const dbDefects = DefectModel.getAll(product);
+    const staleOpen = dbDefects.filter(d =>
+      !['Closed', 'Canceled'].includes(d.status) && !openKeys.has(d.key)
+    );
+    if (staleOpen.length > 0) {
+      console.log(`  Marking ${staleOpen.length} stale-open records as Closed for ${product}`);
+      for (const d of staleOpen) {
+        DefectModel.markClosed(d.key);
+      }
     }
 
     if (createSnapshot) {
