@@ -90,11 +90,11 @@ export default function Layout() {
             )}
           </div>
 
-          <NavLink to="/ktlo-analysis" className={navLinkClass}>
-            <TrendingUp size={16} /> KTLO Analysis
-          </NavLink>
           <NavLink to="/swag-actuals-leadership" className={navLinkClass}>
             <LayoutDashboard size={16} /> Defect Health Summary
+          </NavLink>
+          <NavLink to="/ktlo-analysis" className={navLinkClass}>
+            <TrendingUp size={16} /> KTLO Analysis
           </NavLink>
 
           <div className="pt-2 pb-1">
