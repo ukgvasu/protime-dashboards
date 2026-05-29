@@ -72,6 +72,8 @@ export default function SwagActualsLeadershipDashboard() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [activeProduct, setActiveProduct] = useState('all');
+  const [monthlyProduct, setMonthlyProduct] = useState('all');
+  const [monthlySort, setMonthlySort] = useState('month'); // 'month' | 'count'
 
   useEffect(() => {
     Promise.all([
@@ -171,26 +173,62 @@ export default function SwagActualsLeadershipDashboard() {
 
       {/* Monthly trend chart */}
       <div className="bg-white rounded-lg shadow-sm border border-gray-100 p-5 mb-4">
-        <h2 className="font-semibold text-gray-700 mb-1">Monthly Opened Defects — All Products</h2>
-        <p className="text-xs text-gray-400 mb-4">Defects opened per month by product, computed from Jira created dates</p>
-        {combinedMonthly.some(m => PRODUCTS.some(p => (m[`${PRODUCT_LABELS[p]} Opened`] || 0) > 0)) ? (
-          <ResponsiveContainer width="100%" height={260}>
-            <BarChart data={combinedMonthly} barGap={2}>
-              <CartesianGrid strokeDasharray="3 3" stroke="#f0f0f0" />
-              <XAxis dataKey="month" tick={{ fontSize: 11 }} />
-              <YAxis tick={{ fontSize: 11 }} allowDecimals={false} />
-              <Tooltip />
-              <Legend />
-              {PRODUCTS.map(p => (
-                <Bar key={p} dataKey={`${PRODUCT_LABELS[p]} Opened`} fill={PRODUCT_COLORS[p]} radius={[3, 3, 0, 0]} />
-              ))}
-            </BarChart>
-          </ResponsiveContainer>
-        ) : (
-          <div className="text-center py-12 text-gray-400">
-            <p>No monthly data — defects may predate the 6-month window or all were created before this month.</p>
+        <div className="flex items-start justify-between flex-wrap gap-3 mb-3">
+          <div>
+            <h2 className="font-semibold text-gray-700">Monthly Opened Defects</h2>
+            <p className="text-xs text-gray-400 mt-0.5">Defects opened per month by product, computed from Jira created dates</p>
           </div>
-        )}
+          <div className="flex items-center gap-2 flex-wrap">
+            {/* Product filter */}
+            {['all', ...PRODUCTS].map(p => (
+              <button key={p}
+                onClick={() => setMonthlyProduct(p)}
+                className={`text-xs px-3 py-1 rounded-full border transition-colors ${monthlyProduct === p ? 'text-white border-transparent' : 'border-gray-200 text-gray-600 hover:border-gray-400'}`}
+                style={monthlyProduct === p ? { background: p === 'all' ? '#374151' : PRODUCT_COLORS[p] } : {}}
+              >
+                {p === 'all' ? 'All' : PRODUCT_LABELS[p]}
+              </button>
+            ))}
+            {/* Sort toggle */}
+            <button
+              onClick={() => setMonthlySort(s => s === 'month' ? 'count' : 'month')}
+              className="text-xs px-3 py-1 rounded-full border border-gray-200 text-gray-600 hover:border-gray-400 transition-colors"
+              title={monthlySort === 'month' ? 'Currently sorted by month — click to sort by count' : 'Currently sorted by count — click to sort by month'}
+            >
+              Sort: {monthlySort === 'month' ? 'By Month' : 'By Count'}
+            </button>
+          </div>
+        </div>
+        {(() => {
+          const visibleProducts = monthlyProduct === 'all' ? PRODUCTS : [monthlyProduct];
+          const chartData = [...combinedMonthly].sort((a, b) => {
+            if (monthlySort === 'count') {
+              const aTotal = visibleProducts.reduce((s, p) => s + (a[`${PRODUCT_LABELS[p]} Opened`] || 0), 0);
+              const bTotal = visibleProducts.reduce((s, p) => s + (b[`${PRODUCT_LABELS[p]} Opened`] || 0), 0);
+              return bTotal - aTotal;
+            }
+            return a.month.localeCompare(b.month);
+          });
+          const hasData = chartData.some(m => visibleProducts.some(p => (m[`${PRODUCT_LABELS[p]} Opened`] || 0) > 0));
+          return hasData ? (
+            <ResponsiveContainer width="100%" height={260}>
+              <BarChart data={chartData} barGap={2}>
+                <CartesianGrid strokeDasharray="3 3" stroke="#f0f0f0" />
+                <XAxis dataKey="month" tick={{ fontSize: 11 }} />
+                <YAxis tick={{ fontSize: 11 }} allowDecimals={false} />
+                <Tooltip />
+                <Legend />
+                {visibleProducts.map(p => (
+                  <Bar key={p} dataKey={`${PRODUCT_LABELS[p]} Opened`} fill={PRODUCT_COLORS[p]} radius={[3, 3, 0, 0]} />
+                ))}
+              </BarChart>
+            </ResponsiveContainer>
+          ) : (
+            <div className="text-center py-12 text-gray-400">
+              <p>No monthly data — defects may predate the 6-month window or all were created before this month.</p>
+            </div>
+          );
+        })()}
       </div>
 
       {/* Customer-facing defects across all products */}
