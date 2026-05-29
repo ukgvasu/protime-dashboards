@@ -93,6 +93,9 @@ export default function Layout() {
           <NavLink to="/ktlo-analysis" className={navLinkClass}>
             <TrendingUp size={16} /> KTLO Analysis
           </NavLink>
+          <NavLink to="/swag-actuals-leadership" className={navLinkClass}>
+            <LayoutDashboard size={16} /> Defect Health Summary
+          </NavLink>
 
           <div className="pt-2 pb-1">
             <div className="text-xs font-semibold text-gray-400 uppercase tracking-wider px-3">Products</div>
@@ -109,7 +112,6 @@ export default function Layout() {
                 <NavLink to="/swag-actuals" className={subNavLinkClass}>Actuals vs Planned</NavLink>
                 <NavLink to="/uta" end className={subNavLinkClass}>Defect Dashboard</NavLink>
                 <NavLink to="/customer-impact" className={subNavLinkClass}><Users size={12} /> Customer Impact</NavLink>
-                <NavLink to="/swag-actuals-leadership" className={subNavLinkClass}>SWAG Leadership</NavLink>
               </div>
             )}
           </div>
