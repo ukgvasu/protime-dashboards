@@ -77,13 +77,13 @@ export default function Layout() {
             {expandedSections.security && (
               <div className="space-y-0.5 mt-0.5">
                 <NavLink to="/security" end className={subNavLinkClass}>Overview</NavLink>
-                <NavLink to="/security/uta" className={subNavLinkClass}>
+                <NavLink to="/security/uta" className={({ isActive }) => `flex items-center gap-2 pl-9 pr-3 py-1.5 rounded-md text-sm transition-colors ${isActive ? 'bg-[#005151] text-white font-medium' : 'text-gray-500 hover:bg-gray-100'}`}>
                   <span className="w-2 h-2 rounded-full flex-shrink-0" style={{ background: '#059669' }} /> UTA
                 </NavLink>
-                <NavLink to="/security/utm" className={subNavLinkClass}>
+                <NavLink to="/security/utm" className={({ isActive }) => `flex items-center gap-2 pl-9 pr-3 py-1.5 rounded-md text-sm transition-colors ${isActive ? 'bg-[#005151] text-white font-medium' : 'text-gray-500 hover:bg-gray-100'}`}>
                   <span className="w-2 h-2 rounded-full flex-shrink-0" style={{ background: '#2563eb' }} /> UTM
                 </NavLink>
-                <NavLink to="/security/wfm-classic" className={subNavLinkClass}>
+                <NavLink to="/security/wfm-classic" className={({ isActive }) => `flex items-center gap-2 pl-9 pr-3 py-1.5 rounded-md text-sm transition-colors ${isActive ? 'bg-[#005151] text-white font-medium' : 'text-gray-500 hover:bg-gray-100'}`}>
                   <span className="w-2 h-2 rounded-full flex-shrink-0" style={{ background: '#7c3aed' }} /> WFM Classic
                 </NavLink>
               </div>
