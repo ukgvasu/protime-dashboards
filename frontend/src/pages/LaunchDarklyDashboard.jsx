@@ -1,5 +1,5 @@
-import { useState, useEffect } from 'react';
-import { Search, Flag, CheckCircle, XCircle, Archive, AlertTriangle, ChevronUp, ChevronDown } from 'lucide-react';
+import { useState, useEffect, useRef, useCallback } from 'react';
+import { Search, Flag, CheckCircle, XCircle, Archive, AlertTriangle, ChevronUp, ChevronDown, ChevronsUpDown } from 'lucide-react';
 
 const PRODUCT_COLORS = {
   UTA: '#005151',
@@ -9,6 +9,17 @@ const PRODUCT_COLORS = {
   'Migration-Tool': '#7c3aed',
   Other: '#6b7280',
 };
+
+const COLUMNS = [
+  { key: 'Product',              label: 'Product',              defaultWidth: 120 },
+  { key: 'Flag Key',             label: 'Flag Key',             defaultWidth: 260 },
+  { key: 'Enabled In Prod',      label: 'Status',               defaultWidth: 110 },
+  { key: 'ukg-expiry-date',      label: 'Expiry',               defaultWidth: 110 },
+  { key: 'Rules Details',        label: 'Rules Details',        defaultWidth: 220 },
+  { key: 'Fallthrough Variation',label: 'Fallthrough Variation',defaultWidth: 160 },
+  { key: 'jira issues',          label: 'Jira',                 defaultWidth: 110 },
+  { key: 'Description',          label: 'Description',          defaultWidth: 280 },
+];
 
 function parseCSV(text) {
   const lines = text.split('\n').filter(Boolean);
@@ -27,14 +38,9 @@ function parseCSVLine(line) {
   let inQuotes = false;
   for (let i = 0; i < line.length; i++) {
     const ch = line[i];
-    if (ch === '"') {
-      inQuotes = !inQuotes;
-    } else if (ch === ',' && !inQuotes) {
-      result.push(current);
-      current = '';
-    } else {
-      current += ch;
-    }
+    if (ch === '"') { inQuotes = !inQuotes; }
+    else if (ch === ',' && !inQuotes) { result.push(current); current = ''; }
+    else { current += ch; }
   }
   result.push(current);
   return result;
@@ -45,8 +51,7 @@ function isExpiringSoon(dateStr) {
   const parts = dateStr.split('/');
   if (parts.length !== 3) return false;
   const expiry = new Date(`20${parts[2]}-${parts[0].padStart(2, '0')}-${parts[1].padStart(2, '0')}`);
-  const now = new Date();
-  const diff = (expiry - now) / (1000 * 60 * 60 * 24);
+  const diff = (expiry - new Date()) / (1000 * 60 * 60 * 24);
   return diff >= 0 && diff <= 60;
 }
 
@@ -54,13 +59,20 @@ function isExpired(dateStr) {
   if (!dateStr || dateStr === '12/31/99' || dateStr === '12/31/30' || dateStr === '12/31/27') return false;
   const parts = dateStr.split('/');
   if (parts.length !== 3) return false;
-  const expiry = new Date(`20${parts[2]}-${parts[0].padStart(2, '0')}-${parts[1].padStart(2, '0')}`);
-  return expiry < new Date();
+  return new Date(`20${parts[2]}-${parts[0].padStart(2, '0')}-${parts[1].padStart(2, '0')}`) < new Date();
 }
 
 function normalizeProduct(p) {
-  if (!p || p.trim() === '') return 'Other';
-  return p.trim();
+  return (!p || p.trim() === '') ? 'Other' : p.trim();
+}
+
+function getSortValue(flag, key) {
+  if (key === 'Product') return normalizeProduct(flag.Product);
+  if (key === 'Enabled In Prod') {
+    if (flag['Archived'] === 'TRUE') return '0_archived';
+    return flag['Enabled In Prod'] === 'TRUE' ? '1_enabled' : '2_disabled';
+  }
+  return (flag[key] || '').toLowerCase();
 }
 
 export default function LaunchDarklyDashboard() {
@@ -71,16 +83,52 @@ export default function LaunchDarklyDashboard() {
   const [statusFilter, setStatusFilter] = useState('All');
   const [sortField, setSortField] = useState('Product');
   const [sortDir, setSortDir] = useState('asc');
+  const [colWidths, setColWidths] = useState(() => COLUMNS.map(c => c.defaultWidth));
+
+  const resizeRef = useRef(null); // { colIndex, startX, startWidth }
 
   useEffect(() => {
     fetch('/launchdarklydata/ld-flag-inventory-2026-06-08.csv')
       .then(r => r.text())
-      .then(text => {
-        setFlags(parseCSV(text));
-        setLoading(false);
-      })
+      .then(text => { setFlags(parseCSV(text)); setLoading(false); })
       .catch(() => setLoading(false));
   }, []);
+
+  // Resize mouse handlers
+  const onResizeMouseDown = useCallback((e, colIndex) => {
+    e.preventDefault();
+    e.stopPropagation();
+    resizeRef.current = { colIndex, startX: e.clientX, startWidth: colWidths[colIndex] };
+
+    const onMouseMove = (e) => {
+      if (!resizeRef.current) return;
+      const { colIndex, startX, startWidth } = resizeRef.current;
+      const newWidth = Math.max(60, startWidth + (e.clientX - startX));
+      setColWidths(prev => {
+        const next = [...prev];
+        next[colIndex] = newWidth;
+        return next;
+      });
+    };
+
+    const onMouseUp = () => {
+      resizeRef.current = null;
+      document.removeEventListener('mousemove', onMouseMove);
+      document.removeEventListener('mouseup', onMouseUp);
+      document.body.style.cursor = '';
+      document.body.style.userSelect = '';
+    };
+
+    document.body.style.cursor = 'col-resize';
+    document.body.style.userSelect = 'none';
+    document.addEventListener('mousemove', onMouseMove);
+    document.addEventListener('mouseup', onMouseUp);
+  }, [colWidths]);
+
+  const handleSort = (key) => {
+    if (sortField === key) setSortDir(d => d === 'asc' ? 'desc' : 'asc');
+    else { setSortField(key); setSortDir('asc'); }
+  };
 
   const products = ['All', ...Array.from(new Set(flags.map(f => normalizeProduct(f.Product)))).sort()];
 
@@ -101,9 +149,8 @@ export default function LaunchDarklyDashboard() {
       return true;
     })
     .sort((a, b) => {
-      let av = a[sortField] || '';
-      let bv = b[sortField] || '';
-      if (sortField === 'Product') { av = normalizeProduct(av); bv = normalizeProduct(bv); }
+      const av = getSortValue(a, sortField);
+      const bv = getSortValue(b, sortField);
       return sortDir === 'asc' ? av.localeCompare(bv) : bv.localeCompare(av);
     });
 
@@ -113,14 +160,11 @@ export default function LaunchDarklyDashboard() {
   const expiringSoon = flags.filter(f => isExpiringSoon(f['ukg-expiry-date'])).length;
   const expired = flags.filter(f => isExpired(f['ukg-expiry-date'])).length;
 
-  const handleSort = (field) => {
-    if (sortField === field) setSortDir(d => d === 'asc' ? 'desc' : 'asc');
-    else { setSortField(field); setSortDir('asc'); }
-  };
-
-  const SortIcon = ({ field }) => {
-    if (sortField !== field) return null;
-    return sortDir === 'asc' ? <ChevronUp size={12} className="inline ml-1" /> : <ChevronDown size={12} className="inline ml-1" />;
+  const SortIcon = ({ colKey }) => {
+    if (sortField !== colKey) return <ChevronsUpDown size={11} className="inline ml-1 text-gray-300" />;
+    return sortDir === 'asc'
+      ? <ChevronUp size={11} className="inline ml-1 text-[#005151]" />
+      : <ChevronDown size={11} className="inline ml-1 text-[#005151]" />;
   };
 
   if (loading) {
@@ -229,21 +273,34 @@ export default function LaunchDarklyDashboard() {
           Showing {filtered.length} of {totalFlags} flags
         </div>
         <div className="overflow-x-auto">
-          <table className="w-full text-sm">
+          <table className="text-sm border-collapse" style={{ tableLayout: 'fixed', width: colWidths.reduce((a, b) => a + b, 0) }}>
+            <colgroup>
+              {colWidths.map((w, i) => <col key={i} style={{ width: w }} />)}
+            </colgroup>
             <thead className="bg-gray-50 border-b border-gray-200">
               <tr>
-                <th className="text-left px-4 py-2.5 text-xs font-semibold text-gray-500 uppercase tracking-wide cursor-pointer hover:text-gray-700" onClick={() => handleSort('Product')}>
-                  Product <SortIcon field="Product" />
-                </th>
-                <th className="text-left px-4 py-2.5 text-xs font-semibold text-gray-500 uppercase tracking-wide cursor-pointer hover:text-gray-700" onClick={() => handleSort('Flag Key')}>
-                  Flag Key <SortIcon field="Flag Key" />
-                </th>
-                <th className="text-left px-4 py-2.5 text-xs font-semibold text-gray-500 uppercase tracking-wide">Status</th>
-                <th className="text-left px-4 py-2.5 text-xs font-semibold text-gray-500 uppercase tracking-wide cursor-pointer hover:text-gray-700" onClick={() => handleSort('ukg-expiry-date')}>
-                  Expiry <SortIcon field="ukg-expiry-date" />
-                </th>
-                <th className="text-left px-4 py-2.5 text-xs font-semibold text-gray-500 uppercase tracking-wide">Jira</th>
-                <th className="text-left px-4 py-2.5 text-xs font-semibold text-gray-500 uppercase tracking-wide">Description</th>
+                {COLUMNS.map((col, i) => (
+                  <th
+                    key={col.key}
+                    className="text-left py-2.5 text-xs font-semibold text-gray-500 uppercase tracking-wide select-none relative"
+                    style={{ width: colWidths[i], minWidth: 60 }}
+                  >
+                    <button
+                      className="flex items-center gap-0.5 px-4 w-full hover:text-gray-800 transition-colors truncate"
+                      onClick={() => handleSort(col.key)}
+                    >
+                      <span className="truncate">{col.label}</span>
+                      <SortIcon colKey={col.key} />
+                    </button>
+                    {/* Resize handle */}
+                    <div
+                      className="absolute right-0 top-0 h-full w-4 flex items-center justify-center cursor-col-resize group z-10"
+                      onMouseDown={e => onResizeMouseDown(e, i)}
+                    >
+                      <div className="w-px h-4 bg-gray-300 group-hover:bg-[#005151] group-hover:h-full transition-all" />
+                    </div>
+                  </th>
+                ))}
               </tr>
             </thead>
             <tbody className="divide-y divide-gray-100">
@@ -257,51 +314,55 @@ export default function LaunchDarklyDashboard() {
                 const expired_ = isExpired(expiry);
                 return (
                   <tr key={i} className="hover:bg-gray-50 transition-colors">
-                    <td className="px-4 py-2.5">
-                      <span className="inline-flex items-center gap-1.5">
+                    <td className="px-4 py-2.5 overflow-hidden">
+                      <span className="flex items-center gap-1.5 truncate">
                         <span className="w-2 h-2 rounded-full flex-shrink-0" style={{ backgroundColor: color }} />
-                        <span className="font-medium text-xs" style={{ color }}>{prod}</span>
+                        <span className="font-medium text-xs truncate" style={{ color }}>{prod}</span>
                       </span>
                     </td>
-                    <td className="px-4 py-2.5 font-mono text-xs text-gray-700 max-w-[280px]">
+                    <td className="px-4 py-2.5 font-mono text-xs text-gray-700 overflow-hidden">
                       <span className="block truncate" title={flag['Flag Key']}>{flag['Flag Key']}</span>
                     </td>
-                    <td className="px-4 py-2.5">
-                      <div className="flex flex-col gap-0.5">
-                        {isArchived ? (
-                          <span className="inline-flex items-center gap-1 text-xs text-purple-600 bg-purple-50 px-2 py-0.5 rounded-full w-fit">
-                            <Archive size={10} /> Archived
-                          </span>
-                        ) : enabled ? (
-                          <span className="inline-flex items-center gap-1 text-xs text-green-700 bg-green-50 px-2 py-0.5 rounded-full w-fit">
-                            <CheckCircle size={10} /> Enabled
-                          </span>
-                        ) : (
-                          <span className="inline-flex items-center gap-1 text-xs text-gray-500 bg-gray-100 px-2 py-0.5 rounded-full w-fit">
-                            <XCircle size={10} /> Disabled
-                          </span>
-                        )}
-                      </div>
+                    <td className="px-4 py-2.5 overflow-hidden">
+                      {isArchived ? (
+                        <span className="inline-flex items-center gap-1 text-xs text-purple-600 bg-purple-50 px-2 py-0.5 rounded-full">
+                          <Archive size={10} /> Archived
+                        </span>
+                      ) : enabled ? (
+                        <span className="inline-flex items-center gap-1 text-xs text-green-700 bg-green-50 px-2 py-0.5 rounded-full">
+                          <CheckCircle size={10} /> Enabled
+                        </span>
+                      ) : (
+                        <span className="inline-flex items-center gap-1 text-xs text-gray-500 bg-gray-100 px-2 py-0.5 rounded-full">
+                          <XCircle size={10} /> Disabled
+                        </span>
+                      )}
                     </td>
-                    <td className="px-4 py-2.5 text-xs">
+                    <td className="px-4 py-2.5 text-xs overflow-hidden">
                       {expiry ? (
                         <span className={`font-medium ${expired_ ? 'text-red-600' : expiring ? 'text-amber-600' : 'text-gray-500'}`}>
                           {expiry}
-                          {expiring && <span className="ml-1 text-amber-500">⚠</span>}
-                          {expired_ && <span className="ml-1 text-red-500">!</span>}
+                          {expiring && <span className="ml-1">⚠</span>}
+                          {expired_ && <span className="ml-1">!</span>}
                         </span>
-                      ) : (
-                        <span className="text-gray-300">—</span>
-                      )}
+                      ) : <span className="text-gray-300">—</span>}
                     </td>
-                    <td className="px-4 py-2.5 text-xs">
-                      {flag['jira issues'] ? (
-                        <span className="text-blue-600 font-medium">{flag['jira issues']}</span>
-                      ) : (
-                        <span className="text-gray-300">—</span>
-                      )}
+                    <td className="px-4 py-2.5 text-xs text-gray-500 overflow-hidden">
+                      {flag['Rules Details']
+                        ? <span className="block truncate" title={flag['Rules Details']}>{flag['Rules Details']}</span>
+                        : <span className="text-gray-300">—</span>}
                     </td>
-                    <td className="px-4 py-2.5 text-xs text-gray-500 max-w-[320px]">
+                    <td className="px-4 py-2.5 text-xs text-gray-500 overflow-hidden">
+                      {flag['Fallthrough Variation']
+                        ? <span className="block truncate" title={flag['Fallthrough Variation']}>{flag['Fallthrough Variation']}</span>
+                        : <span className="text-gray-300">—</span>}
+                    </td>
+                    <td className="px-4 py-2.5 text-xs overflow-hidden">
+                      {flag['jira issues']
+                        ? <span className="text-blue-600 font-medium truncate block" title={flag['jira issues']}>{flag['jira issues']}</span>
+                        : <span className="text-gray-300">—</span>}
+                    </td>
+                    <td className="px-4 py-2.5 text-xs text-gray-500 overflow-hidden">
                       <span className="block truncate" title={flag['Description']}>{flag['Description']}</span>
                     </td>
                   </tr>
@@ -309,7 +370,7 @@ export default function LaunchDarklyDashboard() {
               })}
               {filtered.length === 0 && (
                 <tr>
-                  <td colSpan={6} className="px-4 py-10 text-center text-gray-400 text-sm">No flags match the current filters.</td>
+                  <td colSpan={8} className="px-4 py-10 text-center text-gray-400 text-sm">No flags match the current filters.</td>
                 </tr>
               )}
             </tbody>
