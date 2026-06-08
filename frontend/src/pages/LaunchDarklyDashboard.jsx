@@ -88,7 +88,7 @@ export default function LaunchDarklyDashboard() {
   const resizeRef = useRef(null); // { colIndex, startX, startWidth }
 
   useEffect(() => {
-    fetch('/launchdarklydata/ld-flag-inventory-2026-06-08.csv')
+    fetch('/launchdarklydata/ld-flag-inventory.csv')
       .then(r => r.text())
       .then(text => { setFlags(parseCSV(text)); setLoading(false); })
       .catch(() => setLoading(false));
