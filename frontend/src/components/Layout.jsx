@@ -1,6 +1,6 @@
 import { Outlet, NavLink, useNavigate } from 'react-router-dom';
 import { useState } from 'react';
-import { LayoutDashboard, Shield, TrendingUp, Users, RefreshCw, ChevronDown, ChevronRight, ArrowUpCircle, Clock } from 'lucide-react';
+import { LayoutDashboard, Shield, TrendingUp, Users, RefreshCw, ChevronDown, ChevronRight, ArrowUpCircle, Clock, Flag } from 'lucide-react';
 import { api } from '../services/api';
 
 function formatDateTime(date) {
@@ -95,6 +95,9 @@ export default function Layout() {
           </NavLink>
           <NavLink to="/ktlo-analysis" className={navLinkClass}>
             <TrendingUp size={16} /> KTLO Analysis
+          </NavLink>
+          <NavLink to="/launch-darkly" className={navLinkClass}>
+            <Flag size={16} /> Launch Darkly
           </NavLink>
 
           <div className="pt-2 pb-1">

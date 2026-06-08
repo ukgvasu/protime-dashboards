@@ -12,6 +12,7 @@ import KTLOAnalysisDashboard from './pages/KTLOAnalysisDashboard';
 import CustomerImpactDashboard from './pages/CustomerImpactDashboard';
 import AllProductsDashboard from './pages/AllProductsDashboard';
 import CustomerTrends from './pages/CustomerTrends';
+import LaunchDarklyDashboard from './pages/LaunchDarklyDashboard';
 
 function App() {
   return (
@@ -26,6 +27,7 @@ function App() {
           <Route path="swag-actuals" element={<SwagActualsDashboard product="uta" />} />
           <Route path="swag-actuals-leadership" element={<SwagActualsLeadershipDashboard />} />
           <Route path="ktlo-analysis" element={<KTLOAnalysisDashboard />} />
+          <Route path="launch-darkly" element={<LaunchDarklyDashboard />} />
           <Route path="customer-impact" element={<CustomerImpactDashboard product="uta" />} />
           <Route path="utm" element={<UTMDashboard />} />
           <Route path="utm/swag-actuals" element={<SwagActualsDashboard product="utm" />} />
