@@ -25,15 +25,18 @@ function App() {
           <Route path="uta" element={<UTADashboard />} />
           <Route path="uta/upgrade-tracker" element={<UTAUpgradeTracker />} />
           <Route path="swag-actuals" element={<SwagActualsDashboard product="uta" />} />
+          <Route path="swag-actuals-q4" element={<SwagActualsDashboard product="uta-q4" />} />
           <Route path="swag-actuals-leadership" element={<SwagActualsLeadershipDashboard />} />
           <Route path="ktlo-analysis" element={<KTLOAnalysisDashboard />} />
           <Route path="launch-darkly" element={<LaunchDarklyDashboard />} />
           <Route path="customer-impact" element={<CustomerImpactDashboard product="uta" />} />
           <Route path="utm" element={<UTMDashboard />} />
           <Route path="utm/swag-actuals" element={<SwagActualsDashboard product="utm" />} />
+          <Route path="utm/swag-actuals-q4" element={<SwagActualsDashboard product="utm-q4" />} />
           <Route path="utm/customer-impact" element={<CustomerImpactDashboard product="utm" />} />
           <Route path="wfm-classic" element={<WFMClassicDashboard />} />
           <Route path="wfm-classic/swag-actuals" element={<SwagActualsDashboard product="wfmClassic" />} />
+          <Route path="wfm-classic/swag-actuals-q4" element={<SwagActualsDashboard product="wfmClassic-q4" />} />
           <Route path="wfm-classic/customer-impact" element={<CustomerImpactDashboard product="wfmClassic" />} />
           <Route path="leadership" element={<LeadershipDashboard />} />
           <Route path="security" element={<SecurityDashboard />} />

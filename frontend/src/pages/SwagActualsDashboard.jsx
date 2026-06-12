@@ -32,10 +32,15 @@ const TAB_CLASSES = (active) =>
   }`;
 
 const PRODUCT_CONFIG = {
-  uta:       { title: 'UTA Q3 — Development Dashboard',         apiCall: () => api.getSwagActualsUTAQ3() },
-  utm:       { title: 'UTM Q3 — Development Dashboard',         apiCall: () => api.getSwagActualsUTMQ3() },
-  wfmClassic:{ title: 'WFM Classic Q3 — Development Dashboard', apiCall: () => api.getSwagActualsWFCQ3() },
+  uta:           { title: 'UTA Q3 — Development Dashboard',         quarterLabel: 'FY26 Q3', apiCall: () => api.getSwagActualsUTAQ3() },
+  utm:           { title: 'UTM Q3 — Development Dashboard',         quarterLabel: 'FY26 Q3', apiCall: () => api.getSwagActualsUTMQ3() },
+  wfmClassic:    { title: 'WFM Classic Q3 — Development Dashboard', quarterLabel: 'FY26 Q3', apiCall: () => api.getSwagActualsWFCQ3() },
+  'uta-q4':      { title: 'UTA Q4 — Development Dashboard',         quarterLabel: 'FY26 Q4', apiCall: () => api.getSwagActualsUTAQ4() },
+  'utm-q4':      { title: 'UTM Q4 — Development Dashboard',         quarterLabel: 'FY26 Q4', apiCall: () => api.getSwagActualsUTMQ4() },
+  'wfmClassic-q4':{ title: 'WFM Classic Q4 — Development Dashboard', quarterLabel: 'FY26 Q4', apiCall: () => api.getSwagActualsWFCQ4() },
 };
+
+const fmt2 = v => Number(v ?? 0).toFixed(2);
 
 export default function SwagActualsDashboard({ product = 'uta' }) {
   const config = PRODUCT_CONFIG[product] || PRODUCT_CONFIG.uta;
@@ -186,7 +191,7 @@ export default function SwagActualsDashboard({ product = 'uta' }) {
       <div className="mb-6">
         <h1 className="text-2xl font-bold text-[#005151]">{config.title}</h1>
         <p className="text-sm text-gray-500 mt-1">
-          FY26 Q3 ({q3Range}) · As of {asOf} · {timeElapsed}% of quarter elapsed
+          {config.quarterLabel || 'FY26 Q3'} ({q3Range}) · As of {asOf} · {timeElapsed}% of quarter elapsed
         </p>
       </div>
 
@@ -375,10 +380,10 @@ export default function SwagActualsDashboard({ product = 'uta' }) {
                         <td className="px-3 py-2.5 text-right text-xs font-semibold text-gray-700">{e.swag}</td>
                         {periods.map((_, pi) => (
                           <td key={pi} className={`px-3 py-2.5 text-right text-xs ${pi === currentPeriodIdx ? 'font-semibold text-[#005151]' : 'text-gray-600'}`}>
-                            {e.actuals[pi] > 0 ? e.actuals[pi] : <span className="text-gray-300">—</span>}
+                            {e.actuals[pi] > 0 ? fmt2(e.actuals[pi]) : <span className="text-gray-300">—</span>}
                           </td>
                         ))}
-                        <td className="px-3 py-2.5 text-right text-xs font-bold text-gray-800">{Math.round(e.totalActuals * 10) / 10}</td>
+                        <td className="px-3 py-2.5 text-right text-xs font-bold text-gray-800">{fmt2(e.totalActuals)}</td>
                         <td className="px-3 py-2.5 text-right">
                           <span className={`text-xs font-semibold ${pct >= 100 ? 'text-green-600' : pct >= timeElapsed ? 'text-blue-600' : 'text-amber-600'}`}>
                             {pct}%
@@ -405,10 +410,10 @@ export default function SwagActualsDashboard({ product = 'uta' }) {
                           <td className="px-3 py-2 text-right text-xs text-gray-300">—</td>
                           {periods.map((_, pi) => (
                             <td key={pi} className={`px-3 py-2 text-right text-xs ${pi === currentPeriodIdx ? 'font-medium text-[#005151]/70' : 'text-gray-500'}`}>
-                              {p.actuals[pi] > 0 ? p.actuals[pi] : <span className="text-gray-200">—</span>}
+                              {p.actuals[pi] > 0 ? fmt2(p.actuals[pi]) : <span className="text-gray-200">—</span>}
                             </td>
                           ))}
-                          <td className="px-3 py-2 text-right text-xs font-semibold text-gray-600">{Math.round(p.totalActuals * 10) / 10 || <span className="text-gray-300">—</span>}</td>
+                          <td className="px-3 py-2 text-right text-xs font-semibold text-gray-600">{p.totalActuals > 0 ? fmt2(p.totalActuals) : <span className="text-gray-300">—</span>}</td>
                           <td className="px-3 py-2 text-right text-xs text-gray-300">—</td>
                         </tr>
                       ))}
@@ -424,11 +429,11 @@ export default function SwagActualsDashboard({ product = 'uta' }) {
                     const periodTotal = epics.reduce((s, e) => s + (e.actuals[pi] || 0), 0);
                     return (
                       <td key={pi} className="px-3 py-2 text-right text-xs font-bold" style={{ color: '#CCFF00' }}>
-                        {periodTotal > 0 ? periodTotal : <span style={{ color: '#4a7a5a' }}>—</span>}
+                        {periodTotal > 0 ? fmt2(periodTotal) : <span style={{ color: '#4a7a5a' }}>—</span>}
                       </td>
                     );
                   })}
-                  <td className="px-3 py-2 text-right text-xs font-bold" style={{ color: '#CCFF00' }}>{Math.round(totalActuals * 10) / 10}</td>
+                  <td className="px-3 py-2 text-right text-xs font-bold" style={{ color: '#CCFF00' }}>{fmt2(totalActuals)}</td>
                   <td className="px-3 py-2 text-right text-xs font-bold" style={{ color: '#CCFF00' }}>{pctDelivered}%</td>
                 </tr>
               </tfoot>

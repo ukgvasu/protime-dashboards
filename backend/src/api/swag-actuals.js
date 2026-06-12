@@ -202,4 +202,37 @@ router.get('/wfc-q3', async (req, res) => {
   }
 });
 
+// GET /api/swag-actuals/uta-q4
+router.get('/uta-q4', async (req, res) => {
+  try {
+    const data = await buildQ3Data('UTA_2026_Q4', ['UTA FY26 Q4 - '], '2026-06-24', '2026-09-22', 'UTA 26.4');
+    res.json(data);
+  } catch (err) {
+    console.error('[swag-actuals/uta-q4] error:', err.message);
+    res.status(500).json({ error: err.message });
+  }
+});
+
+// GET /api/swag-actuals/utm-q4
+router.get('/utm-q4', async (req, res) => {
+  try {
+    const data = await buildQ3Data('UTM_2026_Q4', ['UTM FY26 Q4 - '], '2026-06-24', '2026-09-22', 'UTM 26.4');
+    res.json(data);
+  } catch (err) {
+    console.error('[swag-actuals/utm-q4] error:', err.message);
+    res.status(500).json({ error: err.message });
+  }
+});
+
+// GET /api/swag-actuals/wfc-q4
+router.get('/wfc-q4', async (req, res) => {
+  try {
+    const data = await buildQ3Data('WFMC_2026_Q4', ['WFM Classic FY26 Q4 - ', 'WFMC FY26 Q4 - '], '2026-06-24', '2026-09-22', 'WFM Classic 26.4');
+    res.json(data);
+  } catch (err) {
+    console.error('[swag-actuals/wfc-q4] error:', err.message);
+    res.status(500).json({ error: err.message });
+  }
+});
+
 export default router;

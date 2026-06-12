@@ -112,7 +112,8 @@ export default function Layout() {
             </button>
             {expandedSections.uta && (
               <div className="space-y-0.5 mt-0.5">
-                <NavLink to="/swag-actuals" className={subNavLinkClass}>Actuals vs Planned</NavLink>
+                <NavLink to="/swag-actuals" className={subNavLinkClass}>Q3 Actuals vs Planned</NavLink>
+                <NavLink to="/swag-actuals-q4" className={subNavLinkClass}>Q4 Actuals vs Planned</NavLink>
                 <NavLink to="/uta" end className={subNavLinkClass}>Defect Dashboard</NavLink>
                 <NavLink to="/customer-impact" className={subNavLinkClass}><Users size={12} /> Customer Impact</NavLink>
               </div>
@@ -127,7 +128,8 @@ export default function Layout() {
             </button>
             {expandedSections.utm && (
               <div className="space-y-0.5 mt-0.5">
-                <NavLink to="/utm/swag-actuals" className={subNavLinkClass}>Actuals vs Planned</NavLink>
+                <NavLink to="/utm/swag-actuals" className={subNavLinkClass}>Q3 Actuals vs Planned</NavLink>
+                <NavLink to="/utm/swag-actuals-q4" className={subNavLinkClass}>Q4 Actuals vs Planned</NavLink>
                 <NavLink to="/utm" end className={subNavLinkClass}>Defect Dashboard</NavLink>
                 <NavLink to="/utm/customer-impact" className={subNavLinkClass}>Customer Impact</NavLink>
               </div>
@@ -142,7 +144,8 @@ export default function Layout() {
             </button>
             {expandedSections.wfm && (
               <div className="space-y-0.5 mt-0.5">
-                <NavLink to="/wfm-classic/swag-actuals" className={subNavLinkClass}>Actuals vs Planned</NavLink>
+                <NavLink to="/wfm-classic/swag-actuals" className={subNavLinkClass}>Q3 Actuals vs Planned</NavLink>
+                <NavLink to="/wfm-classic/swag-actuals-q4" className={subNavLinkClass}>Q4 Actuals vs Planned</NavLink>
                 <NavLink to="/wfm-classic" end className={subNavLinkClass}>Defect Dashboard</NavLink>
                 <NavLink to="/wfm-classic/customer-impact" className={subNavLinkClass}>Customer Impact</NavLink>
               </div>

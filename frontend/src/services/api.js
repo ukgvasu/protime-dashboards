@@ -45,8 +45,13 @@ export const api = {
   // Chat
   chat: (message, context) => fetchAPI('/chat', { method: 'POST', body: JSON.stringify({ message, context }) }),
 
-  // SWAG vs Actuals
+  // SWAG vs Actuals — Q3
   getSwagActualsUTAQ3: () => fetchAPI('/swag-actuals/uta-q3'),
   getSwagActualsUTMQ3: () => fetchAPI('/swag-actuals/utm-q3'),
   getSwagActualsWFCQ3: () => fetchAPI('/swag-actuals/wfc-q3'),
+
+  // SWAG vs Actuals — Q4
+  getSwagActualsUTAQ4: () => fetchAPI('/swag-actuals/uta-q4'),
+  getSwagActualsUTMQ4: () => fetchAPI('/swag-actuals/utm-q4'),
+  getSwagActualsWFCQ4: () => fetchAPI('/swag-actuals/wfc-q4'),
 };
