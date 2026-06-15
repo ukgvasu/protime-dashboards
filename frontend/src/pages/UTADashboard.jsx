@@ -136,6 +136,8 @@ function CollapsibleSection({ title, count, badge, children, defaultOpen = false
 export default function UTADashboard() {
   const [stats, setStats] = useState(null);
   const [defects, setDefects] = useState([]);
+  const [sfEscalations, setSfEscalations] = useState([]);
+  const [sfEscLoading, setSfEscLoading] = useState(true);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
@@ -150,6 +152,11 @@ export default function UTADashboard() {
       })
       .catch(err => setError(err.message))
       .finally(() => setLoading(false));
+
+    api.getUTASFEscalationsNonCode()
+      .then(data => setSfEscalations(data.defects || []))
+      .catch(() => setSfEscalations([]))
+      .finally(() => setSfEscLoading(false));
   }, []);
 
   if (loading) return <div className="p-8 text-center text-gray-500">Loading UTA dashboard...</div>;
@@ -224,11 +231,16 @@ export default function UTADashboard() {
       {/* Collapsible defect sections */}
       <div className="space-y-3">
         {/* SF Escalations — Customer Escalations (Non-Code) */}
-        <CollapsibleSection title="SF Escalations — Customer Escalations (Non-Code)" count={null}>
-          <p className="text-sm text-gray-400 italic">
-            Non-code SF escalations (config, training, environment) are not tracked as Jira defects.
-            See Salesforce cases for these escalations.
-          </p>
+        <CollapsibleSection
+          title="SF Escalations — Customer Escalations (Non-Code)"
+          count={sfEscLoading ? null : sfEscalations.length}
+        >
+          {sfEscLoading
+            ? <p className="text-sm text-gray-400 italic">Loading…</p>
+            : sfEscalations.length > 0
+              ? <DefectTable defects={sfEscalations} />
+              : <p className="text-sm text-gray-400 italic">No open non-code SF escalations found.</p>
+          }
         </CollapsibleSection>
 
         {/* SF Escalations — Customer Defects (Code-Defects) */}

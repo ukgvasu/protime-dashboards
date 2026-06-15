@@ -45,6 +45,11 @@ export const api = {
   // Chat
   chat: (message, context) => fetchAPI('/chat', { method: 'POST', body: JSON.stringify({ message, context }) }),
 
+  // SF Escalations (live Jira)
+  getUTASFEscalationsNonCode: () => fetchAPI('/defects/uta/sf-escalations'),
+  getUTMSFEscalationsNonCode: () => fetchAPI('/defects/utm/sf-escalations'),
+  getWFMSFEscalationsNonCode: () => fetchAPI('/defects/wfm-classic/sf-escalations'),
+
   // SWAG vs Actuals — Q3
   getSwagActualsUTAQ3: () => fetchAPI('/swag-actuals/uta-q3'),
   getSwagActualsUTMQ3: () => fetchAPI('/swag-actuals/utm-q3'),

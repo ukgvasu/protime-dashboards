@@ -5,6 +5,7 @@ import { fileURLToPath } from 'url';
 import { dirname, join } from 'path';
 import { DefectModel } from '../models/defect.js';
 import { cacheService } from '../services/cache-service.js';
+import { fetchIssues, transformIssue } from '../services/jira-service.js';
 
 const router = Router();
 const __dirname = dirname(fileURLToPath(import.meta.url));
@@ -13,6 +14,66 @@ let BOARDS_CONFIG;
 try {
   BOARDS_CONFIG = JSON.parse(fs.readFileSync(join(__dirname, '../../../config/jira-boards.json'), 'utf-8'));
 } catch { BOARDS_CONFIG = { boards: {} }; }
+
+// GET /api/defects/wfm-classic/sf-escalations — live Jira query for Non-Code SF Escalations
+router.get('/wfm-classic/sf-escalations', async (req, res) => {
+  try {
+    const cacheKey = 'wfm-classic:sf-escalations';
+    const cached = cacheService.get(cacheKey);
+    if (cached) return res.json(cached);
+
+    const jql = '"Portfolio Team" in (6252, 3122) AND status not in (Closed, Canceled) AND labels not in (RCA-TYPE-DEFECT, RCA-Type-Defect, UTA-CUSTOMS-MAINTENANCE) AND Customer is not EMPTY AND issuetype not in (Change)';
+    const issues = await fetchIssues(jql, 500);
+    const defects = issues.map(i => transformIssue(i, 'wfmClassic'));
+
+    const result = { defects, total: defects.length };
+    cacheService.set(cacheKey, result);
+    res.json(result);
+  } catch (err) {
+    console.error('[defects/wfm-classic/sf-escalations] error:', err.message);
+    res.status(500).json({ error: err.message });
+  }
+});
+
+// GET /api/defects/utm/sf-escalations — live Jira query for Non-Code SF Escalations
+router.get('/utm/sf-escalations', async (req, res) => {
+  try {
+    const cacheKey = 'utm:sf-escalations';
+    const cached = cacheService.get(cacheKey);
+    if (cached) return res.json(cached);
+
+    const jql = '"Portfolio Team" in (3120) AND status not in (Closed, Canceled) AND labels not in (RCA-TYPE-DEFECT, RCA-Type-Defect, UTA-CUSTOMS-MAINTENANCE) AND Customer is not EMPTY AND issuetype not in (Change)';
+    const issues = await fetchIssues(jql, 500);
+    const defects = issues.map(i => transformIssue(i, 'utm'));
+
+    const result = { defects, total: defects.length };
+    cacheService.set(cacheKey, result);
+    res.json(result);
+  } catch (err) {
+    console.error('[defects/utm/sf-escalations] error:', err.message);
+    res.status(500).json({ error: err.message });
+  }
+});
+
+// GET /api/defects/uta/sf-escalations — live Jira query for Non-Code SF Escalations
+router.get('/uta/sf-escalations', async (req, res) => {
+  try {
+    const cacheKey = 'uta:sf-escalations';
+    const cached = cacheService.get(cacheKey);
+    if (cached) return res.json(cached);
+
+    const jql = '"Portfolio Team" in (3121) AND status not in (Closed, Canceled) AND labels not in (RCA-TYPE-DEFECT, RCA-Type-Defect, UTA-CUSTOMS-MAINTENANCE) AND Customer is not EMPTY AND issuetype not in (Change)';
+    const issues = await fetchIssues(jql, 500);
+    const defects = issues.map(i => transformIssue(i, 'uta'));
+
+    const result = { defects, total: defects.length };
+    cacheService.set(cacheKey, result);
+    res.json(result);
+  } catch (err) {
+    console.error('[defects/uta/sf-escalations] error:', err.message);
+    res.status(500).json({ error: err.message });
+  }
+});
 
 // GET /api/defects/:product
 router.get('/:product', (req, res) => {
