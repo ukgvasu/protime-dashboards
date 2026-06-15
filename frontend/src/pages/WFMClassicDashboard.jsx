@@ -156,8 +156,8 @@ export default function WFMClassicDashboard() {
   if (!stats) return <div className="p-8 text-center text-gray-500">No data</div>;
 
   const openDefects = defects.filter(d => !['Closed', 'Canceled'].includes(d.status));
-  const customerDefects = openDefects.filter(d => d.is_customer_reported === 1 || d.is_customer_reported === true);
-  const internalDefects = openDefects.filter(d => !d.is_customer_reported || d.is_customer_reported === 0);
+  const customerDefects = openDefects.filter(d => d.is_customer_reported === 1 || d.is_customer_reported === true || d.customer_count > 0);
+  const internalDefects = openDefects.filter(d => !d.is_customer_reported && !(d.customer_count > 0));
 
   const priorityData = Object.entries(stats.byPriority || {}).filter(([k, v]) => k !== 'Unknown' && v > 0).map(([k, v]) => ({ name: k, value: v }));
   const severityData = Object.entries(stats.bySeverity || {}).filter(([k, v]) => k !== 'Unknown' && v > 0).map(([k, v]) => ({ name: k, value: v }));
