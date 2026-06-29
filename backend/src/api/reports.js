@@ -93,7 +93,7 @@ const SECURITY_FIELDS = [
   'customfield_15604', // portfolio team (product)
 ];
 
-const TEAM_TO_PRODUCT = { 3121: 'uta', 3120: 'utm', 3122: 'wfmClassic' };
+const TEAM_TO_PRODUCT = { 3121: 'uta', 3120: 'utm', 3122: 'wfmClassic', 6252: 'wfmClassic' };
 const PRODUCT_LABELS  = { uta: 'UTA', utm: 'UTM', wfmClassic: 'WFM Classic' };
 
 function extractSecurityClass(fields) {
@@ -170,7 +170,7 @@ const SECURITY_BASE_JQL =
 
 const SECURITY_UTA_JQL = SECURITY_BASE_JQL + ' AND "Portfolio Team" = 3121';
 const SECURITY_UTM_JQL = SECURITY_BASE_JQL + ' AND "Portfolio Team" = 3120';
-const SECURITY_WFM_JQL = SECURITY_BASE_JQL + ' AND "Portfolio Team" = 3122';
+const SECURITY_WFM_JQL = SECURITY_BASE_JQL + ' AND "Portfolio Team" in (3122, 6252)';
 
 async function buildProductSecurityResult(jql) {
   const rawIssues = await fetchIssues(jql, 500, SECURITY_FIELDS);
