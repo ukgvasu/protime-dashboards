@@ -22,10 +22,7 @@ const PRODUCT_LABEL = { uta: 'UTA', utm: 'UTM', wfmClassic: 'WFM Classic', other
 
 const keyNum = key => parseInt(key.replace(/\D/g, ''), 10) || 0;
 const sortDefects = defects =>
-  [...defects].sort((a, b) => {
-    if (a.tveSubmitted !== b.tveSubmitted) return a.tveSubmitted ? 1 : -1;
-    return keyNum(b.key) - keyNum(a.key);
-  });
+  [...defects].sort((a, b) => keyNum(b.key) - keyNum(a.key));
 
 function SecurityCharts({ data }) {
   const sevData   = Object.entries(data.bySeverity || {}).map(([k, v]) => ({ name: k, value: v }));
@@ -88,9 +85,6 @@ function DefectTable({ defects, label, showProduct = false }) {
                   <td className="py-2 text-xs">
                     <div className="flex items-center gap-1.5">
                       <span className="max-w-xs truncate" title={d.summary}>{d.summary}</span>
-                      {d.tveSubmitted && (
-                        <span style={{ flexShrink: 0, padding: '1px 5px', borderRadius: 4, fontSize: 10, fontWeight: 700, background: '#dbeafe', color: '#1d4ed8', border: '1px solid #93c5fd', whiteSpace: 'nowrap' }}>TVE</span>
-                      )}
                     </div>
                   </td>
                   {showProduct && (
@@ -278,9 +272,6 @@ export default function SecurityDashboard({ product = null }) {
                       <td className="py-2 text-xs">
                         <div className="flex items-center gap-1.5">
                           <span className="max-w-xs truncate" title={d.summary}>{d.summary}</span>
-                          {d.tveSubmitted && (
-                            <span className="flex-shrink-0 px-1.5 py-0.5 rounded text-[10px] font-bold bg-blue-100 text-blue-700 border border-blue-200">TVE</span>
-                          )}
                         </div>
                       </td>
                       <td className="py-2 text-xs">
