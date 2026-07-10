@@ -15,8 +15,8 @@
     "wfmClassic": {
       "id": 3106,
       "name": "ProTime – WFM Classic",
-      "portfolioTeam": 3122,
-      "jql": "cf[22500] = \"ProTime India\" AND (issuetype in (Bug, Defect) OR labels in (\"RCA-Type-Defect\", \"RCA-TYPE-DEFECT\")) AND NOT labels in (Checkmarx, SCA, bitsight, automation, SAST, DAST) AND statusCategory != Done ORDER BY priority DESC, created DESC"
+      "portfolioTeam": [3122, 6252],
+      "jql": "cf[22500] in (\"ProTime India\", \"WFM Classic\") AND (issuetype in (Bug, Defect) OR labels in (\"RCA-Type-Defect\", \"RCA-TYPE-DEFECT\")) AND NOT labels in (Checkmarx, SCA, bitsight, automation, SAST, DAST) AND statusCategory != Done ORDER BY priority DESC, created DESC"
     }
   },
   "securityJql": "(issuetype in (Bug, Defect) OR labels = \"RCA-Type-Defect\") AND labels in (Checkmarx, SCA, bitsight, Security, CVE) ORDER BY priority DESC"
