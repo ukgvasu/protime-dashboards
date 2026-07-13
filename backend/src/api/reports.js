@@ -78,7 +78,7 @@ router.get('/leadership', (req, res) => {
 });
 
 const SECURITY_JQL =
-  'Classification = Security AND status != Closed AND "CTO Staff" = "Benjamin Mast" ' +
+  'Classification = Security AND status != Closed AND "CTO Staff" = "Jeanne Caraglia" ' +
   'AND ("Security Classification" in ("AI PenTest", "Bug Bounty", "Cloud Security", DAST, ' +
   'Infrastructure, Other, PenTest, SAST, SCA, "Secret Management") OR "Security Classification" is EMPTY) ' +
   'AND Pillar = "Transitional Offerings" AND "Value Stream" = "Pro Time"';
@@ -163,7 +163,7 @@ router.get('/security', async (req, res) => {
 });
 
 const SECURITY_BASE_JQL =
-  'Classification = Security AND status != Closed AND "CTO Staff" = "Benjamin Mast" ' +
+  'Classification = Security AND status != Closed AND "CTO Staff" = "Jeanne Caraglia" ' +
   'AND ("Security Classification" in ("AI PenTest", "Bug Bounty", "Cloud Security", DAST, ' +
   'Infrastructure, Other, PenTest, SAST, SCA, "Secret Management") OR "Security Classification" is EMPTY) ' +
   'AND Pillar = "Transitional Offerings"';
