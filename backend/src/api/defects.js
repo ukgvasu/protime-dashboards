@@ -15,14 +15,14 @@ try {
   BOARDS_CONFIG = JSON.parse(fs.readFileSync(join(__dirname, '../../../config/jira-boards.json'), 'utf-8'));
 } catch { BOARDS_CONFIG = { boards: {} }; }
 
-// GET /api/defects/wfm-classic/sf-escalations — live Jira query for Non-Code SF Escalations
+// GET /api/defects/wfm-classic/sf-escalations — live Jira query for Customer Facing defects
 router.get('/wfm-classic/sf-escalations', async (req, res) => {
   try {
     const cacheKey = 'wfm-classic:sf-escalations';
     const cached = cacheService.get(cacheKey);
     if (cached) return res.json(cached);
 
-    const jql = '"Portfolio Team" in (6252, 3122) AND status not in (Closed, Canceled) AND labels not in (RCA-TYPE-DEFECT, RCA-Type-Defect, UTA-CUSTOMS-MAINTENANCE) AND Customer is not EMPTY AND issuetype not in (Change)';
+    const jql = 'filter = GOLD_DEFECTS_OPEN AND level = "Customer Facing" AND "Portfolio Team" in (6252, 3122) ORDER BY cf[15604] ASC';
     const issues = await fetchIssues(jql, 500);
     const defects = issues.map(i => transformIssue(i, 'wfmClassic'));
 
@@ -35,14 +35,14 @@ router.get('/wfm-classic/sf-escalations', async (req, res) => {
   }
 });
 
-// GET /api/defects/utm/sf-escalations — live Jira query for Non-Code SF Escalations
+// GET /api/defects/utm/sf-escalations — live Jira query for Customer Facing defects
 router.get('/utm/sf-escalations', async (req, res) => {
   try {
     const cacheKey = 'utm:sf-escalations';
     const cached = cacheService.get(cacheKey);
     if (cached) return res.json(cached);
 
-    const jql = '"Portfolio Team" in (3120) AND status not in (Closed, Canceled) AND labels not in (RCA-TYPE-DEFECT, RCA-Type-Defect, UTA-CUSTOMS-MAINTENANCE) AND Customer is not EMPTY AND issuetype not in (Change)';
+    const jql = 'filter = GOLD_DEFECTS_OPEN AND level = "Customer Facing" AND "Portfolio Team" in (3120) ORDER BY cf[15604] ASC';
     const issues = await fetchIssues(jql, 500);
     const defects = issues.map(i => transformIssue(i, 'utm'));
 
@@ -55,14 +55,14 @@ router.get('/utm/sf-escalations', async (req, res) => {
   }
 });
 
-// GET /api/defects/uta/sf-escalations — live Jira query for Non-Code SF Escalations
+// GET /api/defects/uta/sf-escalations — live Jira query for Customer Facing defects
 router.get('/uta/sf-escalations', async (req, res) => {
   try {
     const cacheKey = 'uta:sf-escalations';
     const cached = cacheService.get(cacheKey);
     if (cached) return res.json(cached);
 
-    const jql = '"Portfolio Team" in (3121) AND status not in (Closed, Canceled) AND labels not in (RCA-TYPE-DEFECT, RCA-Type-Defect, UTA-CUSTOMS-MAINTENANCE) AND Customer is not EMPTY AND issuetype not in (Change)';
+    const jql = 'filter = GOLD_DEFECTS_OPEN AND level = "Customer Facing" AND "Portfolio Team" in (3121) ORDER BY cf[15604] ASC';
     const issues = await fetchIssues(jql, 500);
     const defects = issues.map(i => transformIssue(i, 'uta'));
 

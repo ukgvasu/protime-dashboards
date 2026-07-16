@@ -208,27 +208,19 @@ export default function UTMDashboard() {
 
       {/* Collapsible defect sections */}
       <div className="space-y-3">
-        {/* SF Escalations — combined */}
-        {(() => {
-          const sfCombined = [
-            ...sfEscalations.map(d => ({ ...d, _sfType: 'Non-Code' })),
-            ...customerDefects.map(d => ({ ...d, _sfType: 'Code-Defect' })),
-          ];
-          return (
-            <CollapsibleSection
-              title="SF Escalations"
-              count={sfEscLoading ? null : sfCombined.length}
-              defaultOpen={true}
-            >
-              {sfEscLoading
-                ? <p className="text-sm text-gray-400 italic">Loading…</p>
-                : sfCombined.length > 0
-                  ? <DefectTable defects={sfCombined} showType />
-                  : <p className="text-sm text-gray-400 italic">No open SF escalations found.</p>
-              }
-            </CollapsibleSection>
-          );
-        })()}
+        {/* SF Escalations — Customer Facing (live Jira) */}
+        <CollapsibleSection
+          title="SF Escalations — Customer Facing"
+          count={sfEscLoading ? null : sfEscalations.length}
+          defaultOpen={true}
+        >
+          {sfEscLoading
+            ? <p className="text-sm text-gray-400 italic">Loading…</p>
+            : sfEscalations.length > 0
+              ? <DefectTable defects={sfEscalations} />
+              : <p className="text-sm text-gray-400 italic">No open customer facing escalations found.</p>
+          }
+        </CollapsibleSection>
 
         {/* Internal Defects */}
         <CollapsibleSection title="Internal Defects (Code-Defects)" count={internalDefects.length}>
