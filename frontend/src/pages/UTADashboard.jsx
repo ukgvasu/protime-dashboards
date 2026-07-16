@@ -36,7 +36,7 @@ function parseCustomers(raw) {
   }
 }
 
-function DefectTable({ defects }) {
+function DefectTable({ defects, showType = false }) {
   if (!defects || defects.length === 0) {
     return <p className="text-sm text-gray-400 italic py-2">No defects found.</p>;
   }
@@ -72,6 +72,11 @@ function DefectTable({ defects }) {
                   {(d.labels || '').split(',').map(l => l.trim()).includes('UTA-INFOR-Defect') && (
                     <span style={{ padding: '1px 5px', borderRadius: 4, fontSize: 10, fontWeight: 700, background: '#fef3c7', color: '#92400e', border: '1px solid #fcd34d', whiteSpace: 'nowrap' }}>
                       INFOR
+                    </span>
+                  )}
+                  {showType && d._sfType && (
+                    <span style={{ padding: '1px 5px', borderRadius: 4, fontSize: 10, fontWeight: 700, background: d._sfType === 'Non-Code' ? '#ede9fe' : '#dbeafe', color: d._sfType === 'Non-Code' ? '#6d28d9' : '#1d4ed8', whiteSpace: 'nowrap' }}>
+                      {d._sfType}
                     </span>
                   )}
                 </div>
@@ -181,28 +186,6 @@ export default function UTADashboard() {
         <p className="text-sm text-gray-500 mt-1">ProTime UTA — Defect Health</p>
       </div>
 
-      {/* Row 1: Customer-Related */}
-      <div className="mb-2">
-        <div className="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-2">Customer Related</div>
-        <div className="grid grid-cols-3 gap-4 mb-4">
-          <StatCard label="Customer Impacting" value={stats.customerImpacting} sublabel="RCA-Type-Defect" color="#dc2626" />
-          <StatCard label="Customer Facing High Priority" value={stats.customerFacingHighPriority} sublabel="P1+P2 with customers" color="#ea580c" />
-          <StatCard label="High Severity (Customer)" value={stats.highSeverityCustomer} sublabel="S1+S2 with customers" color="#b91c1c" />
-        </div>
-      </div>
-
-      {/* Row 2: Internal & Operational */}
-      <div className="mb-2">
-        <div className="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-2">Internal & Operational</div>
-        <div className="grid grid-cols-5 gap-4 mb-6">
-          <StatCard label="Internal Only" value={stats.internalOnly} sublabel="No customer impact" color="#005151" />
-          <StatCard label="High Severity (Internal)" value={stats.highSeverityInternal} sublabel="S1+S2 internal" color="#7c3aed" />
-          <StatCard label="Stale" value={stats.stale} sublabel="No update 30+ days" color="#6b7280" />
-          <StatCard label="Unassigned" value={stats.unassigned} sublabel="Needs owner" color="#ca8a04" />
-          <StatCard label="Total Open" value={stats.total} sublabel="All open defects" color="#005151" />
-        </div>
-      </div>
-
       {/* Pie Charts */}
       <div className="bg-white rounded-lg shadow-sm border border-gray-100 p-5 mb-4">
         <h2 className="font-semibold text-gray-700 mb-4">Defect Breakdown</h2>
@@ -230,31 +213,27 @@ export default function UTADashboard() {
 
       {/* Collapsible defect sections */}
       <div className="space-y-3">
-        {/* SF Escalations — Customer Escalations (Non-Code) */}
-        <CollapsibleSection
-          title="SF Escalations — Customer Escalations (Non-Code)"
-          count={sfEscLoading ? null : sfEscalations.length}
-        >
-          {sfEscLoading
-            ? <p className="text-sm text-gray-400 italic">Loading…</p>
-            : sfEscalations.length > 0
-              ? <DefectTable defects={sfEscalations} />
-              : <p className="text-sm text-gray-400 italic">No open non-code SF escalations found.</p>
-          }
-        </CollapsibleSection>
-
-        {/* SF Escalations — Customer Defects (Code-Defects) */}
-        <CollapsibleSection
-          title="SF Escalations — Customer Defects (Code-Defects)"
-          count={customerDefects.length}
-          defaultOpen={true}
-        >
-          {customerDefects.length > 0 ? (
-            <DefectTable defects={customerDefects} />
-          ) : (
-            <p className="text-sm text-gray-400 italic">No customer-facing code defects. Run Sync Jira to refresh.</p>
-          )}
-        </CollapsibleSection>
+        {/* SF Escalations — combined */}
+        {(() => {
+          const sfCombined = [
+            ...sfEscalations.map(d => ({ ...d, _sfType: 'Non-Code' })),
+            ...customerDefects.map(d => ({ ...d, _sfType: 'Code-Defect' })),
+          ];
+          return (
+            <CollapsibleSection
+              title="SF Escalations"
+              count={sfEscLoading ? null : sfCombined.length}
+              defaultOpen={true}
+            >
+              {sfEscLoading
+                ? <p className="text-sm text-gray-400 italic">Loading…</p>
+                : sfCombined.length > 0
+                  ? <DefectTable defects={sfCombined} showType />
+                  : <p className="text-sm text-gray-400 italic">No open SF escalations found.</p>
+              }
+            </CollapsibleSection>
+          );
+        })()}
 
         {/* Internal Defects */}
         <CollapsibleSection title="Internal Defects (Code-Defects)" count={internalDefects.length}>
