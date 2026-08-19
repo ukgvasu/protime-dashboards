@@ -17,5 +17,8 @@
     "build:backend": "cd backend && npm run build"
   },
   "author": "Ian Cowpar",
-  "license": "MIT"
+  "license": "MIT",
+  "devDependencies": {
+    "concurrently": "^10.0.4"
+  }
 }

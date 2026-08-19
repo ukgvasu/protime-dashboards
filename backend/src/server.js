@@ -14,6 +14,9 @@ import ktloRouter from './api/ktlo.js';
 import customerImpactRouter from './api/customer-impact.js';
 import insightsRouter from './api/insights.js';
 import swagActualsRouter from './api/swag-actuals.js';
+import fy27Router from './api/fy27.js';
+import q1ProgressRouter from './api/q1-progress.js';
+import q2ProgressRouter from './api/q2-progress.js';
 import { startAutoSync } from './jobs/auto-sync.js';
 
 const app = express();
@@ -67,6 +70,9 @@ app.use('/api/ktlo', ktloRouter);
 app.use('/api/customer-impact', customerImpactRouter);
 app.use('/api/insights', insightsRouter);
 app.use('/api/swag-actuals', swagActualsRouter);
+app.use('/api/fy27', fy27Router);
+app.use('/api/q1-progress', q1ProgressRouter);
+app.use('/api/q2-progress', q2ProgressRouter);
 
 // 404 handler
 app.use((req, res) => {

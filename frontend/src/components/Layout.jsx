@@ -90,12 +90,6 @@ export default function Layout() {
             )}
           </div>
 
-          <NavLink to="/swag-actuals-leadership" className={navLinkClass}>
-            <LayoutDashboard size={16} /> Defect Health Summary
-          </NavLink>
-          <NavLink to="/ktlo-analysis" className={navLinkClass}>
-            <TrendingUp size={16} /> KTLO Analysis
-          </NavLink>
           <NavLink to="/launch-darkly" className={navLinkClass}>
             <Flag size={16} /> Launch Darkly
           </NavLink>
@@ -112,7 +106,10 @@ export default function Layout() {
             </button>
             {expandedSections.uta && (
               <div className="space-y-0.5 mt-0.5">
-                <NavLink to="/swag-actuals" className={subNavLinkClass}>Q3 Actuals vs Planned</NavLink>
+                <div className="pl-6 pr-3 py-1 text-sm font-semibold text-gray-400 uppercase">FY27</div>
+                <NavLink to="/uta/fy27-h1" end className={subNavLinkClass}>H1 Plan Summary</NavLink>
+                <NavLink to="/uta/fy27-h1/q1-progress" className={subNavLinkClass}>├─ Q1 Progress</NavLink>
+                <NavLink to="/uta/fy27-h1/q2-progress" className={subNavLinkClass}>├─ Q2 Progress</NavLink>
                 <NavLink to="/swag-actuals-q4" className={subNavLinkClass}>Q4 Actuals vs Planned</NavLink>
                 <NavLink to="/uta" end className={subNavLinkClass}>Defect Dashboard</NavLink>
                 <NavLink to="/customer-impact" className={subNavLinkClass}><Users size={12} /> Customer Impact</NavLink>
@@ -128,7 +125,10 @@ export default function Layout() {
             </button>
             {expandedSections.utm && (
               <div className="space-y-0.5 mt-0.5">
-                <NavLink to="/utm/swag-actuals" className={subNavLinkClass}>Q3 Actuals vs Planned</NavLink>
+                <div className="pl-6 pr-3 py-1 text-sm font-semibold text-gray-400 uppercase">FY27</div>
+                <NavLink to="/utm/fy27-h1" end className={subNavLinkClass}>H1 Plan Summary</NavLink>
+                <NavLink to="/utm/fy27-h1/q1-progress" className={subNavLinkClass}>├─ Q1 Progress</NavLink>
+                <NavLink to="/utm/fy27-h1/q2-progress" className={subNavLinkClass}>├─ Q2 Progress</NavLink>
                 <NavLink to="/utm/swag-actuals-q4" className={subNavLinkClass}>Q4 Actuals vs Planned</NavLink>
                 <NavLink to="/utm" end className={subNavLinkClass}>Defect Dashboard</NavLink>
                 <NavLink to="/utm/customer-impact" className={subNavLinkClass}>Customer Impact</NavLink>
@@ -144,13 +144,26 @@ export default function Layout() {
             </button>
             {expandedSections.wfm && (
               <div className="space-y-0.5 mt-0.5">
-                <NavLink to="/wfm-classic/swag-actuals" className={subNavLinkClass}>Q3 Actuals vs Planned</NavLink>
+                <div className="pl-6 pr-3 py-1 text-sm font-semibold text-gray-400 uppercase">FY27</div>
+                <NavLink to="/wfm-classic/fy27-h1" end className={subNavLinkClass}>H1 Plan Summary</NavLink>
+                <NavLink to="/wfm-classic/fy27-h1/q1-progress" className={subNavLinkClass}>├─ Q1 Progress</NavLink>
+                <NavLink to="/wfm-classic/fy27-h1/q2-progress" className={subNavLinkClass}>├─ Q2 Progress</NavLink>
                 <NavLink to="/wfm-classic/swag-actuals-q4" className={subNavLinkClass}>Q4 Actuals vs Planned</NavLink>
                 <NavLink to="/wfm-classic" end className={subNavLinkClass}>Defect Dashboard</NavLink>
                 <NavLink to="/wfm-classic/customer-impact" className={subNavLinkClass}>Customer Impact</NavLink>
               </div>
             )}
           </div>
+
+          <div className="pt-3 pb-1 mt-2">
+            <div className="text-xs font-semibold text-gray-400 uppercase tracking-wider px-3">Analytics</div>
+          </div>
+          <NavLink to="/swag-actuals-leadership" className={navLinkClass}>
+            <LayoutDashboard size={16} /> Defect Health Summary
+          </NavLink>
+          <NavLink to="/ktlo-analysis" className={navLinkClass}>
+            <TrendingUp size={16} /> KTLO Analysis
+          </NavLink>
 
         </nav>
 

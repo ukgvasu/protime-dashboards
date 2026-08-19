@@ -13,6 +13,9 @@ import CustomerImpactDashboard from './pages/CustomerImpactDashboard';
 import AllProductsDashboard from './pages/AllProductsDashboard';
 import CustomerTrends from './pages/CustomerTrends';
 import LaunchDarklyDashboard from './pages/LaunchDarklyDashboard';
+import FY27H1Summary from './pages/FY27H1Summary';
+import Q1DevelopmentProgress from './pages/Q1DevelopmentProgress';
+import Q2DevelopmentProgress from './pages/Q2DevelopmentProgress';
 
 function App() {
   return (
@@ -24,18 +27,24 @@ function App() {
           <Route path="all-products" element={<AllProductsDashboard />} />
           <Route path="uta" element={<UTADashboard />} />
           <Route path="uta/upgrade-tracker" element={<UTAUpgradeTracker />} />
-          <Route path="swag-actuals" element={<SwagActualsDashboard product="uta" />} />
+          <Route path="uta/fy27-h1" element={<FY27H1Summary product="uta" />} />
+          <Route path="uta/fy27-h1/q1-progress" element={<Q1DevelopmentProgress product="uta" />} />
+          <Route path="uta/fy27-h1/q2-progress" element={<Q2DevelopmentProgress product="uta" />} />
           <Route path="swag-actuals-q4" element={<SwagActualsDashboard product="uta-q4" />} />
           <Route path="swag-actuals-leadership" element={<SwagActualsLeadershipDashboard />} />
           <Route path="ktlo-analysis" element={<KTLOAnalysisDashboard />} />
           <Route path="launch-darkly" element={<LaunchDarklyDashboard />} />
           <Route path="customer-impact" element={<CustomerImpactDashboard product="uta" />} />
           <Route path="utm" element={<UTMDashboard />} />
-          <Route path="utm/swag-actuals" element={<SwagActualsDashboard product="utm" />} />
+          <Route path="utm/fy27-h1" element={<FY27H1Summary product="utm" />} />
+          <Route path="utm/fy27-h1/q1-progress" element={<Q1DevelopmentProgress product="utm" />} />
+          <Route path="utm/fy27-h1/q2-progress" element={<Q2DevelopmentProgress product="utm" />} />
           <Route path="utm/swag-actuals-q4" element={<SwagActualsDashboard product="utm-q4" />} />
           <Route path="utm/customer-impact" element={<CustomerImpactDashboard product="utm" />} />
           <Route path="wfm-classic" element={<WFMClassicDashboard />} />
-          <Route path="wfm-classic/swag-actuals" element={<SwagActualsDashboard product="wfmClassic" />} />
+          <Route path="wfm-classic/fy27-h1" element={<FY27H1Summary product="wfmClassic" />} />
+          <Route path="wfm-classic/fy27-h1/q1-progress" element={<Q1DevelopmentProgress product="wfmClassic" />} />
+          <Route path="wfm-classic/fy27-h1/q2-progress" element={<Q2DevelopmentProgress product="wfmClassic" />} />
           <Route path="wfm-classic/swag-actuals-q4" element={<SwagActualsDashboard product="wfmClassic-q4" />} />
           <Route path="wfm-classic/customer-impact" element={<CustomerImpactDashboard product="wfmClassic" />} />
           <Route path="leadership" element={<LeadershipDashboard />} />
