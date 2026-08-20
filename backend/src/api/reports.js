@@ -109,7 +109,13 @@ router.get('/security', async (req, res) => {
     const cached = cacheService.get('security');
     if (cached) return res.json(cached);
 
-    const rawIssues = await fetchIssues(SECURITY_JQL, 500, SECURITY_FIELDS);
+    let rawIssues = [];
+    try {
+      rawIssues = await fetchIssues(SECURITY_JQL, 500, SECURITY_FIELDS);
+    } catch (jqlError) {
+      console.warn('Security JQL query failed, returning empty results:', jqlError.message);
+      rawIssues = [];
+    }
 
     const defects = rawIssues.map(issue => {
       const fields = issue.fields || {};
