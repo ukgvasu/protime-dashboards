@@ -5,7 +5,7 @@ metadata:
   node_type: memory
   type: project
   originSessionId: b8a71462-95c4-4c34-8dc0-a0fc831a707c
-  modified: 2026-08-20T13:40:43.371Z
+  modified: 2026-08-20T20:31:14.585Z
 ---
 
 ## ProTime Dashboard - Complete Implementation
@@ -42,6 +42,20 @@ A comprehensive portfolio management dashboard for three UKG products (UTA, UTM,
 
 ---
 
+## Custom Fields Reference
+
+**Key Custom Fields Used:**
+| Field ID | Field Name | Type | Used In | Notes |
+|----------|-----------|------|---------|-------|
+| customfield_18302 | SWAG | number | H1/Q1/Q2 | Story points/capacity |
+| customfield_22600 | Outcome | string | H1 Planning | Epic completion summary |
+| customfield_10903 | Health Status | option | H1/Q1/Q2 | Epic health indicator |
+| customfield_22500 | Portfolio Team | string | H1/Q1/Q2 | UTA, UTM, WFM Classic |
+| customfield_22201 | Subvalue Stream | string | WFM Classic | Different field structure |
+| customfield_22200 | Value Stream | string | WFM Classic | "Classic Offerings - Pro Time" |
+
+---
+
 ## Features Implemented
 
 ### 1. H1 Plan Summary Pages
@@ -60,6 +74,7 @@ A comprehensive portfolio management dashboard for three UKG products (UTA, UTM,
 - WFM Classic: 11 Business Epics, Planned SWAG: 1495
 
 **SWAG Field:** customfield_18302 (extracted from each epic)
+**Outcome Field:** customfield_22600 (text summary of epic outcome/results)
 
 ### 2. Q1 Development Progress Pages
 **Route:** `/[product]/fy27-h1/q1-progress`
@@ -151,15 +166,33 @@ ANALYTICS (bottom section)
 **Problem:** Epic's own SWAG being overwritten by sum of child stories' SWAG
 **Solution:** Removed child story SWAG aggregation - display epic's own SWAG value from customfield_18302
 
+### Challenge 5: Finding the Outcome Field
+**Problem:** User requested "Outcome" field values for business epics - not in initial field list
+**Solution:** 
+- Created `/api/fy27/fields/list` endpoint to query all 671 Jira fields
+- Discovered Outcome field: **customfield_22600** (type: string)
+- Added customfield_22600 to comprehensiveFields in fy27.js
+- Updated transformEpic() to include outcome in response
+- Result: Now fetching outcome values for all epics (currently 1/14 UTA epics have outcome data filled)
+
 ---
 
 ## API Endpoints
 
 ### H1 Planning
-- `GET /api/fy27/:product` — Business Epics with SWAG
-  - Returns: epics array, stats (totalEpics, plannedSWAG)
+- `GET /api/fy27/:product` — Business Epics with SWAG and Outcome
+  - Returns: epics array with {key, name, status, owner, health, outcome, progress, dueDate, swag}, stats (totalEpics, plannedSWAG)
   - Products: uta, utm, wfmClassic
+  - Fields: customfield_18302 (SWAG), customfield_22600 (Outcome)
   - Cache key: `fy27:{product}:h1`
+
+- `GET /api/fy27/debug/:epicKey` — Inspect all fields for an epic
+  - Returns: allFields array with all non-null field values from Jira
+  - Used for debugging field discovery
+
+- `GET /api/fy27/fields/list` — List all 671 Jira fields and search for outcome-related fields
+  - Returns: outcomeFields (filtered), customFieldsCount, allCustomFields
+  - Used for discovering custom field IDs
 
 ### Q1 Progress
 - `GET /api/q1-progress/:product` — Q1 Epics
@@ -203,7 +236,15 @@ ANALYTICS (bottom section)
 
 ---
 
-## Recent Git Commits
+## Recent Work & Updates
+
+### Latest Session (2026-08-20)
+- **Discovered Outcome field:** customfield_22600 (type: string)
+- **Created fields list endpoint:** `/api/fy27/fields/list` to query all 671 Jira custom fields
+- **Integrated Outcome field:** Now returning outcome values in FY27 H1 Planning API
+- **Updated debug endpoint:** Enhanced `/api/fy27/debug/:epicKey` to return allFields array
+
+### Recent Git Commits
 
 1. **7842d73** - Implement FY27 H1 Planning dashboard system with SWAG tracking
 2. **87bcd11** - Fix security dashboard error handling
@@ -238,12 +279,21 @@ ANALYTICS (bottom section)
 
 ---
 
-## Known Limitations & Future Enhancements
+## Current Status & Data
 
-1. **Planned SWAG for Q1/Q2:** Currently hardcoded to 0 - could be calculated from epic SWAG
-2. **Security Classification:** Removed old logic - could be re-added if needed
-3. **Child Story SWAG:** Currently not aggregated - could be calculated per epic
-4. **Cache Invalidation:** Time-based (5 min) - no manual invalidation endpoint yet
+### Outcome Field Implementation
+- **Field ID:** customfield_22600 (string type)
+- **Status:** ✅ Integrated in API
+- **Data Fill Rate:** 1/14 UTA epics have outcome data (EP-15462: LaunchDarkly SDK Key Management)
+- **Usage:** Returned in `/api/fy27/:product` endpoint, can be displayed in UI as needed
+
+### Known Limitations & Future Enhancements
+
+1. **Outcome Field Fill Rate:** Most epics don't have outcome values populated yet
+2. **Planned SWAG for Q1/Q2:** Currently hardcoded to 0 - could be calculated from epic SWAG
+3. **Security Classification:** Removed old logic - could be re-added if needed
+4. **Child Story SWAG:** Currently not aggregated - could be calculated per epic
+5. **Cache Invalidation:** Time-based (5 min) - no manual invalidation endpoint yet
 
 ---
 

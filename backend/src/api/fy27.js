@@ -2,6 +2,7 @@ import express from 'express';
 const { Router } = express;
 import { fetchIssues } from '../services/jira-service.js';
 import { cacheService } from '../services/cache-service.js';
+import axios from 'axios';
 
 const router = Router();
 
@@ -91,6 +92,7 @@ function transformEpic(issue, index) {
     status: fields.status?.name || 'To Do',
     owner: assignee?.displayName || null,
     health: healthStatus,
+    outcome: fields.customfield_22600 || null,
     progress: Math.round((fields.customfield_10905?.progress || 0) * 100),
     dueDate: fields.duedate || null,
     swag: swag
@@ -166,10 +168,11 @@ router.get('/:product', async (req, res) => {
 
     console.log(`[fy27/${product}] Fetching Business Epics with JQL:`, jql);
 
-    // Request fields including SWAG field (customfield_18302)
+    // Request fields including SWAG field (customfield_18302) and Outcome field (customfield_22600)
     const comprehensiveFields = [
       'key', 'summary', 'status', 'assignee', 'priority', 'progress', 'duedate', 'issuelinks',
       'customfield_18302', // SWAG field
+      'customfield_22600', // Outcome field
       'customfield_10905', // health status
       'customfield_10903', 'customfield_10904',
       'customfield_22500', 'customfield_22201', // portfolio team (different field for WFM Classic)
@@ -242,28 +245,31 @@ router.get('/debug/:epicKey', async (req, res) => {
     // Return all fields with their values, including numeric ones
     const fieldDebug = {};
     const numericFields = [];
+    const allFields = [];
 
     for (const [key, value] of Object.entries(fields)) {
       if (value === null || value === undefined) {
         continue;
       }
 
+      // Record all fields
+      let displayValue = value;
       if (typeof value === 'object' && value.value !== undefined) {
-        fieldDebug[key] = value.value;
+        displayValue = value.value;
         if (typeof value.value === 'number' && value.value === 64) {
           numericFields.push({ field: key, value: value.value, type: 'object' });
         }
       } else if (typeof value === 'number') {
-        fieldDebug[key] = value;
         if (value === 64) {
           numericFields.push({ field: key, value: value, type: 'number' });
         }
       } else if (typeof value === 'string') {
-        fieldDebug[key] = value;
         if (!isNaN(value) && Number(value) === 64) {
           numericFields.push({ field: key, value: Number(value), type: 'string' });
         }
       }
+
+      allFields.push({ field: key, value: displayValue, type: typeof displayValue });
     }
 
     // Return full raw issue for inspection
@@ -277,10 +283,55 @@ router.get('/debug/:epicKey', async (req, res) => {
       fieldsWithValue64: numericFields,
       // Show raw field keys to identify the SWAG field
       fieldKeys: Object.keys(fields),
+      // Return all fields with their values
+      allFields: allFields,
       // Return first few fields as example
       sample: Object.fromEntries(Object.entries(fields).slice(0, 20))
     });
   } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+// Endpoint to fetch all Jira field definitions
+router.get('/fields/list', async (req, res) => {
+  try {
+    const jiraBaseUrl = process.env.JIRA_BASE_URL;
+    const jiraPat = process.env.JIRA_PAT;
+
+    const response = await axios.get(`${jiraBaseUrl}/rest/api/2/field`, {
+      headers: {
+        'Authorization': `Bearer ${jiraPat}`,
+        'Content-Type': 'application/json',
+        'Accept': 'application/json'
+      }
+    });
+
+    const fields = response.data.map(f => ({
+      id: f.id,
+      name: f.name,
+      custom: f.custom,
+      type: f.schema?.type
+    }));
+
+    // Filter for outcome-related fields
+    const outcomeFields = fields.filter(f =>
+      f.name.toLowerCase().includes('outcome') ||
+      f.name.toLowerCase().includes('result') ||
+      f.name.toLowerCase().includes('status')
+    );
+
+    // Also show all custom fields
+    const customFields = fields.filter(f => f.custom).sort((a, b) => a.name.localeCompare(b.name));
+
+    res.json({
+      totalFields: fields.length,
+      outcomeFields,
+      customFieldsCount: customFields.length,
+      allCustomFields: customFields
+    });
+  } catch (err) {
+    console.error('[fields/list] error:', err.message);
     res.status(500).json({ error: err.message });
   }
 });
