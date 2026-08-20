@@ -231,7 +231,7 @@ export default function Q2DevelopmentProgress({ product = 'uta' }) {
       </div>
 
       {/* Stats Grid */}
-      <div className="grid grid-cols-5 gap-4">
+      <div className="grid grid-cols-7 gap-4">
         <StatCard
           label="Total Epics"
           value={stats.totalEpics}
@@ -256,6 +256,16 @@ export default function Q2DevelopmentProgress({ product = 'uta' }) {
           label="Planned SWAG"
           value={stats.plannedSWAG || '—'}
           color={productInfo.color}
+        />
+        <StatCard
+          label="Start Date"
+          value={sprintDef.startDate.toLocaleDateString('en-US', { month: '2-digit', day: '2-digit', year: '2-digit' })}
+          color="#6366f1"
+        />
+        <StatCard
+          label="End Date"
+          value={sprintDef.endDate.toLocaleDateString('en-US', { month: '2-digit', day: '2-digit', year: '2-digit' })}
+          color="#6366f1"
         />
       </div>
 
