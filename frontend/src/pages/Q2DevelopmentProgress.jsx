@@ -76,7 +76,7 @@ function StatCard({ label, value, color = '#005151' }) {
   );
 }
 
-function EpicRow({ epic }) {
+function EpicRow({ epic, sprintDef }) {
   const healthColor = HEALTH_COLORS[epic.health] || '#9ca3af';
   const HealthIcon = HEALTH_ICONS[epic.health] || Clock;
   const priorityColor = PRIORITY_COLORS[epic.priority] || '#6b7280';
@@ -96,6 +96,12 @@ function EpicRow({ epic }) {
       </td>
       <td className="px-4 py-3">
         <span className="text-sm text-gray-700 line-clamp-2">{epic.name}</span>
+      </td>
+      <td className="px-4 py-3 whitespace-nowrap text-xs text-gray-500">
+        {sprintDef?.startDate ? sprintDef.startDate.toLocaleDateString('en-US', { month: '2-digit', day: '2-digit', year: '2-digit' }) : '—'}
+      </td>
+      <td className="px-4 py-3 whitespace-nowrap text-xs text-gray-500">
+        {sprintDef?.endDate ? sprintDef.endDate.toLocaleDateString('en-US', { month: '2-digit', day: '2-digit', year: '2-digit' }) : '—'}
       </td>
       <td className="px-4 py-3 whitespace-nowrap">
         <div className="flex items-center gap-1.5">
@@ -337,6 +343,8 @@ export default function Q2DevelopmentProgress({ product = 'uta' }) {
                     <tr className="bg-gray-50 border-b border-gray-200">
                       <th className="px-4 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider whitespace-nowrap">Key</th>
                       <th className="px-4 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">Summary</th>
+                      <th className="px-4 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider whitespace-nowrap">Start Date</th>
+                      <th className="px-4 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider whitespace-nowrap">End Date</th>
                       <th className="px-4 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider whitespace-nowrap">Health</th>
                       <th className="px-4 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider whitespace-nowrap">Priority</th>
                       <th className="px-4 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">Progress</th>
@@ -347,7 +355,7 @@ export default function Q2DevelopmentProgress({ product = 'uta' }) {
                   </thead>
                   <tbody>
                     {epics.map(epic => (
-                      <EpicRow key={epic.key} epic={epic} />
+                      <EpicRow key={epic.key} epic={epic} sprintDef={sprintDef} />
                     ))}
                   </tbody>
                 </table>
