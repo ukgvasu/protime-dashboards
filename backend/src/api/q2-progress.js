@@ -91,7 +91,11 @@ router.get('/:product', async (req, res) => {
     if (cached) return res.json(cached);
 
     // JQL Query: type = "Epic" AND "Portfolio Team Name" in (product) AND summary ~ "Q2"
-    const jql = `type = "Epic" AND "Portfolio Team Name" in ("${teamName}") AND summary ~ "Q2" AND created >= -90d ORDER BY priority DESC, created DESC`;
+    // For WFM Classic, use summary pattern matching since it uses different field structure
+    let jql = `type = "Epic" AND "Portfolio Team Name" in ("${teamName}") AND summary ~ "Q2" AND created >= -90d ORDER BY priority DESC, created DESC`;
+    if (product === 'wfmClassic') {
+      jql = `type = "Epic" AND summary ~ "WFM Classic" AND summary ~ "Q2" AND created >= -90d ORDER BY priority DESC, created DESC`;
+    }
 
     console.log(`[q2-progress/${product}] Fetching Epics with JQL:`, jql);
 
