@@ -78,29 +78,24 @@ router.get('/leadership', (req, res) => {
 });
 
 const SECURITY_JQL =
-  'Classification = Security AND status != Closed AND "CTO Staff" = "Jeanne Caraglia" ' +
-  'AND ("Security Classification" in ("AI PenTest", "Bug Bounty", "Cloud Security", DAST, ' +
-  'Infrastructure, Other, PenTest, SAST, SCA, "Secret Management") OR "Security Classification" is EMPTY) ' +
-  'AND Pillar = "Transitional Offerings" AND "Value Stream" = "Pro Time"';
+  'reporter = svc_DevSecOps_RW and component in ("WFM Classic", UTA, UTM) and status not in (Closed, Canceled)';
 
-// customfield_26300 = Security Classification (array of options)
-// customfield_10704 = Severity
-// customfield_15604 = Portfolio Team → maps to product
+// Standard fields for security issues
 const SECURITY_FIELDS = [
-  'summary', 'status', 'priority', 'assignee', 'labels',
+  'summary', 'status', 'priority', 'assignee', 'labels', 'components',
   'customfield_10704', // severity
-  'customfield_26300', // security classification
-  'customfield_15604', // portfolio team (product)
 ];
 
-const TEAM_TO_PRODUCT = { 3121: 'uta', 3120: 'utm', 3122: 'wfmClassic', 6252: 'wfmClassic' };
+const COMPONENT_TO_PRODUCT = { 'UTA': 'uta', 'UTM': 'utm', 'WFM Classic': 'wfmClassic' };
 const PRODUCT_LABELS  = { uta: 'UTA', utm: 'UTM', wfmClassic: 'WFM Classic' };
 
-function extractSecurityClass(fields) {
-  const val = fields.customfield_26300;
-  if (Array.isArray(val) && val.length > 0) return val[0].value || null;
-  if (val && typeof val === 'object' && val.value) return val.value;
-  return null;
+function extractProduct(fields) {
+  const components = fields.components || [];
+  if (components.length > 0) {
+    const componentName = components[0].name || components[0];
+    return COMPONENT_TO_PRODUCT[componentName] || 'other';
+  }
+  return 'other';
 }
 
 // GET /api/reports/security
@@ -121,8 +116,7 @@ router.get('/security', async (req, res) => {
       const fields = issue.fields || {};
       const severityRaw = fields.customfield_10704;
       const severity = severityRaw?.value || (typeof severityRaw === 'string' ? severityRaw : null);
-      const teamId = fields.customfield_15604?.id;
-      const product = TEAM_TO_PRODUCT[teamId] || 'other';
+      const product = extractProduct(fields);
       return {
         key: issue.key,
         summary: fields.summary || '',
@@ -130,7 +124,6 @@ router.get('/security', async (req, res) => {
         priority: fields.priority?.name || 'Unknown',
         severity: severity || null,
         assignee: fields.assignee?.displayName || null,
-        securityClass: extractSecurityClass(fields),
         product,
         tveSubmitted: (fields.labels || []).some(l => l.toUpperCase().includes('TVE-SUBMITTED')),
       };
@@ -168,47 +161,43 @@ router.get('/security', async (req, res) => {
   }
 });
 
-const SECURITY_BASE_JQL =
-  'Classification = Security AND status != Closed AND "CTO Staff" = "Jeanne Caraglia" ' +
-  'AND ("Security Classification" in ("AI PenTest", "Bug Bounty", "Cloud Security", DAST, ' +
-  'Infrastructure, Other, PenTest, SAST, SCA, "Secret Management") OR "Security Classification" is EMPTY) ' +
-  'AND Pillar = "Transitional Offerings"';
-
-const SECURITY_UTA_JQL = SECURITY_BASE_JQL + ' AND "Portfolio Team" = 3121';
-const SECURITY_UTM_JQL = SECURITY_BASE_JQL + ' AND "Portfolio Team" = 3120';
-const SECURITY_WFM_JQL = SECURITY_BASE_JQL + ' AND "Portfolio Team" in (3122, 6252)';
+const SECURITY_UTA_JQL = 'reporter = svc_DevSecOps_RW and component = UTA and status not in (Closed, Canceled)';
+const SECURITY_UTM_JQL = 'reporter = svc_DevSecOps_RW and component = UTM and status not in (Closed, Canceled)';
+const SECURITY_WFM_JQL = 'reporter = svc_DevSecOps_RW and component = "WFM Classic" and status not in (Closed, Canceled)';
 
 async function buildProductSecurityResult(jql) {
-  const rawIssues = await fetchIssues(jql, 500, SECURITY_FIELDS);
-  const defects = rawIssues.map(issue => {
-    const fields = issue.fields || {};
-    const severityRaw = fields.customfield_10704;
-    const severity = severityRaw?.value || (typeof severityRaw === 'string' ? severityRaw : null);
-    return {
-      key: issue.key,
-      summary: fields.summary || '',
-      status: fields.status?.name || 'Unknown',
-      priority: fields.priority?.name || 'Unknown',
-      severity: severity || null,
-      assignee: fields.assignee?.displayName || null,
-      securityClass: extractSecurityClass(fields),
-      tveSubmitted: (fields.labels || []).some(l => l.toUpperCase().includes('TVE-SUBMITTED')),
-    };
-  });
+  let defects = [];
+  try {
+    const rawIssues = await fetchIssues(jql, 500, SECURITY_FIELDS);
+    defects = rawIssues.map(issue => {
+      const fields = issue.fields || {};
+      const severityRaw = fields.customfield_10704;
+      const severity = severityRaw?.value || (typeof severityRaw === 'string' ? severityRaw : null);
+      return {
+        key: issue.key,
+        summary: fields.summary || '',
+        status: fields.status?.name || 'Unknown',
+        priority: fields.priority?.name || 'Unknown',
+        severity: severity || null,
+        assignee: fields.assignee?.displayName || null,
+        tveSubmitted: (fields.labels || []).some(l => l.toUpperCase().includes('TVE-SUBMITTED')),
+      };
+    });
+  } catch (err) {
+    console.warn('Security product JQL query failed, returning empty results:', err.message);
+    defects = [];
+  }
+
   const bySeverity = {};
-  const bySecurityClassification = {};
   defects.forEach(d => {
     const s = d.severity || 'Unknown';
     bySeverity[s] = (bySeverity[s] || 0) + 1;
-    const sc = d.securityClass || 'Unclassified';
-    bySecurityClassification[sc] = (bySecurityClassification[sc] || 0) + 1;
   });
   return {
     total: defects.length,
     critical: defects.filter(d => ['S1', 'S2'].includes(d.severity)).length,
     defects,
     bySeverity,
-    bySecurityClassification,
     updatedAt: new Date().toISOString(),
   };
 }
